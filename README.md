@@ -19,7 +19,7 @@ O SIGEA (Sistema de Gestão Acadêmica) é um sistema desenvolvido com o objetiv
 
 ## Como usar
 
-# Em desenvolvimento...
+### Em desenvolvimento...
 
 <!-- **Primeiro passo:** Clone o projeto
 
