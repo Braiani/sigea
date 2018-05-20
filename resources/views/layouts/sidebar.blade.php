@@ -26,13 +26,13 @@ Tip 2: you can also add an image using data-image tag
                 <div class="collapse" id="collapseExample">
                     <ul class="nav">
                         <li>
-                            <a class="profile-dropdown" href="#pablo">
+                            <a class="profile-dropdown" href="{{route('sigea.profile.index')}}">
                                 <span class="sidebar-mini">MP</span>
                                 <span class="sidebar-normal">Meu Perfil</span>
                             </a>
                         </li>
                         <li>
-                            <a class="profile-dropdown" href="#pablo">
+                            <a class="profile-dropdown" href="{{route('sigea.profile.edit')}}">
                                 <span class="sidebar-mini">EP</span>
                                 <span class="sidebar-normal">Editar Perfil</span>
                             </a>

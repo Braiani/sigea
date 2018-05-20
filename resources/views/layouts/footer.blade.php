@@ -2,26 +2,15 @@
         <div class="container">
             <nav>
                 <ul class="footer-menu">
-                    {{-- <li>
-                        <a href="#">
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            Company
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            Portfolio
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            Blog
-                        </a>
-                    </li> --}}
+                    @auth
+                    @if (Auth::user()->isAdmin)
+                        <li>
+                            <a href="{{route('voyager.dashboard')}}">
+                                Back-end
+                            </a>
+                        </li>
+                    @endif
+                    @endauth
                 </ul>
                 <p class="copyright text-center">
                     ©

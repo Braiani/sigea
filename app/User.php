@@ -15,7 +15,7 @@ class User extends \TCG\Voyager\Models\User
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'about',
     ];
 
     /**
@@ -26,4 +26,9 @@ class User extends \TCG\Voyager\Models\User
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getisAdminAttribute()
+    {
+        return $this->role->name == 'admin' ;
+    }
 }
