@@ -65,7 +65,7 @@
                                 <i class="nc-icon nc-settings-90"></i> Configurações
                             </a>
                             <div class="divider"></div>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{route('lockscreen')}}">
                                 <i class="nc-icon nc-lock-circle-open"></i> Bloquear
                             </a>
                             <a href="#" class="dropdown-item text-danger" id="sair">

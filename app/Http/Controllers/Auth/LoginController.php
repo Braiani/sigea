@@ -40,13 +40,13 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     public function logout()
     {
         Auth::logout();
 
-        return redirect()->route('sigea.login');
+        return redirect()->route('login');
     }
 }

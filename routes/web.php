@@ -12,13 +12,16 @@
 */
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('sigea.dashboard');
 });
 
-Route::get('/admin/login', 'Auth\\LoginController@index')->name('sigea.login');
+Route::get('/admin/login', 'Auth\\LoginController@index')->name('login');
 Route::post('/admin/logout', 'Auth\\LoginController@logout')->name('sigea.logout');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+Route::get('/admin/lockscreen', 'LockscreenController@lock')->name('lockscreen');
+Route::post('/admin/lockscreen', 'LockscreenController@unlock')->name('unlock');
+
+Route::group(['prefix' => 'admin', 'middleware' => 'lock'], function(){
     Route::get('/', function(){ return view('dashboard'); })->name('sigea.dashboard');
     Route::get('/perfil', 'ProfileController@index')->name('sigea.profile.index');
     Route::get('/perfil/edit', 'ProfileController@edit')->name('sigea.profile.edit');
