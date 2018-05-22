@@ -75,12 +75,9 @@ class ProfileController extends Controller
         if (!$request->ajax()) {
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
-            return redirect()
-                ->route("sigea.profile.index")
-                ->with([
-                    'message'    => "Perfil atualizado com sucesso!",
-                    'alert-type' => 'success',
-                ]);
+            toastr()->success('Perfil atualizado com sucesso!');
+
+            return redirect()->route('sigea.profile.index');
         }
     }
 }

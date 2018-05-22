@@ -50,27 +50,9 @@
 <script src="{{asset('/js/demo.js')}}"></script>
 
 @toastr_js
+@toastr_render
 
 <script>
-    @if(Session::has('alerts'))
-        let alerts = {!! json_encode(Session::get('alerts')) !!};
-        helpers.displayAlerts(alerts, toastr);
-    @endif
-
-    @if(Session::has('message'))
-
-    // TODO: change Controllers to use AlertsMessages trait... then remove this
-    var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
-    var alertMessage = {!! json_encode(Session::get('message')) !!};
-    var alerter = toastr[alertType];
-
-    if (alerter) {
-        alerter(alertMessage);
-    } else {
-        toastr.error("toastr alert-type " + alertType + " is unknown");
-    }
-
-    @endif
     $(document).ready(function() {
         $('#sair').on('click', function(e){
             e.preventDefault();
