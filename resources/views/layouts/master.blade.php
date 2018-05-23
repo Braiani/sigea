@@ -42,6 +42,11 @@
 <script src="{{asset('/js/plugins/bootstrap-switch.js')}}"></script>
 <!--  Chartist Plugin  -->
 <script src="{{asset('/js/plugins/chartist.min.js')}}"></script>
+<!--  Bootstrap Table Plugin -->
+<script src="{{asset('/js/plugins/bootstrap-table.js')}}"></script>
+<script src="{{asset('/js/locale/bootstrap-table-pt-BR.js')}}"></script>
+<!--  Sweet Alert  -->
+<script src="{{asset('/js/plugins/sweetalert2.min.js')}}" type="text/javascript"></script>
 <!--  Notifications Plugin    -->
 <script src="{{asset('/js/plugins/bootstrap-notify.js')}}"></script>
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->

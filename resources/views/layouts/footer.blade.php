@@ -5,7 +5,7 @@
                     @auth
                     @if (Auth::user()->isAdmin)
                         <li>
-                            <a href="{{route('voyager.dashboard')}}">
+                            <a target="_blank" href="{{route('voyager.dashboard')}}">
                                 Back-end
                             </a>
                         </li>

@@ -29,14 +29,14 @@
                         <form class="form" method="POST" action="{{ route('voyager.login') }}">
                             @csrf
                             <div class="card card-login card-hidden">
-                                <div class="card-header ">
+                                <div class="card-header">
                                     <h3 class="header text-center">Login - SIGEA</h3>
                                 </div>
                                 <div class="card-body ">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label>E-mail</label>
-                                            <input type="email" placeholder="Digite seu e-mail" name="email" class="form-control">
+                                            <input type="email" placeholder="Digite seu e-mail" name="email" class="form-control" autofocus>
                                         </div>
                                         <div class="form-group">
                                             <label>Senha</label>

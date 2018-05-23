@@ -21,12 +21,16 @@ Route::post('/admin/logout', 'Auth\\LoginController@logout')->name('sigea.logout
 Route::get('/admin/lockscreen', 'LockscreenController@lock')->name('lockscreen');
 Route::post('/admin/lockscreen', 'LockscreenController@unlock')->name('unlock');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'lock'], function(){
-    Route::get('/', function(){ return view('dashboard'); })->name('sigea.dashboard');
-    Route::get('/perfil', 'ProfileController@index')->name('sigea.profile.index');
-    Route::get('/perfil/edit', 'ProfileController@edit')->name('sigea.profile.edit');
-    Route::put('/perfil', 'ProfileController@update')->name('sigea.profile.update');
-    Route::get('/passivo', function(){return 'teste';})->name('passivo');
+Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], function(){
+    Route::get('/', function(){ return view('dashboard'); })->name('dashboard');
+
+    Route::get('/perfil', 'ProfileController@index')->name('profile.index');
+    Route::get('/perfil/edit', 'ProfileController@edit')->name('profile.edit');
+    Route::put('/perfil', 'ProfileController@update')->name('profile.update');
+
+    Route::resource('/passivo', 'PassivoController');
+    Route::get('/passivo/table/json', 'PassivoController@getData')->name('passivo.table');
+
     Route::get('/configuracoes', function(){return 'teste';})->name('configuracoes');
 });
 
