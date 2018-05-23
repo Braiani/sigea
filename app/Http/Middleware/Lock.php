@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Lock
 {
@@ -15,6 +16,9 @@ class Lock
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
         if ($request->session()->has('locked')) {
             return redirect()->route('lockscreen');
