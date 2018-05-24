@@ -28,19 +28,14 @@ class LockscreenController extends Controller
 
         if (Hash::check($password, Auth::user()->password)) {
             Session::forget('locked');
-            return redirect()
-                ->route('sigea.dashboard')
-                ->with([
-                    'message' => 'Usuário desbloquado',
-                    'alert-type' => 'success'
-                ]);
+
+            toastr()->success('Usuário desbloquado');
+
+            return redirect()->route('sigea.dashboard');
         }
 
-        return redirect()
-                ->route('lockscreen')
-                ->with([
-                    'message' => 'Senha incorreta',
-                    'alert-type' => 'error'
-                ]);
+        toastr()->error('Senha incorreta');
+
+        return redirect()->route('lockscreen');
     }
 }
