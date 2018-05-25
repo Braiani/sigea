@@ -8,7 +8,7 @@
 @section('content')
 <div class="row">
     <div class="col-sm-4">
-        <a href="{{ route('sigea.passivo.create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Cadastrar pasta no passivo</a>
+        <button id="addPassivoBtn" class="btn btn-success"><i class="fa fa-plus"></i> Cadastrar pasta no passivo</button>
     </div>
     <div class="col-md-12">
         <div class="card bootstrap-table">

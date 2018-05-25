@@ -92,7 +92,11 @@ async function message(value, row, index){
 async function getInputs(value, row, index){
     $id = row.id;
     $nome = row.nome;
-    $curso = row.curso;
+    if (row.curso == null) {
+        $curso = '';
+    }else{
+        $curso = row.curso;
+    }
     if (row.atualizacao_nome) {
         $at_nome = 'checked';
     }else{
@@ -171,6 +175,123 @@ function operateFormatter(value, row, index) {
     ].join('');
 }
 
+async function getAddInput(){
+    await swal({
+        title: 'Cadastrar pasta',
+        html:
+        '<div class="card stacked-form">' +
+        '<div class="card-body ">' +
+        '<div class="form-group">' +
+        '<label>Nome</label>' +
+        '<input placeholder="Nome" name="nome" class="form-control" type="text">' +
+        '</div>' +
+        '<div class="form-group">' +
+        '<label>Curso</label>' +
+        '<input placeholder="Curso" name="curso" class="form-control" type="text">' +
+        '</div>' +
+        '<div class="row">' +
+        '<div class="col-md-10">' +
+        '<div class="form-check checkbox-inline">' +
+        '<label class="form-check-label">' +
+        '<input class="form-check-input" type="checkbox" name="atualizacao_nome">' +
+        '<span class="form-check-sign"></span>' +
+        'Nome atualizado' +
+        '</label>' +
+        '</div>' +
+        '<div class="form-check checkbox-inline">' +
+        '<label class="form-check-label">' +
+        '<input class="form-check-input" type="checkbox" name="siga">' +
+        '<span class="form-check-sign"></span>' +
+        'Siga' +
+        '</label>' +
+        '</div>' +
+        '<div class="form-check checkbox-inline">' +
+        '<label class="form-check-label">' +
+        '<input class="form-check-input" type="checkbox" name="sistec">' +
+        '<span class="form-check-sign"></span>' +
+        'SISTEC' +
+        '</label>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="form-group">' +
+        '<label>Observação</label>' +
+        '<input placeholder="Observação" name="observacao" class="form-control" type="text">' +
+        '</div>' +
+        '</div>' +
+        '</div>',
+        focusConfirm: false,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            if ($('input[name=atualizacao_nome]').is(':checked')) {
+                atualizacao_nome = 1;
+            }else{
+                atualizacao_nome = 0;
+            }
+            if ($('input[name=siga]').is(':checked')) {
+                siga = 1;
+            }else{
+                siga = 0;
+            }
+            if ($('input[name=sistec]').is(':checked')) {
+                sistec = 1;
+            }else{
+                sistec = 0;
+            }
+            return {
+                nome: $('input[name=nome]').val(),
+                curso: $('input[name=curso]').val(),
+                atualizacao_nome: atualizacao_nome,
+                siga: siga,
+                sistec: sistec,
+                observacao: $('input[name=observacao]').val(),
+            }
+        }
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "/admin/passivo",
+                data: {
+                    'nome': result.value.nome,
+                    'curso': result.value.curso,
+                    'atualizacao_nome': result.value.atualizacao_nome,
+                    'siga': result.value.siga,
+                    'sistec': result.value.sistec,
+                    'observacao': result.value.observacao
+                },
+                cache: false,
+                success: function(response) {
+                    if (!response.error) {
+                        // $table.bootstrapTable('refresh');
+                        swal(
+                            "Sucesso!",
+                            response.message,
+                            "success"
+                        )
+                    }else {
+                        swal(
+                            "Erro!",
+                            response.message,
+                            "error"
+                        )
+                    }
+                },
+                error: function (response) {
+                    swal(
+                        "Erro interno!",
+                        "Oops, ocorreu um erro ao tentar salvar as alterações.", // had a missing comma
+                        "error"
+                    )
+                }
+            });
+        }
+    })
+}
+
 $().ready(function() {
     window.operateEvents = {
         'click .edit': function(e, value, row, index) {
@@ -207,4 +328,9 @@ $().ready(function() {
     $(window).resize(function() {
         $table.bootstrapTable('resetView');
     });
+
+    $('#addPassivoBtn').on('click', async function(){
+        await getAddInput();
+        $table.bootstrapTable('refresh');
+    })
 });

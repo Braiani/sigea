@@ -58,13 +58,36 @@ class PassivoController extends VoyagerBaseController
         return "Teste!";
     }
 
+    public function store(Request $request)
+    {
+        if ($this->isBackend($request)) {
+            return parent::create($request);
+        }
+
+        $request->validate([
+            'nome' => 'required',
+            'curso' => 'required'
+        ]);
+
+        if (Passivo::create($request->all())) {
+            return [
+                'error' => false,
+                'message' => 'Alterações salvas com sucesso'
+            ];
+        }
+        return [
+            'error' => true,
+            'message' => 'Não foi possível cadastrar a pasta!'
+        ];
+    }
+
     public function update(Request $request, $id)
     {
         if ($this->isBackend($request)) {
             return parent::index($request);
         }
 
-        $validacao = Validator($request->all(), [
+        $request->validate([
             'nome' => 'required'
         ]);
 
