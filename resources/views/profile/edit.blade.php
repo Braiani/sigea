@@ -69,7 +69,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Sobre</label>
-                                    <textarea name="about" rows="4" cols="80" class="form-control" placeholder="Aqui você pode contar um pouco de você">{{ Auth::user()->about }}</textarea>
+                                    <input name="about" type="text" class="form-control" placeholder="Aqui você pode contar um pouco de você" value="{{ Auth::user()->about }}">
                                 </div>
                             </div>
                         </div>
