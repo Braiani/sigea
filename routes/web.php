@@ -22,14 +22,14 @@ Route::get('/admin/lockscreen', 'LockscreenController@lock')->name('lockscreen')
 Route::post('/admin/lockscreen', 'LockscreenController@unlock')->name('unlock');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], function(){
-    Route::get('/', function(){ return view('dashboard'); })->name('dashboard');
+    Route::get('/', 'DashboardController@index')->name('dashboard');
 
     Route::get('/perfil', 'ProfileController@index')->name('profile.index');
     Route::get('/perfil/edit', 'ProfileController@edit')->name('profile.edit');
     Route::put('/perfil', 'ProfileController@update')->name('profile.update');
 
-    Route::resource('/passivo', 'PassivoController');
     Route::get('/passivo/table/json', 'PassivoController@getData')->name('passivo.table');
+    Route::resource('/passivo', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('/configuracoes', function(){return 'teste';})->name('configuracoes');
 });
