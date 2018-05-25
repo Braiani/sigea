@@ -266,7 +266,7 @@ async function getAddInput(){
                 cache: false,
                 success: function(response) {
                     if (!response.error) {
-                        // $table.bootstrapTable('refresh');
+                        $table.bootstrapTable('refresh');
                         swal(
                             "Sucesso!",
                             response.message,
@@ -331,6 +331,5 @@ $().ready(function() {
 
     $('#addPassivoBtn').on('click', async function(){
         await getAddInput();
-        $table.bootstrapTable('refresh');
     })
 });
