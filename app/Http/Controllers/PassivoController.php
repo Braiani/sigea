@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Passivo;
+use Dotenv\Validator;
 
 class PassivoController extends VoyagerBaseController
 {
@@ -38,10 +39,11 @@ class PassivoController extends VoyagerBaseController
             $query = $query->orderBy($sort, $request->get('order'));
         }
 
-        $passivo = $query->offset($offset)->limit($limit)->get();
+        $passivo = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->get();
 
         $resposta = array(
             'total' => $total,
+            'count' => $passivo->count(),
             'rows' => $passivo,
         );
         return $resposta;
@@ -54,6 +56,29 @@ class PassivoController extends VoyagerBaseController
         }
 
         return "Teste!";
+    }
+
+    public function update(Request $request, $id)
+    {
+        if ($this->isBackend($request)) {
+            return parent::index($request);
+        }
+
+        $validacao = Validator($request->all(), [
+            'nome' => 'required'
+        ]);
+
+        if (Passivo::find($id)->update($request->all())) {
+            return [
+                'error' => false,
+                'message' => 'Alterações salvas com sucesso'
+            ];
+        }else{
+            return [
+                'error' => true,
+                'message' => 'ID inexistente'
+            ];
+        }
     }
 
 
