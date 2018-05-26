@@ -38,46 +38,18 @@ async function message(value, row, index){
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "PUT",
-                    url: "/admin/passivo/" + $id,
-                    data: {
-                        'id': formValues.id,
-                        'nome': formValues.nome,
-                        'curso': formValues.curso,
-                        'atualizacao_nome': formValues.atualizacao_nome,
-                        'siga': formValues.siga,
-                        'sistec': formValues.sistec,
-                        'observacao': formValues.observacao
-                    },
-                    cache: false,
-                    success: function(response) {
-                        if (!response.error) {
-                            $table.bootstrapTable('refresh', {silent: true});
-                            swal(
-                                "Sucesso!",
-                                response.message,
-                                "success"
-                            )
-                        }else {
-                            swal(
-                                "Erro!",
-                                response.message,
-                                "error"
-                            )
-                        }
-                    },
-                    error: function (response) {
-                        swal(
-                            "Erro interno!",
-                            "Oops, ocorreu um erro ao tentar salvar as alterações.", // had a missing comma
-                            "error"
-                        )
-                    }
-                });
+                type = 'PUT';
+                url = "/admin/passivo/" + $id;
+                data = {
+                    'id': formValues.id,
+                    'nome': formValues.nome,
+                    'curso': formValues.curso,
+                    'atualizacao_nome': formValues.atualizacao_nome,
+                    'siga': formValues.siga,
+                    'sistec': formValues.sistec,
+                    'observacao': formValues.observacao
+                };
+                execAjax(type, url, data);
             } else if ( result.dismiss === swal.DismissReason.cancel) {
                 swalWithBootstrapButtons(
                     'Cancelado!',
@@ -249,45 +221,17 @@ async function getAddInput(){
         }
     }).then((result) => {
         if (result.value) {
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: "/admin/passivo",
-                data: {
-                    'nome': result.value.nome,
-                    'curso': result.value.curso,
-                    'atualizacao_nome': result.value.atualizacao_nome,
-                    'siga': result.value.siga,
-                    'sistec': result.value.sistec,
-                    'observacao': result.value.observacao
-                },
-                cache: false,
-                success: function(response) {
-                    if (!response.error) {
-                        $table.bootstrapTable('refresh');
-                        swal(
-                            "Sucesso!",
-                            response.message,
-                            "success"
-                        )
-                    }else {
-                        swal(
-                            "Erro!",
-                            response.message,
-                            "error"
-                        )
-                    }
-                },
-                error: function (response) {
-                    swal(
-                        "Erro interno!",
-                        "Oops, ocorreu um erro ao tentar salvar as alterações.", // had a missing comma
-                        "error"
-                    )
-                }
-            });
+            type = 'POST';
+            url = '/admin/passivo';
+            data = {
+                'nome': result.value.nome,
+                'curso': result.value.curso,
+                'atualizacao_nome': result.value.atualizacao_nome,
+                'siga': result.value.siga,
+                'sistec': result.value.sistec,
+                'observacao': result.value.observacao
+            };
+            execAjax(type, url, data);
         }
     })
 }
