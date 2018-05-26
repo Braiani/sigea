@@ -291,6 +291,61 @@ async function getAddInput(){
         }
     })
 }
+function deleteRow(value, row, index){
+    $id = row.id;
+    swal({
+        title: 'Você deseja retirar a pasta ' + $id + ' do passivo?',
+        html:
+            '<label>Digite o motivo da retirada da pasta:</label>' +
+            '<p><input id="input-field" class="form-control"></p>',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, eu quero!',
+        cancelButtonText: 'Não, cancelar!',
+        closeOnConfirm: false,
+        allowOutsideClick: false
+    }).then((result) => {
+        $data = {'observacao': $('#input-field').val()};
+        if (result.value) {
+            execAjax('DELETE', '/admin/passivo/' + $id, $data);
+        }
+    })
+}
+
+function execAjax(type, url, data){
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: type,
+        url: url,
+        data: data,
+        cache: false,
+        success: function(response) {
+            if (!response.error) {
+                $table.bootstrapTable('refresh');
+                swal(
+                    "Sucesso!",
+                    response.message,
+                    "success"
+                )
+            }else {
+                swal(
+                    "Erro!",
+                    response.message,
+                    "error"
+                )
+            }
+        },
+        error: function (response) {
+            swal(
+                "Erro interno!",
+                "Oops, ocorreu um erro ao tentar salvar as alterações.", // had a missing comma
+                "error"
+            )
+        }
+    });
+}
 
 $().ready(function() {
     window.operateEvents = {
@@ -299,10 +354,11 @@ $().ready(function() {
         },
         'click .remove': function(e, value, row, index) {
             console.log(row);
-            $table.bootstrapTable('remove', {
-                field: 'id',
-                values: [row.id]
-            });
+            deleteRow(value, row, index);
+            // $table.bootstrapTable('remove', {
+            //     field: 'id',
+            //     values: [row.id]
+            // });
         }
     };
     $table.bootstrapTable({

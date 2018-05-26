@@ -49,19 +49,10 @@ class PassivoController extends VoyagerBaseController
         return $resposta;
     }
 
-    public function create(Request $request)
-    {
-        if ($this->isBackend($request)) {
-            return parent::create($request);
-        }
-
-        return "Teste!";
-    }
-
     public function store(Request $request)
     {
         if ($this->isBackend($request)) {
-            return parent::create($request);
+            return parent::store($request);
         }
 
         $request->validate([
@@ -84,7 +75,7 @@ class PassivoController extends VoyagerBaseController
     public function update(Request $request, $id)
     {
         if ($this->isBackend($request)) {
-            return parent::index($request);
+            return parent::update($request, $id);
         }
 
         $request->validate([
@@ -99,11 +90,35 @@ class PassivoController extends VoyagerBaseController
         }else{
             return [
                 'error' => true,
-                'message' => 'ID inexistente'
+                'message' => 'Número de pasta inexistente'
             ];
         }
     }
 
+    public function destroy(Request $request, $id)
+    {
+        if ($this->isBackend($request)) {
+            return parent::destroy($request, $id);
+        }
+
+        $pasta = Passivo::find($id);
+
+        if ($pasta->update($request->all())) {
+            $pasta->delete();
+            return [
+                'error' => false,
+                'message' => 'Pasta retirada da lista do arquivo passivo!'
+            ];
+        }else{
+            return [
+                'error' => true,
+                'message' => 'Número de pasta inexistente'
+            ];
+        }
+
+        return $request;
+
+    }
 
     public function isBackend(Request $request)
     {
