@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('sigea.dashboard');
-});
+Route::get('/', 'DashboardController@index');
 
 Route::get('/admin/login', 'Auth\\LoginController@index')->name('login');
 Route::post('/admin/logout', 'Auth\\LoginController@logout')->name('sigea.logout');

@@ -42,7 +42,7 @@
 <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
 <script src="{{asset('/js/plugins/bootstrap-switch.js')}}"></script>
 <!--  Chartist Plugin  -->
-<script src="{{asset('/js/plugins/chartist.min.js')}}"></script>
+<script src="{{asset('/js/plugins/chart.bundle.min.js')}}"></script>
 <!--  Bootstrap Table Plugin -->
 <script src="{{asset('/js/plugins/bootstrap-table.js')}}"></script>
 <script src="{{asset('/js/locale/bootstrap-table-pt-BR.js')}}"></script>
@@ -53,7 +53,7 @@
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
 <script src="{{asset('/js/light-bootstrap-dashboard.js?v=2.0.1')}}" type="text/javascript"></script>
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
-<script src="{{asset('/js/demo.js')}}"></script>
+<script src="{{asset('/js/app.js')}}"></script>
 
 @toastr_js
 @toastr_render
@@ -64,6 +64,7 @@
             e.preventDefault();
             $('#form-sair').submit();
         });
+        app.checkFullPageBackgroundImage();
     });
 </script>
 
