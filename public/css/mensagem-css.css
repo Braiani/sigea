@@ -1,0 +1,130 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:200,300,400);
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+.FAB {
+  position: absolute;
+  bottom: 10%;
+  right: 60px;
+  width: 56px;
+}
+.FAB__action-button, .FAB__mini-action-button {
+  cursor: pointer;
+  position: absolute;
+}
+.FAB__action-button {
+  bottom: 0;
+  right: 0;
+}
+.FAB__action-button:hover .action-button__icon {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.14), 0 8px 16px rgba(0, 0, 0, 0.28);
+}
+.FAB__mini-action-button {
+  bottom: 0;
+  right: 49px;
+}
+
+.action-button__icon {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+  background-color: #ff4081;
+  border-radius: 50%;
+  color: #fff;
+  padding: 16px;
+}
+.action-button__text--hide {
+  display: none;
+}
+.action-button__text--show {
+  background-color: #212121;
+  border-radius: 3px;
+  color: #fff;
+  right: 75px;
+  font-size: 14px;
+  font-family: "Helvetica Neue";
+  opacity: .8;
+  padding: 5px 9px;
+  position: absolute;
+  top: 2px;
+  white-space: nowrap;
+}
+
+.mini-action-button__icon {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+  background-color: #536DFE;
+  border-radius: 50%;
+  color: #fff;
+  padding: 8px;
+}
+.mini-action-button__icon:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.14), 0 8px 16px rgba(0, 0, 0, 0.28);
+}
+.mini-action-button__text--hide {
+  display: none;
+}
+.mini-action-button__text--show {
+  background-color: #212121;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  right: 60px;
+  font-size: 14px;
+  font-family: "Helvetica Neue";
+  opacity: .8;
+  padding: 5px 9px;
+  position: absolute;
+  top: -6px;
+  white-space: nowrap;
+}
+.mini-action-button--show {
+  position: absolute;
+  text-align: center;
+}
+.mini-action-button--hide {
+  display: none;
+  opacity: 0;
+}
+
+.mini-action-button--show:nth-child(1) {
+  bottom: 80px;
+}
+
+.mini-action-button--show:nth-child(2) {
+  bottom: 140px;
+}
+
+.mini-action-button--show:nth-child(3) {
+  bottom: 200px;
+}
+
+.mini-action-button--show:nth-child(4) {
+  bottom: 260px;
+}
+
+.mini-action-button--show:nth-child(5) {
+  bottom: 320px;
+}
+
+.mini-action-button--show:nth-child(6) {
+  bottom: 380px;
+}
+
+.mini-action-button--show:nth-child(7) {
+  bottom: 440px;
+}
+
+.mini-action-button--show:nth-child(8) {
+  bottom: 500px;
+}
+
+.mini-action-button--show:nth-child(9) {
+  bottom: 560px;
+}
+
+.mini-action-button--show:nth-child(10) {
+  bottom: 620px;
+}
+
+/* Custom file */
+
+textarea {
+    height: 100%;
+}

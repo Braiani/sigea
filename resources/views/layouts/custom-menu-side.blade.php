@@ -3,7 +3,6 @@
         @php
             $listItemClass = [];
             $linkAttributes = null;
-            $transItem = $item;
 
             $href = $item->link();
 
@@ -29,7 +28,7 @@
                     continue;
                 }
 
-                $linkAttributes = 'href="#' . $transItem->id .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
+                $linkAttributes = 'href="#' . $item->id .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
                 array_push($listItemClass, 'dropdown');
             }
             else
@@ -47,11 +46,9 @@
                 <p>{{ $item->title }}@if ($hasChildren) <b class="caret"></b> @endif</p>
             </a>
             @if($hasChildren)
-            <div id="{{ $transItem->id }}-dropdown-element" class="collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
+            <div id="{{ $item->id }}-dropdown-element" class="collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
                 <ul class="nav">
-                    <li class="nav-item">
-                        @include('layouts.custom-menu-side', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
-                    </li>
+                    @include('layouts.custom-menu-side', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
                 </ul>
             </div>
         @endif

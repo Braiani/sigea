@@ -6,6 +6,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{asset('/img/apple-icon.png')}}">
     <link rel="icon" type="image/png" href="{{asset('/img/favicon.ico')}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{setting('site.title')}} - @yield('title')</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -48,11 +49,13 @@
 <script src="{{asset('/js/locale/bootstrap-table-pt-BR.js')}}"></script>
 <!--  Sweet Alert  -->
 <script src="{{asset('/js/plugins/sweetalert2.min.js')}}" type="text/javascript"></script>
+<!--  Bootstrap Select  -->
+<script src="{{asset('/js/plugins/bootstrap-selectpicker.js')}}" type="text/javascript"></script>
 <!--  Notifications Plugin    -->
 <script src="{{asset('/js/plugins/bootstrap-notify.js')}}"></script>
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
 <script src="{{asset('/js/light-bootstrap-dashboard.js?v=2.0.1')}}" type="text/javascript"></script>
-<!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
+
 <script src="{{asset('/js/app.js')}}"></script>
 
 @toastr_js

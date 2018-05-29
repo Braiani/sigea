@@ -29,6 +29,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::get('/passivo/table/json', 'PassivoController@getData')->name('passivo.table');
     Route::resource('/passivo', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
 
+    Route::get('/mensagens/unread/{id}', 'MensagemController@unread')->name('mensagens.unread');
+    Route::get('/mensagens/saida', 'MensagemController@saida')->name('mensagens.saida');
+    Route::resource('/mensagens', 'MensagemController')->except(['edit']);
+
     Route::get('/configuracoes', function(){return 'teste';})->name('configuracoes');
 });
 
