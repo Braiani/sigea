@@ -57,15 +57,15 @@ $(document).ready(function () {
     });
 
     $('#addMail').on('click', function() {
-        window.location = '/admin/mensagens/create';
+        window.location = $(this).data('url');
     });
 
     $('#sent').on('click', function() {
-        window.location = '/admin/mensagens/saida';
+        window.location = $(this).data('url');
     });
 
     $('#inbox').on('click', function() {
-        window.location = '/admin/mensagens';
+        window.location = $(this).data('url');
     });
 
     var textarea = document.querySelector('textarea');

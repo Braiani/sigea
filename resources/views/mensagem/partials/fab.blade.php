@@ -1,14 +1,14 @@
 <section class="FAB">
     <div class="FAB__mini-action-button">
-        <div class="mini-action-button--hide mini-action-button" id="addMail">
+        <div class="mini-action-button--hide mini-action-button" data-url="{{ route('sigea.mensagens.create') }}" id="addMail">
             <i class="mini-action-button__icon material-icons">create</i>
             <p class="mini-action-button__text--hide">Escrever mensagem</p>
         </div>
-        <div class="mini-action-button--hide mini-action-button" id="inbox">
+        <div class="mini-action-button--hide mini-action-button" data-url="{{ route('sigea.mensagens.index') }}" id="inbox">
             <i class="mini-action-button__icon material-icons">inbox</i>
             <p class="mini-action-button__text--hide">Caixa de entrada</p>
         </div>
-        <div class="mini-action-button--hide mini-action-button" id="sent">
+        <div class="mini-action-button--hide mini-action-button" data-url="{{ route('sigea.mensagens.saida') }}" id="sent">
             <i class="mini-action-button__icon material-icons">send</i>
             <p class="mini-action-button__text--hide">Caixa de saída</p>
         </div>
