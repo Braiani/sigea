@@ -67,5 +67,6 @@
 @endsection
 
 @push('script')
+<script>var $baseUrl = "{{ route('sigea.passivo.index') }}";</script>
 <script src="{{asset('/js/custom-bread-passivo.js')}}"></script>
 @endpush

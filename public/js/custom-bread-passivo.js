@@ -39,7 +39,7 @@ async function message(value, row, index){
         }).then((result) => {
             if (result.value) {
                 type = 'PUT';
-                url = "/admin/passivo/" + $id;
+                url = $baseUrl + '/' + $id;
                 data = {
                     'id': formValues.id,
                     'nome': formValues.nome,
@@ -222,7 +222,7 @@ async function getAddInput(){
     }).then((result) => {
         if (result.value) {
             type = 'POST';
-            url = '/admin/passivo';
+            url = $baseUrl;
             data = {
                 'nome': result.value.nome,
                 'curso': result.value.curso,
@@ -251,7 +251,7 @@ function deleteRow(value, row, index){
     }).then((result) => {
         $data = {'observacao': $('#input-field').val()};
         if (result.value) {
-            execAjax('DELETE', '/admin/passivo/' + $id, $data);
+            execAjax('DELETE', $baseUrl + '/' + $id, $data);
         }
     })
 }
@@ -299,10 +299,6 @@ $().ready(function() {
         'click .remove': function(e, value, row, index) {
             console.log(row);
             deleteRow(value, row, index);
-            // $table.bootstrapTable('remove', {
-            //     field: 'id',
-            //     values: [row.id]
-            // });
         }
     };
     $table.bootstrapTable({
