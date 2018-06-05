@@ -38,7 +38,7 @@
                                 <div class="card-body ">
                                     <h4 class="card-title">{{ Auth::user()->name }}</h4>
                                     <div class="form-group">
-                                        <input type="password" name="password" placeholder="Digite sua senha" class="form-control">
+                                        <input type="password" name="password" placeholder="Digite sua senha" class="form-control" autofocus required>
                                     </div>
                                 </div>
                                 <div class="card-footer ">
