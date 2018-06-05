@@ -27,7 +27,9 @@
                         <label for="to">Destinatário</label>
                         <select id="to" name="to" class="selectpicker" data-title="Selecione o destinatário" data-style="btn-default btn-outline" data-menu-style="dropdown-blue">
                             @foreach ($usuarios as $usuario)
+                                @if (($usuario->id !== Auth::id() and $usuario->id !== 1) or Auth::user()->isAdmin)
                                 <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
