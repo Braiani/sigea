@@ -56,7 +56,7 @@ class MensagemController extends VoyagerBaseController
                 'error' => false,
                 'message' => 'Mensagem marcada como não lida!'
             ];
-        }else{
+        } else {
             return [
                 'error' => true,
                 'message' => 'Não foi possível executar essa ação!'
@@ -84,7 +84,7 @@ class MensagemController extends VoyagerBaseController
         if ($this->isBackend($request)) {
             return parent::create($request);
         }
-        $usuarios = User::select('id', 'name')->get();
+        $usuarios = User::select('id', 'name')->orderBy('name', 'asc')->get();
         return view('mensagem.escrever')->with([
             'usuarios' => $usuarios,
         ]);
@@ -108,7 +108,6 @@ class MensagemController extends VoyagerBaseController
             ]);
 
             if (Mensagem::create($request->all())) {
-
                 toastr()->success('Mensagem enviada com sucesso');
 
                 return redirect()->route('sigea.mensagens.index');
