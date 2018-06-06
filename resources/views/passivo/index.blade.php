@@ -25,7 +25,7 @@
                     <thead>
                         <tr>
                             {{-- <th data-field="state" data-checkbox="true"></th> --}}
-                            <th data-field="id" data-align="center">Nº Pasta</th>
+                            <th data-field="id" data-align="center" data-sortable="true">Nº Pasta</th>
                             <th data-field="nome"
                                 data-sortable="true"
                                 {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}

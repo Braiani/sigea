@@ -17,7 +17,6 @@ class PassivoController extends VoyagerBaseController
 
         $passivo_model = new Passivo();
         return view('passivo.index')->with(['passivo_model' => $passivo_model]);
-
     }
 
     public function getData(Request $request)
@@ -33,7 +32,8 @@ class PassivoController extends VoyagerBaseController
 
         if ($search) {
             $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhere('curso', 'LIKE', "%{$search}%");
+                    ->orWhere('curso', 'LIKE', "%{$search}%")
+                    ->orWhere('id', 'LIKE', "%{$search}%");
         }
         if ($sort) {
             $query = $query->orderBy($sort, $request->get('order'));
@@ -87,7 +87,7 @@ class PassivoController extends VoyagerBaseController
                 'error' => false,
                 'message' => 'Alterações salvas com sucesso'
             ];
-        }else{
+        } else {
             return [
                 'error' => true,
                 'message' => 'Número de pasta inexistente'
@@ -109,7 +109,7 @@ class PassivoController extends VoyagerBaseController
                 'error' => false,
                 'message' => 'Pasta retirada da lista do arquivo passivo!'
             ];
-        }else{
+        } else {
             return [
                 'error' => true,
                 'message' => 'Número de pasta inexistente'
@@ -117,7 +117,6 @@ class PassivoController extends VoyagerBaseController
         }
 
         return $request;
-
     }
 
     public function isBackend(Request $request)
