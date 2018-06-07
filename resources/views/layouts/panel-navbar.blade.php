@@ -15,16 +15,16 @@
                 <span class="navbar-toggler-bar burger-lines"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end">
-                <ul class="nav navbar-nav mr-auto">
+                {{-- <ul class="nav navbar-nav mr-auto">
                     <form class="navbar-form navbar-left navbar-search-form" role="search">
                         <div class="input-group">
                             <i class="nc-icon nc-zoom-split"></i>
                             <input type="text" value="" class="form-control" id="pesquisar" placeholder="Procurar...">
                         </div>
                     </form>
-                </ul>
+                </ul> --}}
                 <ul class="navbar-nav">
-                    <li class="dropdown nav-item">
+                    {{--<li class="dropdown nav-item">
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                             <i class="nc-icon nc-planet"></i>
                         </a>
@@ -35,7 +35,7 @@
                             <li class="divider"></li>
                             <a class="dropdown-item" href="#">Another action</a>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="dropdown nav-item">
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                             <i class="nc-icon nc-bell-55"></i>
