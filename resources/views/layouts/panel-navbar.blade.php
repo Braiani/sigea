@@ -15,14 +15,35 @@
                 <span class="navbar-toggler-bar burger-lines"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end">
-                {{-- <ul class="nav navbar-nav mr-auto">
-                    <form class="navbar-form navbar-left navbar-search-form" role="search">
+                @php
+                    $notifi = new App\Classes\Notificacoes;
+                    $notificacoes = $notifi->handle(Auth::user()->id);
+                @endphp
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="dropdown nav-item">
+                        <a href="#" class="{{(isset($notificacoes) and $notificacoes['total'] > 0) ? 'dropdown-toggle' : '' }} nav-link" 
+                            @if(isset($notificacoes) and $notificacoes['total'] > 0) data-toggle="dropdown" @endif>
+                            <i class="nc-icon nc-bell-55"></i>
+                            @if(isset($notificacoes) and $notificacoes['total'] > 0)
+                            <span class="notification">{{ $notificacoes['total'] }}</span>
+                            @endif
+                            <span class="d-lg-none">Notificações</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @if(isset($notificacoes) and $notificacoes['total'] > 0)
+                            @foreach ($notificacoes['not_cont'] as $notificacao)
+                            <a class="dropdown-item" href="{{route($notificacao['link'])}}">{{$notificacao['mensagem']}}</a>
+                            @endforeach
+                            @endif
+                        </ul>
+                    </li>
+                    {{-- <form class="navbar-form navbar-left navbar-search-form" role="search">
                         <div class="input-group">
                             <i class="nc-icon nc-zoom-split"></i>
                             <input type="text" value="" class="form-control" id="pesquisar" placeholder="Procurar...">
                         </div>
-                    </form>
-                </ul> --}}
+                    </form> --}}
+                </ul>
                 <ul class="navbar-nav">
                     {{--<li class="dropdown nav-item">
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -36,20 +57,7 @@
                             <a class="dropdown-item" href="#">Another action</a>
                         </ul>
                     </li> --}}
-                    <li class="dropdown nav-item">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <i class="nc-icon nc-bell-55"></i>
-                            <span class="notification">5</span>
-                            <span class="d-lg-none">Notification</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Notification 1</a>
-                            <a class="dropdown-item" href="#">Notification 2</a>
-                            <a class="dropdown-item" href="#">Notification 3</a>
-                            <a class="dropdown-item" href="#">Notification 4</a>
-                            <a class="dropdown-item" href="#">Notification 5</a>
-                        </ul>
-                    </li>
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="nc-icon nc-bullet-list-67"></i>
