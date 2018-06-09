@@ -7,7 +7,7 @@
                         <i class="fa fa-navicon visible-on-sidebar-mini"></i>
                     </button>
                 </div>
-                <a class="navbar-brand" href="{{route('sigea.dashboard')}}"> {{ setting('site.title') }} </a>
+                <a class="navbar-brand" href="{{ route('sigea.dashboard')}}"> {{ setting('site.title') }} </a>
             </div>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-bar burger-lines"></span>
@@ -21,7 +21,7 @@
                 @endphp
                 <ul class="nav navbar-nav mr-auto">
                     <li class="dropdown nav-item">
-                        <a href="#" class="{{(isset($notificacoes) and $notificacoes['total'] > 0) ? 'dropdown-toggle' : '' }} nav-link" 
+                        <a href="#" class="{{ (isset($notificacoes) and $notificacoes['total'] > 0) ? 'dropdown-toggle' : '' }} nav-link"
                             @if(isset($notificacoes) and $notificacoes['total'] > 0) data-toggle="dropdown" @endif>
                             <i class="nc-icon nc-bell-55"></i>
                             @if(isset($notificacoes) and $notificacoes['total'] > 0)
@@ -32,7 +32,7 @@
                         <ul class="dropdown-menu">
                             @if(isset($notificacoes) and $notificacoes['total'] > 0)
                             @foreach ($notificacoes['not_cont'] as $notificacao)
-                            <a class="dropdown-item" href="{{route($notificacao['link'])}}">{{$notificacao['mensagem']}}</a>
+                            <a class="dropdown-item" href="{{ route($notificacao['link']) }}">{{ $notificacao['mensagem'] }}</a>
                             @endforeach
                             @endif
                         </ul>
@@ -57,13 +57,13 @@
                             <a class="dropdown-item" href="#">Another action</a>
                         </ul>
                     </li> --}}
-                    
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="nc-icon nc-bullet-list-67"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{ route('sigea.mensagens.index') }}">
                                 <i class="nc-icon nc-email-85"></i> Mensagens
                             </a>
                             <a class="dropdown-item" href="#">
@@ -73,13 +73,13 @@
                                 <i class="nc-icon nc-settings-90"></i> Configurações
                             </a>
                             <div class="divider"></div>
-                            <a class="dropdown-item" href="{{route('lockscreen')}}">
+                            <a class="dropdown-item" href="{{ route('lockscreen') }}">
                                 <i class="nc-icon nc-lock-circle-open"></i> Bloquear
                             </a>
                             <a href="#" class="dropdown-item text-danger" id="sair">
                                 <i class="nc-icon nc-button-power"></i> Sair
                             </a>
-                            <form method="POST" action="{{route('sigea.logout')}}" id="form-sair">
+                            <form method="POST" action="{{ route('sigea.logout') }}" id="form-sair">
                                 {{ csrf_field() }}
                             </form>
                         </div>
