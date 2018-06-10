@@ -139,10 +139,10 @@ async function getInputs(value, row, index){
 function operateFormatter(value, row, index) {
     return [
         '<a rel="tooltip" title="Edit" class="btn btn-link btn-warning table-action edit" href="javascript:void(0)">',
-        '<i class="fa fa-edit"></i>',
+            '<i class="fa fa-edit"></i>',
         '</a>',
         '<a rel="tooltip" title="Remove" class="btn btn-link btn-danger table-action remove" href="javascript:void(0)">',
-        '<i class="fa fa-remove"></i>',
+            '<i class="fa fa-remove"></i>',
         '</a>'
     ].join('');
 }
@@ -152,45 +152,45 @@ async function getAddInput(){
         title: 'Cadastrar pasta',
         html:
         '<div class="card stacked-form">' +
-        '<div class="card-body ">' +
-        '<div class="form-group">' +
-        '<label>Nome</label>' +
-        '<input placeholder="Nome" name="nome" class="form-control" type="text">' +
-        '</div>' +
-        '<div class="form-group">' +
-        '<label>Curso</label>' +
-        '<input placeholder="Curso" name="curso" class="form-control" type="text">' +
-        '</div>' +
-        '<div class="row">' +
-        '<div class="col-md-10">' +
-        '<div class="form-check checkbox-inline">' +
-        '<label class="form-check-label">' +
-        '<input class="form-check-input" type="checkbox" name="atualizacao_nome">' +
-        '<span class="form-check-sign"></span>' +
-        'Nome atualizado' +
-        '</label>' +
-        '</div>' +
-        '<div class="form-check checkbox-inline">' +
-        '<label class="form-check-label">' +
-        '<input class="form-check-input" type="checkbox" name="siga">' +
-        '<span class="form-check-sign"></span>' +
-        'Siga' +
-        '</label>' +
-        '</div>' +
-        '<div class="form-check checkbox-inline">' +
-        '<label class="form-check-label">' +
-        '<input class="form-check-input" type="checkbox" name="sistec">' +
-        '<span class="form-check-sign"></span>' +
-        'SISTEC' +
-        '</label>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
-        '<div class="form-group">' +
-        '<label>Observação</label>' +
-        '<input placeholder="Observação" name="observacao" class="form-control" type="text">' +
-        '</div>' +
-        '</div>' +
+            '<div class="card-body ">' +
+                '<div class="form-group">' +
+                    '<label>Nome</label>' +
+                    '<input placeholder="Nome" name="nome" class="form-control" type="text">' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Curso</label>' +
+                    '<input placeholder="Curso" name="curso" class="form-control" type="text">' +
+                '</div>' +
+                '<div class="row">' +
+                    '<div class="col-md-10">' +
+                        '<div class="form-check checkbox-inline">' +
+                            '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" name="atualizacao_nome">' +
+                                '<span class="form-check-sign"></span>' +
+                                'Nome atualizado' +
+                            '</label>' +
+                        '</div>' +
+                        '<div class="form-check checkbox-inline">' +
+                            '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" name="siga">' +
+                                '<span class="form-check-sign"></span>' +
+                                'Siga' +
+                            '</label>' +
+                        '</div>' +
+                        '<div class="form-check checkbox-inline">' +
+                            '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" name="sistec">' +
+                                '<span class="form-check-sign"></span>' +
+                                'SISTEC' +
+                            '</label>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Observação</label>' +
+                    '<input placeholder="Observação" name="observacao" class="form-control" type="text">' +
+                '</div>' +
+            '</div>' +
         '</div>',
         focusConfirm: false,
         showLoaderOnConfirm: true,
