@@ -25,37 +25,50 @@
                     <h4 class="card-title">Tarefas</h4>
                     <p class="card-category">Tarefas repassadas pelo COGEA</p>
                 </div>
+                @php
+                    $tasks = new App\Task;
+                    $anyTask = false;
+                @endphp
                 <div class="card-body ">
                     <div class="table-full-width">
                         <table class="table">
                             <tbody>
+                                @foreach ($tasks->get() as $task)
+                                @can('see', $task)
+                                @php $anyTask = true; @endphp
                                 <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" checked value="">
-                                                <span class="form-check-sign"></span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
+                                    <td>@if($task->deadline > \Carbon\Carbon::now()) Expira @else Prazo terminou @endif {{ $task->deadline->diffForHumans() }}</td>
+                                    <td>{{ $task->task }}</td>
                                     <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                            <i class="fa fa-edit"></i>
+                                        <button type="button" rel="tooltip" id="taskDone" title="Tarefa realizada" class="btn btn-info btn-simple btn-link">
+                                            <i class="fa fa-check "></i>
                                         </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                            <i class="fa fa-times"></i>
-                                        </button>
+                                        @can('delete', $task)
+                                            <button type="button" rel="tooltip" id="removeTask" title="Remove" class="btn btn-danger btn-simple btn-link">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        @endcan
                                     </td>
                                 </tr>
+                                @endcan
+                                @endforeach
+                                @if (!$anyTask)
+                                    <tr>Nenhuma tarefa atribuída!</tr>
+                                @endif
                             </tbody>
+
                         </table>
                     </div>
                 </div>
                 <div class="card-footer ">
                     <hr>
                     <div class="stats">
-                        <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                        <i class="now-ui-icons loader_refresh spin"></i> Atualizado
+                        @can('create', $tasks)
+                            <div class="pull-right">
+                                <button id="addTask" class="btn btn-success"><i class="fa fa-plus"></i> Adicionar tarefa</button>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -83,7 +96,15 @@
 
         app.initPassivoPie(id, labels, count, title);
 
+        @can('create', $tasks)
+        var url = "{{ route('sigea.tasks.store') }}";
+        $('#addTask').on('click', async function() {
+            await addTask(url)
+        });
+        @endcan
+
         $('[rel="tooltip"]').tooltip();
     });
 </script>
+<script src="{{ asset('js/tasks-js.js') }}"></script>
 @endpush

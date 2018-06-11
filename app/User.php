@@ -31,4 +31,9 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->role->name == 'admin' ;
     }
+
+    public function getisCogeaAttribute()
+    {
+        return $this->role->name == 'cogea' ;
+    }
 }
