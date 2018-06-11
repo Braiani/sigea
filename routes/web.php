@@ -33,6 +33,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::get('/mensagens/saida', 'MensagemController@saida')->name('mensagens.saida');
     Route::resource('/mensagens', 'MensagemController')->except(['edit']);
 
+    Route::resource('/tasks', 'TaskController')->only(['store', 'update', 'destroy']);
+
     Route::get('/configuracoes', function(){return 'teste';})->name('configuracoes');
 });
 
