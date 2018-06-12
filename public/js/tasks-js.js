@@ -1,4 +1,4 @@
-async function addTask(url){
+async function addTask(url, urlGetUsers){
     await swal({
         title: 'Registrar Tarefa',
         html:
@@ -6,7 +6,9 @@ async function addTask(url){
             '<div class="card-body ">' +
                 '<div class="form-group">' +
                     '<label>Para</label>' +
-                    '<input placeholder="Para" name="user_to" class="form-control" type="text">' +
+                    '<select name="user_to" id="user_to" class="form-control">' +
+                        '<option value="X">Carregando...</option>' +
+                    '</select>' +
                 '</div>' +
                 '<div class="form-group">' +
                     '<label>Tarefa</label>' +
@@ -14,15 +16,18 @@ async function addTask(url){
                 '</div>' +
                 '<div class="form-group">' +
                     '<label>Data limite</label>' +
-                    '<input placeholder="Data Limite" name="deadline" class="form-control" type="text">' +
+                    '<input placeholder="Data Limite" id="datepicker" name="deadline" class="form-control" type="date">' +
                 '</div>' +
             '</div>' +
         '</div>',
         focusConfirm: false,
+        onOpen: function() {
+            getUsers('GET', urlGetUsers);
+        },
         showLoaderOnConfirm: true,
         preConfirm: () => {
             return {
-                user_to: $('input[name=user_to]').val(),
+                user_to: $('select[name=user_to]').val(),
                 task: $('input[name=task]').val(),
                 deadline: $('input[name=deadline]').val(),
             }
@@ -57,6 +62,41 @@ function execAjax(type, url, data){
                     response.message,
                     "success"
                 )
+            }else {
+                swal(
+                    "Erro!",
+                    response.message,
+                    "error"
+                )
+            }
+        },
+        error: function (response) {
+            swal(
+                "Erro interno!",
+                "Oops, ocorreu um erro ao tentar salvar as alterações.", // had a missing comma
+                "error"
+            )
+        }
+    });
+}
+
+function getUsers(type, url){
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: type,
+        url: url,
+        cache: false,
+        success: function(response) {
+            if (!response.error) {
+                $('select option[value="X"]').remove();
+                $.each(response, function(index, itemData) {
+                    $('select').append($('<option>', {
+                        value: itemData.id,
+                        text: itemData.nome
+                    }));
+                });
             }else {
                 swal(
                     "Erro!",

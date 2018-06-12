@@ -32,11 +32,6 @@ class TaskPolicy
         return $user->isCogea;
     }
 
-    public function see(User $user, Task $task)
-    {
-        return $user->id === $task->user_to or $user->isCogea;
-    }
-
     public function delete(User $user, Task $task)
     {
         return $user->isCogea;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\User;
 
 class TaskController extends Controller
 {
@@ -13,6 +14,8 @@ class TaskController extends Controller
             'user_to' => 'required',
             'task' => 'required'
         ]);
+
+        return $request;
 
         if (Task::create([
             'user_to' => $request->user_to,
@@ -39,5 +42,10 @@ class TaskController extends Controller
     public function destroy(Request $request, Task $task)
     {
         //
+    }
+
+    public function getUsers()
+    {
+        return User::select('id', 'name as nome')->get();
     }
 }
