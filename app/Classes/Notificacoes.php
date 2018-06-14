@@ -15,12 +15,15 @@ class Notificacoes
 
     public function handle($id)
     {
-        if (Mensagem::mailTo($id)->where('read', 0)->count() > 0) {
+        $mensagem = Mensagem::mailTo($id)->get()->filter(function ($value, $key){
+            return $value->read == NULL or $value->read == 0;
+        })->count();
+        if ($mensagem > 0) {
             array_push($this->retorno, [
-            'link' => 'sigea.mensagens.index',
-            'mensagem' => 'Você possui mensagens não lidas!'
-        ]);
-            $this->total++;
+                'link' => 'sigea.mensagens.index',
+                'mensagem' => "Você possui {$mensagem} mensagens não lidas!"
+            ]);
+            $this->total += $mensagem;
         }
         return [
             'total' => $this->total,
