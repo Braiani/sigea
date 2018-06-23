@@ -61,7 +61,11 @@ function execAjax(type, url, data){
                     "Sucesso!",
                     response.message,
                     "success"
-                )
+                ).then((result) => {
+                    if (result.value) {
+                        window.location.reload();
+                    }
+                });
             }else {
                 swal(
                     "Erro!",
