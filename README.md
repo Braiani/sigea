@@ -14,8 +14,8 @@ O SIGEA (Sistema de Gestão Acadêmica) é um sistema desenvolvido com o objetiv
  - Gerenciamento de usuários e senhas através de um Backend
  - Gerenciamento do perfil do usuário
  - Gerenciamento do arquivo passivo
+ - Módulo de Tarefas
  - Mural de recados (Em desenvolvimento)
- - Módulo de Tarefas (Em desenvolvimento)
  - Gerenciamento de "Ocorrências" individuais de alunos (Em desenvolvimento)
  - Gerenciamento e emissão de inúmeros documentos institucionais (Em desenvolvimento)
 
