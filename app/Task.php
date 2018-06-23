@@ -10,4 +10,9 @@ class Task extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at', 'deadline'];
     protected $guarded = [];
+
+    public function userTo()
+    {
+        return $this->belongsTo('App\User', 'user_to');
+    }
 }
