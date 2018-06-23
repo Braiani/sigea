@@ -15,4 +15,9 @@ class Task extends Model
     {
         return $this->belongsTo('App\User', 'user_to');
     }
+
+    public function scopeToUser($query, $id)
+    {
+        return $query->where('user_to', $id);
+    }
 }
