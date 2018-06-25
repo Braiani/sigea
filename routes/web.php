@@ -36,7 +36,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::get('/tasks/users', 'TaskController@getUsers')->name('tasks.getUsers');
     Route::resource('/tasks', 'TaskController')->only(['store', 'update', 'destroy']);
 
-    Route::get('/configuracoes', function(){return 'teste';})->name('configuracoes');
+    Route::get('/configuracoes', 'ConfiguracoesController@index')->name('configuracoes.index');
+    Route::post('/configuracoes', 'ConfiguracoesController@store')->name('configuracoes.update');
 });
 
 
