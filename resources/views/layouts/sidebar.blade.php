@@ -1,4 +1,12 @@
-<div class="sidebar" data-color="black" data-image="{{asset('/img/sidebar-4.jpg')}}">
+@php
+    $selected_color = Auth::user()->settings;
+    if (isset($selected_color['sidebar_color'])) {
+        $color = $selected_color['sidebar_color'];
+    }else {
+        $color = 'black';
+    }
+@endphp
+<div class="sidebar" data-color="{{ $color }}" data-image="{{asset('/img/sidebar-4.jpg')}}">
     <!--
 Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
