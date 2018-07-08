@@ -27,7 +27,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::put('/perfil', 'ProfileController@update')->name('profile.update');
 
     Route::get('/passivo/table/json', 'PassivoController@getData')->name('passivo.table');
-    Route::resource('/passivo', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/passivos', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('/mensagens/unread/{id}', 'MensagemController@unread')->name('mensagens.unread');
     Route::get('/mensagens/saida', 'MensagemController@saida')->name('mensagens.saida');
