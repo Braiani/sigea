@@ -50,7 +50,6 @@ Tip 2: you can also add an image using data-image tag
             </div>
         </div>
 
-        {{ menu('sidebar', 'layouts.custom-menu-side') }}
-        {{--  --}}
+        {!! menu('sidebar', 'layouts.custom-menu-side') !!}
     </div>
 </div>

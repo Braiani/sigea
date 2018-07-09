@@ -10,6 +10,7 @@
                 array_push($listItemClass, 'active');
             }
 
+            $permission = '';
             $hasChildren = false;
 
             // With Children Attributes
@@ -17,6 +18,9 @@
             {
                 foreach($item->children as $child)
                 {
+                    if(!Auth::user()->can('browse', $item)) {
+                        continue;
+                    }
                     $hasChildren = $hasChildren || Auth::user()->can('browse', $child);
 
                     if(url($child->link()) == url()->current())

@@ -36,7 +36,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label>E-mail</label>
-                                            <input type="email" placeholder="Digite seu e-mail" name="email" class="form-control" autofocus>
+                                            <input type="email" placeholder="Digite seu e-mail" name="email" class="form-control" value="{{old('email')}}" autofocus>
                                         </div>
                                         <div class="form-group">
                                             <label>Senha</label>

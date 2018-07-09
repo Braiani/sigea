@@ -27,7 +27,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::put('/perfil', 'ProfileController@update')->name('profile.update');
 
     Route::get('/passivo/table/json', 'PassivoController@getData')->name('passivo.table');
-    Route::resource('/passivo', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/passivos', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('/mensagens/unread/{id}', 'MensagemController@unread')->name('mensagens.unread');
     Route::get('/mensagens/saida', 'MensagemController@saida')->name('mensagens.saida');
@@ -38,6 +38,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
 
     Route::get('/configuracoes', 'ConfiguracoesController@index')->name('configuracoes.index');
     Route::post('/configuracoes', 'ConfiguracoesController@store')->name('configuracoes.update');
+
+    Route::get('/cerel/comprovante/{aluno}', 'CerelController@comprovante')->name('registros.comprovante');
+    Route::get('/cerel/registros/{aluno}/editar', 'CerelController@editar')->name('registros.editar');
+    Route::put('/cerel/registros/{aluno}/salvar', 'CerelController@salvarUpdate')->name('registros.salvarUpdate');
+    Route::resource('/cerel/registros', 'CerelController')->except(['create', 'store']);
 });
 
 
