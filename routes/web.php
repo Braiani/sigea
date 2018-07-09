@@ -38,6 +38,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
 
     Route::get('/configuracoes', 'ConfiguracoesController@index')->name('configuracoes.index');
     Route::post('/configuracoes', 'ConfiguracoesController@store')->name('configuracoes.update');
+
+    Route::resource('/registros', 'CerelController');
 });
 
 
