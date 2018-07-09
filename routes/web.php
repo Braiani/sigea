@@ -39,7 +39,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::get('/configuracoes', 'ConfiguracoesController@index')->name('configuracoes.index');
     Route::post('/configuracoes', 'ConfiguracoesController@store')->name('configuracoes.update');
 
-    Route::resource('/registros', 'CerelController');
+    Route::get('/cerel/comprovante/{aluno}', 'CerelController@comprovante')->name('registros.comprovante');
+    Route::get('/cerel/registros/{aluno}/editar', 'CerelController@editar')->name('registros.editar');
+    Route::put('/cerel/registros/{aluno}/salvar', 'CerelController@salvarUpdate')->name('registros.salvarUpdate');
+    Route::resource('/cerel/registros', 'CerelController')->except(['create', 'store']);
 });
 
 

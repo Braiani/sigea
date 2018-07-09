@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Model' => 'App\Policies\ModelPolicy',
         'App\Task' => 'App\Policies\TaskPolicy',
         MenuItem::class => MenuItemPolicy::class,
+        'App\Registro' => 'App\Policies\RegistroRematriculaPolicy',
     ];
 
     /**
