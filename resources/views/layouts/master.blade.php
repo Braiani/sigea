@@ -15,6 +15,7 @@
     <!-- CSS Files -->
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/light-bootstrap-dashboard.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/bootstrap-select.css')}}" rel="stylesheet" />
     @toastr_css
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{asset('/css/demo.css')}}" rel="stylesheet" />
@@ -50,7 +51,8 @@
 <!--  Sweet Alert  -->
 <script src="{{asset('/js/plugins/sweetalert2.min.js')}}" type="text/javascript"></script>
 <!--  Bootstrap Select  -->
-<script src="{{asset('/js/plugins/bootstrap-selectpicker.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/plugins/bootstrap-select.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/plugins/i18n/defaults-pt_BR.js')}}" type="text/javascript"></script>
 <!--  Notifications Plugin    -->
 <script src="{{asset('/js/plugins/bootstrap-notify.js')}}"></script>
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->

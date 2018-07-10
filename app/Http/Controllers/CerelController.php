@@ -17,7 +17,7 @@ class CerelController extends Controller
      */
     public function index()
     {
-        $alunos = Aluno::all();
+        $alunos = Aluno::orderBy('nome', 'ASC')->get();
         return view('registros.index')->with(['alunos' => $alunos]);
     }
 
@@ -173,5 +173,23 @@ class CerelController extends Controller
 
         toastr()->success('Registro atualizado com sucesso!');
         return redirect()->route('sigea.registros.edit', $aluno);
+    }
+
+    public function getAlunos(Request $request)
+    {
+        $alunos = Aluno::where('nome', 'LIKE', "%{$request->q}%")->get();
+        $resposta = [];
+        foreach ($alunos as $aluno) {
+            $resposta[] = [
+                'text' => $aluno->nome,
+                'value' => $aluno->id,
+                'data' => [
+                    'subtext' => $aluno->curso->nome
+                ]
+            ];
+        }
+
+
+        return $resposta;
     }
 }
