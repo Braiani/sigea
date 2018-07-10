@@ -37,7 +37,7 @@
         @foreach ($disciplinas as $semestre)
         <div class="col-sm-12 col-md-6 col-lg-4">
             <div class="form-group{{ $errors->has('disciplinas') ? ' has-error' : '' }} border">
-                <h4>{{$semestre[0]->semestre}}º semestre</h4>
+                <h4 class="{{ $errors->has('disciplinas') ? 'bg-danger' : '' }}">{{$semestre[0]->semestre}}º semestre</h4>
                 @foreach ($semestre as $disciplina)
                 <label>
                     <input type="checkbox" name="disciplinas[]" value="{{$disciplina->id}}"> {{$disciplina->nome}}
