@@ -60,7 +60,7 @@
     </head>
     <body>
         <center>
-            <img class='img-header' src="{{ asset('/img/comprovante/header.jpg') }}">
+            <img class='img-header' src="{{ public_path() }}/img/comprovante/header.jpg">
             <h2>REGISTRO DE PRÉ-MATRÍCULA</h2>
         </center>
         <div class='first-paragraph'>
@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="rodape">
-            <img class="img-rodape" src="{{ asset('/img/comprovante/footer.jpg') }}">
+            <img class="img-rodape" src="{{ public_path() }}/img/comprovante/footer.jpg">
         </div>
     </body>
 </html>
