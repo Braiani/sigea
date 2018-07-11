@@ -26,6 +26,7 @@
                     <div class="form-group">
                         <label for="semestre">Semestre de rematrícula:</label>
                         <select name='semestre' class='form-control selectpicker' data-style="{{ $errors->has('semestre') ? 'btn-danger' : 'btn-info' }}">
+                            <option value="20182">2018/2</option>
                             <option value="20181">2018/1</option>
                         </select>
                     </div>
