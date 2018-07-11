@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <h3>Foram encontrados os seguintes registros para o(a) estudante selecionado: {{ $aluno->nome }}</h3>
+        <h3>Foram encontrados os seguintes registros para o(a) estudante selecionado: {{ $aluno->nomeFormatado }}</h3>
         <div class="row">
             <div class="pull-right">
                 <a href="{{ route('sigea.registros.editar', $aluno->id) }}" class="btn btn-success">+ Adicionar disciplina</a>
@@ -23,7 +23,7 @@
                 <tbody>
                     @foreach ($registros as $registro)
                         <tr>
-                            <td>{{ $registro->disciplinas->nome }}</td>
+                            <td>{{ $registro->disciplinas->nomeFormatado }}</td>
                             <td>
                                 @can('delete', $registro)
                                 <form action="{{ route('sigea.registros.destroy', $registro->id) }}" class="form pull-right" method="POST">

@@ -9,7 +9,7 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <div class="form-group">
-                <h3>Estudante: {{ $aluno->nome . ' - ' . $aluno->matricula . ' - ' . $aluno->curso->nome }}</h3>
+                <h3>Estudante: {{ $aluno->nomeFormatado . ' - ' . $aluno->matricula . ' - ' . $aluno->curso->nome }}</h3>
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-6">
@@ -39,7 +39,7 @@
                         @foreach ($semestre as $disciplina)
                         <label>
                             <input type="checkbox" name="disciplinas[]"
-                                value="{{ $disciplina->id }}" {{ $registros->contains('id_disciplina_cursos', $disciplina->id) ? 'checked' : '' }}> {{$disciplina->nome}}
+                                value="{{ $disciplina->id }}" {{ $registros->contains('id_disciplina_cursos', $disciplina->id) ? 'checked' : '' }}> {{$disciplina->nomeFormatado}}
                         </label>
                         @endforeach
                     </div>
@@ -55,7 +55,7 @@
         <div class="alert alert-info fixed-message">
             <p><b>Disciplinas já cadastradas:</b></p>
             @foreach ($registros as $registro)
-                <p>{{$registro->disciplinas->nome}}</p>
+                <p>{{$registro->disciplinas->nomeFormatado}}</p>
             @endforeach
         </div>
     </div>

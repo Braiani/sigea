@@ -11,7 +11,7 @@
     {{ csrf_field() }}
     {{ method_field("PUT") }}
     <div class="form-group">
-        <h3>Estudante: {{ $aluno->nome . ' - ' . $aluno->matricula . ' - ' . $aluno->curso->nome }}</h3>
+        <h3>Estudante: {{ $aluno->nomeFormatado . ' - ' . $aluno->matricula . ' - ' . $aluno->curso->nome }}</h3>
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -40,7 +40,7 @@
                 <h4 class="{{ $errors->has('disciplinas') ? 'bg-danger' : '' }}">{{$semestre[0]->semestre}}º semestre</h4>
                 @foreach ($semestre as $disciplina)
                 <label>
-                    <input type="checkbox" name="disciplinas[]" value="{{$disciplina->id}}"> {{$disciplina->nome}}
+                    <input type="checkbox" name="disciplinas[]" value="{{$disciplina->id}}"> {{$disciplina->nomeFormatado}}
                 </label>
                 @endforeach
             </div>

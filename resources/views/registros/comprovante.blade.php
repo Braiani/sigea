@@ -64,12 +64,12 @@
             <h2>REGISTRO DE PRÉ-MATRÍCULA</h2>
         </center>
         <div class='first-paragraph'>
-            <p>O registro de intenção de matrícula do(a) estudante {{$aluno->nome}}, curso {{ $aluno->curso->nome }}, foi realizado com sucesso, conforme informações abaixo:</p>
+            <p>O registro de intenção de matrícula do(a) estudante {{ $aluno->nomeFormatado }}, curso {{ $aluno->curso->nome }}, foi realizado com sucesso, conforme informações abaixo:</p>
         </div>
         <div class="disciplinas">
             <ul>
                 @foreach ($registros as $registro)
-                <li>{{ $registro->disciplinas->nome }}</li>
+                <li>{{ $registro->disciplinas->nomeFormatado }}</li>
                 @endforeach
             </ul>
 

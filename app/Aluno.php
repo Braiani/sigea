@@ -10,4 +10,9 @@ class Aluno extends Model
     {
         return $this->belongsTo('App\Curso', 'id_curso');
     }
+
+    public function getNomeFormatadoAttribute()
+    {
+        return ucwords(mb_strtolower($this->nome, 'UTF-8'));
+    }
 }

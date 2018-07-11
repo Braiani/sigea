@@ -20,4 +20,9 @@ class DisciplinaCurso extends Model
     {
         return $query->where('semestre', $id);
     }
+
+    public function getNomeFormatadoAttribute()
+    {
+        return ucfirst(mb_strtolower(str_replace('*', '', $this->nome), 'UTF-8'));
+    }
 }
