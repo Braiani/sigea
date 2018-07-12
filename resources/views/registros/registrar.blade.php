@@ -40,7 +40,8 @@
                 <h4 class="{{ $errors->has('disciplinas') ? 'bg-danger' : '' }}">{{$semestre[0]->semestre}}º semestre</h4>
                 @foreach ($semestre as $disciplina)
                 <label>
-                    <input type="checkbox" name="disciplinas[]" value="{{$disciplina->id}}"> {{$disciplina->nomeFormatado}}
+                    <input type="checkbox" name="disciplinas[]"
+                        value="{{$disciplina->id}}"{{ in_array($disciplina->id, old('disciplinas')) ? 'checked' : '' }}> {{$disciplina->nomeFormatado}}
                 </label>
                 @endforeach
             </div>
