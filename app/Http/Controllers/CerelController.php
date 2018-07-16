@@ -10,6 +10,15 @@ use App\DisciplinaCurso;
 
 class CerelController extends Controller
 {
+
+    public function __construct(Request $request)
+    {
+
+        // if (!$request->user()->isAdmin or !$request->user()->isCogea or !$request->user()->role->name == 'cerel') {
+        //     toastr()->error('Você não tem permissão para essa ação!');
+        //     return redirect()->route('sigea.dashborad');
+        // }
+    }
     /**
      * Display a listing of the resource.
      *
