@@ -28,14 +28,15 @@
                                 >Nome estudante</th>
                             <th data-field="curso"
                                 data-sortable="true"
-                                {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
+                                {{-- data-formatter="cursoFormatter" --}}
                                 >Curso</th>
                             <th data-field="cr"
                                 data-align="center"
                                 data-sortable="true"
                                 {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
                                 >CR</th>
-                            <th data-field="avaliacao" data-formatter="trueOrFalseFormatter">Avaliado?</th>
+                            <th data-field="situacao" data-sortable="false">Situação</th>
+                            {{-- <th data-field="avaliacao" data-formatter="trueOrFalseFormatter">Avaliado?</th> --}}
                             <th data-field="actions" class="td-actions text-right" data-events="operateEvents" data-formatter="operateFormatter">Ações</th>
                         </tr>
                     </thead>
@@ -50,14 +51,14 @@
 <script>
     function operateFormatter(value, row, index) {
         return [
-            '<a rel="tooltip" title="Visualizar" class="btn btn-link btn-primary table-action ver" href="javascript:void(0)">',
+            '<a rel="tooltip" title="Visualizar" class="btn btn-link btn-primary table-action" target="_Blank" href="{{ route('sigea.coordenacao.index') }}/' + row.id + '">',
                 '<i class="fa fa-eye"></i>',
             '</a>',
         ].join('');
     };
 
     function trueOrFalseFormatter(value, row){
-        if (value) {
+        if (value == 1 || value == 2) {
             return 'Avaliado';
         }else{
             return 'Não avaliado';
@@ -70,9 +71,6 @@
 
         window.operateEvents = {
             'click .ver': function(e, value, row, index) {
-                console.log(row);
-            },
-            'click .remove': function(e, value, row, index) {
                 console.log(row);
             }
         };
@@ -95,6 +93,12 @@
                     detailClose: 'fa fa-minus-circle'
                 }
         });
+
+        $('#curso').on('change', function(){
+
+            console.log($table.attr('data-url'));
+            $table.bootstrapTable('refresh');
+        })
 
         $(window).resize(function() {
             $table.bootstrapTable('resetView');

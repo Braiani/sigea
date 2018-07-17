@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Registro;
+use App\Aluno;
 
 class RematriculaCoordController extends Controller
 {
@@ -26,19 +27,10 @@ class RematriculaCoordController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $aluno = Aluno::find($id);
+        return view('rematricula.coords.mostrar')->with([
+            'aluno' => $aluno,
+        ]);
     }
 
     public function getData(Request $request)
@@ -48,30 +40,45 @@ class RematriculaCoordController extends Controller
         $search = $request->get('search') ? $request->get('search') : false;
         $sort = $request->get('sort') ? $request->get('sort') : false;
 
-        $total = Registro::count();
+        $total = Registro::select('id_alunos')->distinct()->get()->count();
 
-        $query = new Registro();
+        $query = new Aluno();
 
         if ($search) {
             $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhere('curso', 'LIKE', "%{$search}%")
-                    ->orWhere('id', 'LIKE', "%{$search}%");
-        }
-        if ($sort) {
-            $query = $query->orderBy($sort, $request->get('order'));
+                    ->orWhereHas('curso', function($q) use ($search) {
+                        $q->where('cursos.nome', 'LIKE', "%{$search}%");
+                    });
         }
 
-        $result = $query->select('id_alunos', 'avaliacao')->distinct()->offset($offset)->limit($limit)->orderBy('id_alunos', 'DESC')->get();
-        // $result = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->get();
+        if ($sort) {
+            if ($sort == 'curso') {
+
+                $query = $query->orderBy('id_curso', $request->get('order'));
+
+            }elseif ($sort == 'situacao') {
+
+                $query = $query->with('registros')->orderBy('situacao', $request->get('order'));
+            }else{
+
+                $query = $query->orderBy($sort, $request->get('order'));
+            }
+        }
+
+        $query = $query->has('registros');
+
+        $result = $query->offset($offset)->limit($limit)->get();
 
         $registros = [];
 
         foreach ($result as $resultado) {
             array_push($registros, [
-                'nome' => $resultado->aluno->nome,
-                'curso' => $resultado->aluno->curso->nome,
-                'cr' => sprintf("%1.4f", $resultado->aluno->CR),
-                // 'avaliacao' => $resultado->avaliacao
+                'id' => $resultado->id,
+                'nome' => $resultado->nome,
+                'curso' => $resultado->curso->nome,
+                'cr' => sprintf("%1.4f", $resultado->CR),
+                // 'avaliacao' => $resultado->registros->avaliacao->count() == 0 ? 'Não avaliado' : 'Avaliado',
+                'situacao' => $resultado->registros[0]->situacao == 1 ? 'Dependência' : 'Retido'
             ]);
         }
 
@@ -81,5 +88,56 @@ class RematriculaCoordController extends Controller
             'rows' => $registros,
         );
         return $resposta;
+    }
+
+    public function aceitar(Request $request, Aluno $aluno, Registro $registro)
+    {
+        try{
+            $this->authorize('aceitar', $registro);
+        }catch(\Exception $e){
+            toastr()->error('Você não tem permissão para essa ação!');
+            return redirect()->route('sigea.coordenacao.show', $aluno->id);
+        }
+
+        $registro->avaliacao = 1;
+
+        $registro->save();
+
+        toastr()->success('Registro aceito!');
+        return redirect()->route('sigea.coordenacao.show', $aluno->id);
+    }
+
+    public function recusar(Request $request, Aluno $aluno, Registro $registro)
+    {
+        try{
+            $this->authorize('recusar', $registro);
+        }catch(\Exception $e){
+            toastr()->error('Você não tem permissão para essa ação!');
+            return redirect()->route('sigea.coordenacao.show', $aluno->id);
+        }
+
+        $registro->avaliacao = 2;
+
+        $registro->save();
+
+        toastr()->success('Registro recusado!');
+        return redirect()->route('sigea.coordenacao.show', $aluno->id);
+    }
+
+    public function desfazer(Request $request, Aluno $aluno, Registro $registro)
+    {
+        try{
+            $this->authorize('desfazer', $registro);
+        }catch(\Exception $e){
+            toastr()->error('Você não tem permissão para essa ação!');
+            return redirect()->route('sigea.coordenacao.show', $aluno->id);
+        }
+
+        $registro->avaliacao = 0;
+
+        $registro->save();
+
+        toastr()->success('Registro desfeito!');
+        return redirect()->route('sigea.coordenacao.show', $aluno->id);
     }
 }

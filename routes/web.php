@@ -53,7 +53,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
 
     // Rematrícula - Coords
     Route::get('/rematricula/coordenacao/table/json', 'RematriculaCoordController@getData')->name('coordenacao.table');
-    Route::resource('rematricula/coordenacao', 'RematriculaCoordController')->only(['index', 'show', 'update']);
+    Route::put('/rematricula/coordenacao/{aluno}/aceitar/{registro}', 'RematriculaCoordController@aceitar')->name('coordenacao.aceitar');
+    Route::put('/rematricula/coordenacao/{aluno}/recusar/{registro}', 'RematriculaCoordController@recusar')->name('coordenacao.recusar');
+    Route::put('/rematricula/coordenacao/{aluno}/desfazer/{registro}', 'RematriculaCoordController@desfazer')->name('coordenacao.desfazer');
+    Route::resource('rematricula/coordenacao', 'RematriculaCoordController')->only(['index', 'show']);
 });
 
 
