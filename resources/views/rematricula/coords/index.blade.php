@@ -36,7 +36,7 @@
                                 {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
                                 >CR</th>
                             <th data-field="situacao" data-sortable="false">Situação</th>
-                            {{-- <th data-field="avaliacao" data-formatter="trueOrFalseFormatter">Avaliado?</th> --}}
+                            <th data-field="avaliacao">Avaliado?</th>
                             <th data-field="actions" class="td-actions text-right" data-events="operateEvents" data-formatter="operateFormatter">Ações</th>
                         </tr>
                     </thead>
@@ -55,14 +55,6 @@
                 '<i class="fa fa-eye"></i>',
             '</a>',
         ].join('');
-    };
-
-    function trueOrFalseFormatter(value, row){
-        if (value == 1 || value == 2) {
-            return 'Avaliado';
-        }else{
-            return 'Não avaliado';
-        }
     };
 
     $(document).ready(function() {

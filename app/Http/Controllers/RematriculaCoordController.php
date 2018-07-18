@@ -40,16 +40,17 @@ class RematriculaCoordController extends Controller
         $search = $request->get('search') ? $request->get('search') : false;
         $sort = $request->get('sort') ? $request->get('sort') : false;
 
-        $total = Registro::select('id_alunos')->distinct()->get()->count();
-
         $query = new Aluno();
 
-        if ($search) {
-            $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhereHas('curso', function($q) use ($search) {
-                        $q->where('cursos.nome', 'LIKE', "%{$search}%");
-                    });
-        }
+        $query = $query->has('registros');
+
+        $query = $query->when($search, function ($query, $search){
+
+            return $query->where(function($query) use ($search){
+
+                $query->nome($search)->curso($search)->situacao($search);
+            });
+        });
 
         if ($sort) {
             if ($sort == 'curso') {
@@ -65,25 +66,30 @@ class RematriculaCoordController extends Controller
             }
         }
 
-        $query = $query->has('registros');
-
-        $result = $query->offset($offset)->limit($limit)->get();
-
+        $result = $query->orderBy('CR', 'DESC')->offset($offset)->limit($limit)->get();
         $registros = [];
 
         foreach ($result as $resultado) {
+            $situacao = 'Erro';
+            $avaliacao = 'Não avaliado';
+            foreach ($resultado->registros as $registro) {
+                $situacao = $registro->situacoes->nome;
+                if ($registro->avaliacao !== 0) {
+                    $avaliacao = 'Avaliado';
+                }
+            }
             array_push($registros, [
                 'id' => $resultado->id,
                 'nome' => $resultado->nome,
                 'curso' => $resultado->curso->nome,
                 'cr' => sprintf("%1.4f", $resultado->CR),
-                // 'avaliacao' => $resultado->registros->avaliacao->count() == 0 ? 'Não avaliado' : 'Avaliado',
-                'situacao' => $resultado->registros[0]->situacao == 1 ? 'Dependência' : 'Retido'
+                'avaliacao' => $avaliacao,
+                'situacao' => $situacao
             ]);
         }
 
         $resposta = array(
-            'total' => $total,
+            'total' => $query->count(),
             'count' => $result->count(),
             'rows' => $registros,
         );

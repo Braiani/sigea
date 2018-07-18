@@ -16,6 +16,27 @@ class Aluno extends Model
         return $this->hasMany('App\Registro', 'id_alunos');
     }
 
+    public function scopeSituacao($query, $search)
+    {
+        return $query->orWhereHas('registros', function ($query) use ($search) {
+            $query->whereHas('situacoes', function($q) use ($search){
+                $q->where('nome', 'LIKE', "%{$search}%");
+            });
+        });
+    }
+
+    public function scopeCurso($query, $search)
+    {
+        return $query->orWhere('id_curso', function ($q) use ($search){
+            $q->select('id')->from('cursos')->where('nome', 'LIKE', "%{$search}%");
+        });
+    }
+
+    public function scopeNome($query, $search)
+    {
+        return $query->where('nome', 'LIKE', "%{$search}%");
+    }
+
     public function getCRFormatadoAttribute()
     {
         return sprintf("%1.4f", $this->CR);
