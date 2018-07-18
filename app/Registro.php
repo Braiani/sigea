@@ -21,6 +21,11 @@ class Registro extends Model
         return $this->belongsTo('App\User', 'id_user');
     }
 
+    public function situacoes()
+    {
+        return $this->hasOne('App\RegistroSituacao', 'id', 'situacao');
+    }
+
     public function scopeAlunoRegistrado($query, $id)
     {
         return $query->where('id_alunos', $id);

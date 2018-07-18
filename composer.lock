@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f8d638a9f569c725a24fb8ae78bae6e",
+    "content-hash": "f4f61e6ef8daf233c0da963615316ef9",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -4327,6 +4327,65 @@
             "time": "2018-06-16T22:05:52+00:00"
         },
         {
+            "name": "orangehill/iseed",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/orangehill/iseed.git",
+                "reference": "c99a9f7bcc37dd853891acdc2e4d43bcf55a0404"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orangehill/iseed/zipball/c99a9f7bcc37dd853891acdc2e4d43bcf55a0404",
+                "reference": "c99a9f7bcc37dd853891acdc2e4d43bcf55a0404",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.3.8",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "illuminate/filesystem": "5.x",
+                "laravel/framework": "^5.3.8",
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Orangehill\\Iseed\\IseedServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Orangehill\\Iseed": "src/"
+                },
+                "classmap": [
+                    "src/Orangehill/Iseed/Exceptions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Tihomir Opacic",
+                    "email": "tihomir.opacic@orangehilldev.com"
+                }
+            ],
+            "description": "Generate a new Laravel database seed file based on data from the existing database table.",
+            "keywords": [
+                "artisan",
+                "generators",
+                "laravel",
+                "seed"
+            ],
+            "time": "2017-10-05T07:30:15+00:00"
+        },
+        {
             "name": "phar-io/manifest",
             "version": "1.0.1",
             "source": {
@@ -5632,7 +5691,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "orangehill/iseed": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

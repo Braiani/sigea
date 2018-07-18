@@ -40,7 +40,7 @@
                 locale        : {
                     emptyTitle: 'Digite para procurar...'
                 },
-                log           : 3,
+                log           : 2,
             };
             $('.selectpicker').selectpicker().ajaxSelectPicker(options);
             $('select').trigger('change');

@@ -36,4 +36,9 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->role->name == 'cogea' ;
     }
+
+    public function getisCoordAttribute()
+    {
+        return $this->role->name == 'coords' ;
+    }
 }

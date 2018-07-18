@@ -31,4 +31,19 @@ class RegistroRematriculaPolicy
     {
         return $registro->user->id === $user->id or $user->isCogea;
     }
+
+    public function aceitar(User $user, Registro $registro)
+    {
+        return $user->isCoord or $user->isCogea;
+    }
+
+    public function recusar(User $user, Registro $registro)
+    {
+        return $user->isCoord or $user->isCogea;
+    }
+
+    public function desfazer(User $user, Registro $registro)
+    {
+        return $user->isCoord or $user->isCogea;
+    }
 }
