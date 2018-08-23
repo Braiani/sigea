@@ -26,8 +26,6 @@ class PassivoController extends VoyagerBaseController
         $search = $request->get('search') ? $request->get('search') : false;
         $sort = $request->get('sort') ? $request->get('sort') : false;
 
-        $total = Passivo::count();
-
         $query = new Passivo();
 
         if ($search) {
@@ -38,6 +36,8 @@ class PassivoController extends VoyagerBaseController
         if ($sort) {
             $query = $query->orderBy($sort, $request->get('order'));
         }
+
+        $total = $query->count();
 
         $passivo = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->get();
 
