@@ -72,6 +72,30 @@ class PassivoController extends VoyagerBaseController
         ];
     }
 
+    public function verificaNome(Request $request)
+    {
+        $passivo = Passivo::where('nome', $request->nome)->get();
+        $count = $passivo->count();
+        $igual = false;
+        $message = '';
+        if ($count > 0) {
+            $igual = true;
+            if ($count == 1) {
+                $message = "Foi encontrado a seguinte pasta com o nome {$passivo[0]->nome} : n. {$passivo[0]->id}";
+            }else{
+                $message = "Foram encontradas as seguintes pastas com o nome {$passivo[0]->nome} : ";
+                foreach ($passivo as $value) {
+                    $message .= " n. {$value->id}";
+                }
+            }
+        }
+        return [
+            'error' => false,
+            'igual' => $igual,
+            'message' => $message
+        ];
+    }
+
     public function update(Request $request, $id)
     {
         if ($this->isBackend($request)) {

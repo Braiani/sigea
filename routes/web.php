@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
 
     // Rota para o controle do passivo
     Route::get('/passivo/table/json', 'PassivoController@getData')->name('passivo.table');
+    Route::post('/passivos/verifica-nome', 'PassivoController@verificaNome')->name('passivo.verifica');
     Route::resource('/passivos', 'PassivoController')->only(['index', 'store', 'update', 'destroy']);
 
     // Rota para mensagens do sistema

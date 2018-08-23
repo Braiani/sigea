@@ -219,8 +219,10 @@ async function getAddInput(){
                 observacao: $('input[name=observacao]').val(),
             }
         }
-    }).then((result) => {
+    }).then(async (result) => {
+
         if (result.value) {
+            const verifica = await verificaNomeAnterior(result.value.nome);
             type = 'POST';
             url = $baseUrl;
             data = {
@@ -231,7 +233,30 @@ async function getAddInput(){
                 'sistec': result.value.sistec,
                 'observacao': result.value.observacao
             };
-            execAjax(type, url, data);
+
+            if (verifica.igual) {
+                swal({
+                    title: 'Pasta encontrada!',
+                    text: verifica.message,
+                    type: 'info',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Quero adicionar outra!',
+                    cancelButtonText: 'Cancelar!',
+                }).then((result) => {
+                    if (result.value) {
+                        execAjax(type, url, data);
+                    }else{
+                        swal(
+                            'Cancelado!',
+                            'Você cancelou o cadastro dessa pasta!',
+                            'error'
+                        );
+                    }
+                });
+            }else{
+                execAjax(type, url, data);
+            }
         }
     })
 }
@@ -289,6 +314,19 @@ function execAjax(type, url, data){
             )
         }
     });
+}
+
+async function verificaNomeAnterior(nome){
+    var consulta = $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "POST",
+                    url: $baseUrl + '/verifica-nome',
+                    data: {nome: nome},
+                    cache: false,
+                });
+    return consulta;
 }
 
 $().ready(function() {
