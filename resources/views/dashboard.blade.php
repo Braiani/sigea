@@ -35,13 +35,15 @@
 <script type="text/javascript">
     $(document).ready(function() {
         @php
-            $cursos = $passivo->select('curso', DB::raw('count(*) as total'))->groupBy('curso')->get();
+            $cursos = $passivo->select('curso_id', DB::raw('count(*) as total'))->groupBy('curso_id')->get();
         @endphp
         var labels = [];
         var count = [];
         @foreach($cursos as $key)
-            labels.push("{{ $key->curso }}");
-            count.push("{{ $key->total }}");
+        @if($key->curso_id != null)
+        labels.push("{{ $key->curso->nome }}");
+        count.push("{{ $key->total }}");
+        @endif
         @endforeach
         var title = '';
         var id = 'passivoChart';

@@ -30,7 +30,9 @@ class PassivoController extends VoyagerBaseController
 
         if ($search) {
             $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhere('curso', 'LIKE', "%{$search}%")
+                    ->orWhereIn('curso_id', function($query) use ($search){
+                        $query->select('id')->from('cursos')->where('nome',  'LIKE', "%{$search}%");
+                    })
                     ->orWhere('id', 'LIKE', "%{$search}%");
         }
         if ($sort) {
@@ -39,7 +41,7 @@ class PassivoController extends VoyagerBaseController
 
         $total = $query->count();
 
-        $passivo = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->get();
+        $passivo = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->with('curso')->get();
 
         $resposta = array(
             'total' => $total,

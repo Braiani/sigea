@@ -17,6 +17,13 @@ function trueOrFalseFormatter(value, row, index){
         return 'Não atualizado';
     }
 }
+function cursoNomeFormatter(value, row, index){
+    if (value != null) {
+        return value.nome;
+    }else{
+        return '-';
+    }
+}
 
 async function message(value, row, index){
     formValues = await getInputs(value, row, index);
