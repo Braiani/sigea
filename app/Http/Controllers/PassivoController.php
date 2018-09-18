@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Passivo;
 use Dotenv\Validator;
+use App\Curso;
 
 class PassivoController extends VoyagerBaseController
 {
@@ -19,6 +20,11 @@ class PassivoController extends VoyagerBaseController
         return view('passivo.index')->with(['passivo_model' => $passivo_model]);
     }
 
+    public function getCursos(Request $request)
+    {
+        return Curso::all();
+    }
+
     public function getData(Request $request)
     {
         $offset = $request->get('offset');
@@ -30,7 +36,9 @@ class PassivoController extends VoyagerBaseController
 
         if ($search) {
             $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhere('curso', 'LIKE', "%{$search}%")
+                    ->orWhereIn('curso_id', function($query) use ($search){
+                        $query->select('id')->from('cursos')->where('nome',  'LIKE', "%{$search}%");
+                    })
                     ->orWhere('id', 'LIKE', "%{$search}%");
         }
         if ($sort) {
@@ -39,7 +47,7 @@ class PassivoController extends VoyagerBaseController
 
         $total = $query->count();
 
-        $passivo = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->get();
+        $passivo = $query->offset($offset)->limit($limit)->orderBy('id', 'DESC')->with('curso')->get();
 
         $resposta = array(
             'total' => $total,
@@ -57,7 +65,7 @@ class PassivoController extends VoyagerBaseController
 
         $request->validate([
             'nome' => 'required',
-            'curso' => 'required'
+            'curso_id' => 'required'
         ]);
 
         if (Passivo::create($request->all())) {

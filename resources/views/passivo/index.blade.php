@@ -31,7 +31,8 @@
                                 {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
                                 >Nome</th>
                             <th data-field="curso"
-                                data-sortable="true"
+                                data-formatter="cursoNomeFormatter"
+                                data-sortable="false"
                                 {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
                                 >Curso</th>
                             <th data-field="atualizacao_nome"

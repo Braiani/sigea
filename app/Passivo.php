@@ -10,4 +10,9 @@ class Passivo extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $guarded = [];
+
+    public function curso()
+    {
+        return $this->belongsTo('App\Curso');
+    }
 }
