@@ -50,7 +50,7 @@ async function message(value, row, index){
                 data = {
                     'id': formValues.id,
                     'nome': formValues.nome,
-                    'curso': formValues.curso,
+                    'curso_id': formValues.curso,
                     'atualizacao_nome': formValues.atualizacao_nome,
                     'siga': formValues.siga,
                     'sistec': formValues.sistec,
@@ -97,22 +97,64 @@ async function getInputs(value, row, index){
         $observacao = row.observacao;
     }
 
-
     const {value: formValues} = await swal({
         title: 'Editar registro',
+        onBeforeOpen: () => {
+            swal.showLoading();
+            $("#curso-edit").selectpicker();
+        },
+        onOpen: () => {
+            getCurso('GET', $baseUrl + '/cursos', function(){
+                $("#curso-edit option[value='x']").remove();
+                $("#curso-edit option[value=" + row.curso.id + "]").prop("selected",true);
+                $("#curso-edit").selectpicker("refresh");
+                swal.hideLoading();
+            });
+        },
         html:
-        '<label for="nome">Nome</label>' +
-        '<input id="swal-input-nome" class="swal2-input" value="' + $nome + '">' +
-        '<label for="nome">Curso</label>' +
-        '<input id="swal-input-curso" class="swal2-input" value="' + $curso + '">' +
-        '<label for="nome">Atualização de nome</label> ' +
-        '<input type="checkbox" id="swal-input-at_nome" class="" ' + $at_nome + '><br />' +
-        '<label for="nome">SIGA</label> ' +
-        '<input type="checkbox" id="swal-input-siga" class="" ' + $siga + '><br />' +
-        '<label for="nome">SISTEC</label> ' +
-        '<input type="checkbox" id="swal-input-sistec" class="" ' + $sistec + '><br />' +
-        '<label for="nome">Observação</label> ' +
-        '<input id="swal-input-observacao" class="swal2-input" value="' + $observacao + '">',
+        '<div class="card stacked-form">' +
+            '<div class="card-body ">' +
+                '<div class="form-group">' +
+                    '<label>Nome</label>' +
+                    '<input id="swal-input-nome" value="' + $nome + '" name="nome" class="form-control" type="text">' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Curso</label>' +
+                    '<select id="curso-edit" name="curso_id" class="form-control">' +
+                        '<option value="x">Carregando...</option>' +
+                    '</select>' +
+                '</div>' +
+                '<div class="row">' +
+                    '<div class="col-md-10">' +
+                        '<div class="form-check checkbox-inline">' +
+                            '<label class="form-check-label">' +
+                                '<input id="swal-input-at_nome" class="form-check-input" type="checkbox" name="atualizacao_nome" ' + $at_nome + '>' +
+                                '<span class="form-check-sign"></span>' +
+                                'Nome atualizado' +
+                            '</label>' +
+                        '</div>' +
+                        '<div class="form-check checkbox-inline">' +
+                            '<label class="form-check-label">' +
+                                '<input id="swal-input-siga" class="form-check-input" type="checkbox" name="siga" ' + $siga + '>' +
+                                '<span class="form-check-sign"></span>' +
+                                'Siga' +
+                            '</label>' +
+                        '</div>' +
+                        '<div class="form-check checkbox-inline">' +
+                            '<label class="form-check-label">' +
+                                '<input id="swal-input-sistec" class="form-check-input" type="checkbox" name="sistec" ' + $sistec + '>' +
+                                '<span class="form-check-sign"></span>' +
+                                'SISTEC' +
+                            '</label>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Observação</label>' +
+                    '<input id="swal-input-observacao" name="observacao" class="form-control" type="text" value="' + $observacao + '">' +
+                '</div>' +
+            '</div>' +
+        '</div>',
         focusConfirm: false,
         preConfirm: () => {
             if ($('#swal-input-at_nome').is(':checked')) {
@@ -132,7 +174,7 @@ async function getInputs(value, row, index){
             }
             return {
                 nome: $('#swal-input-nome').val(),
-                curso: $('#swal-input-curso').val(),
+                curso: $('#curso-edit').val(),
                 atualizacao_nome: atualizacao_nome,
                 siga: siga,
                 sistec: sistec,
@@ -154,9 +196,56 @@ function operateFormatter(value, row, index) {
     ].join('');
 }
 
+async function getCurso(type, url, callback){
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: type,
+        callback: callback,
+        url: url,
+        cache: false,
+        success: function(response) {
+            if (!response.error) {
+                $.each(response, function(index, itemData) {
+                    $('select[name="curso_id"]').append($('<option>', {
+                        value: itemData.id,
+                        text: itemData.nome
+                    }));
+                });
+            }else {
+                swal(
+                    "Erro!",
+                    response.message,
+                    "error"
+                )
+            }
+            this.callback(true);
+        },
+        error: function (response) {
+            swal(
+                "Erro interno!",
+                "Oops, ocorreu um erro ao tentar salvar as alterações.", // had a missing comma
+                "error"
+            )
+            this.callback(true);
+        }
+    });
+}
+
 async function getAddInput(){
     await swal({
         title: 'Cadastrar pasta',
+        onBeforeOpen: () =>{
+            swal.showLoading();
+            $('#curso').selectpicker();
+        },
+        onOpen: () => {
+            getCurso('GET', $baseUrl + '/cursos', function() {
+                $('#curso').selectpicker('refresh');
+                swal.hideLoading();
+            });
+        },
         html:
         '<div class="card stacked-form">' +
             '<div class="card-body ">' +
@@ -166,7 +255,9 @@ async function getAddInput(){
                 '</div>' +
                 '<div class="form-group">' +
                     '<label>Curso</label>' +
-                    '<input placeholder="Curso" name="curso" class="form-control" type="text">' +
+                    '<select id="curso" name="curso_id" class="form-control">' +
+                        '<option>Selecione o curso</option>' +
+                    '</select>' +
                 '</div>' +
                 '<div class="row">' +
                     '<div class="col-md-10">' +
@@ -219,7 +310,7 @@ async function getAddInput(){
             }
             return {
                 nome: $('input[name=nome]').val(),
-                curso: $('input[name=curso]').val(),
+                curso: $('select[name=curso_id]').val(),
                 atualizacao_nome: atualizacao_nome,
                 siga: siga,
                 sistec: sistec,
@@ -234,7 +325,7 @@ async function getAddInput(){
             url = $baseUrl;
             data = {
                 'nome': result.value.nome,
-                'curso': result.value.curso,
+                'curso_id': result.value.curso,
                 'atualizacao_nome': result.value.atualizacao_nome,
                 'siga': result.value.siga,
                 'sistec': result.value.sistec,

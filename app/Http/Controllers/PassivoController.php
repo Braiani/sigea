@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use App\Passivo;
 use Dotenv\Validator;
+use App\Curso;
 
 class PassivoController extends VoyagerBaseController
 {
@@ -17,6 +18,11 @@ class PassivoController extends VoyagerBaseController
 
         $passivo_model = new Passivo();
         return view('passivo.index')->with(['passivo_model' => $passivo_model]);
+    }
+
+    public function getCursos(Request $request)
+    {
+        return Curso::all();
     }
 
     public function getData(Request $request)
@@ -59,7 +65,7 @@ class PassivoController extends VoyagerBaseController
 
         $request->validate([
             'nome' => 'required',
-            'curso' => 'required'
+            'curso_id' => 'required'
         ]);
 
         if (Passivo::create($request->all())) {

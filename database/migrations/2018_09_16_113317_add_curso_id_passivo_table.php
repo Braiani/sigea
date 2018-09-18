@@ -14,6 +14,7 @@ class AddCursoIdPassivoTable extends Migration
     public function up()
     {
         Schema::table('passivos', function (Blueprint $table) {
+            $table->string('curso')->nullable()->change();
             $table->unsignedInteger('curso_id')->nullable()->after('nome');
 
             $table->foreign('curso_id')->references('id')->on('cursos');
@@ -28,6 +29,7 @@ class AddCursoIdPassivoTable extends Migration
     public function down()
     {
         Schema::table('passivos', function (Blueprint $table) {
+            $table->string('curso')->change();
             $table->dropForeign(['curso_id']);
             $table->dropColumn('curso_id');
         });
