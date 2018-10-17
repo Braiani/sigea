@@ -105,8 +105,10 @@ async function getInputs(value, row, index){
         },
         onOpen: () => {
             getCurso('GET', $baseUrl + '/cursos', function(){
-                $("#curso-edit option[value='x']").remove();
-                $("#curso-edit option[value=" + row.curso.id + "]").prop("selected",true);
+                // $("#curso-edit option[value='x']").remove();
+                if (row.curso != null) {
+                    $("#curso-edit option[value=" + row.curso.id + "]").prop("selected",true);
+                }
                 $("#curso-edit").selectpicker("refresh");
                 swal.hideLoading();
             });
@@ -121,7 +123,7 @@ async function getInputs(value, row, index){
                 '<div class="form-group">' +
                     '<label>Curso</label>' +
                     '<select id="curso-edit" name="curso_id" class="form-control">' +
-                        '<option value="x">Carregando...</option>' +
+                        '<option>Selecione o curso</option>' +
                     '</select>' +
                 '</div>' +
                 '<div class="row">' +
