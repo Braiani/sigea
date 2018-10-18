@@ -17,8 +17,6 @@
     <link href="{{asset('/css/light-bootstrap-dashboard.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-select.css')}}" rel="stylesheet" />
     @toastr_css
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="{{asset('/css/demo.css')}}" rel="stylesheet" />
     @stack('css')
 </head>
 
@@ -70,6 +68,11 @@
             $('#form-sair').submit();
         });
         app.checkFullPageBackgroundImage();
+        app.initSidebarMini();
+
+        $('#minimizeSidebar').on('click', function(){
+            app.toggleNavbar();
+        });
     });
 </script>
 

@@ -322,45 +322,45 @@ lbd = {
             }
         });
 
-        $('#minimizeSidebar').click(function() {
-            var $btn = $(this);
+        // $('#minimizeSidebar').click(function() {
+        //     var $btn = $(this);
 
-            if (lbd.misc.sidebar_mini_active == true) {
-                $('body').removeClass('sidebar-mini');
-                lbd.misc.sidebar_mini_active = false;
+        //     if (lbd.misc.sidebar_mini_active == true) {
+        //         $('body').removeClass('sidebar-mini');
+        //         lbd.misc.sidebar_mini_active = false;
 
-                if (isWindows) {
-                    $('.sidebar .sidebar-wrapper').perfectScrollbar();
-                }
+        //         if (isWindows) {
+        //             $('.sidebar .sidebar-wrapper').perfectScrollbar();
+        //         }
 
-            } else {
+        //     } else {
 
-                $('.sidebar .collapse').collapse('hide').on('hidden.bs.collapse', function() {
-                    $(this).css('height', 'auto');
-                });
+        //         $('.sidebar .collapse').collapse('hide').on('hidden.bs.collapse', function() {
+        //             $(this).css('height', 'auto');
+        //         });
 
-                if (isWindows) {
-                    $('.sidebar .sidebar-wrapper').perfectScrollbar('destroy');
-                }
+        //         if (isWindows) {
+        //             $('.sidebar .sidebar-wrapper').perfectScrollbar('destroy');
+        //         }
 
-                setTimeout(function() {
-                    $('body').addClass('sidebar-mini');
+        //         setTimeout(function() {
+        //             $('body').addClass('sidebar-mini');
 
-                    $('.sidebar .collapse').css('height', 'auto');
-                    lbd.misc.sidebar_mini_active = true;
-                }, 300);
-            }
+        //             $('.sidebar .collapse').css('height', 'auto');
+        //             lbd.misc.sidebar_mini_active = true;
+        //         }, 300);
+        //     }
 
-            // we simulate the window Resize so the charts will get updated in realtime.
-            var simulateWindowResize = setInterval(function() {
-                window.dispatchEvent(new Event('resize'));
-            }, 180);
+        //     // we simulate the window Resize so the charts will get updated in realtime.
+        //     var simulateWindowResize = setInterval(function() {
+        //         window.dispatchEvent(new Event('resize'));
+        //     }, 180);
 
-            // we stop the simulation of Window Resize after the animations are completed
-            setTimeout(function() {
-                clearInterval(simulateWindowResize);
-            }, 1000);
-        });
+        //     // we stop the simulation of Window Resize after the animations are completed
+        //     setTimeout(function() {
+        //         clearInterval(simulateWindowResize);
+        //     }, 1000);
+        // });
     },
 
     initCollapseArea: function() {
