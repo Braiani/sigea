@@ -21,7 +21,7 @@
 <body>
     <div class="wrapper wrapper-full-page">
 
-        <div class="full-page  section-image" data-color="black" data-image="{{asset('/img/full-screen-image-3.jpg')}}">
+        <div class="full-page  section-image" data-color="black" data-image="https://source.unsplash.com/collection/3156495/1920x1080/">
             <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
             <div class="content">
                 <div class="container">
