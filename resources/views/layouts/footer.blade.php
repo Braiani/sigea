@@ -17,7 +17,7 @@
                     <script>
                         document.write(new Date().getFullYear())
                     </script>
-                    Produzido por <a href="http://brtech.tk">BRtech Sistemas</a>
+                    Produzido por <a href="http://brtechsistemas.com.br">BR tech Sistemas</a>
                 </p>
             </nav>
         </div>
