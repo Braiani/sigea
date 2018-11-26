@@ -6,7 +6,7 @@
         $color = 'black';
     }
 @endphp
-<div class="sidebar" data-color="{{ $color }}" data-image="{{asset('/img/sidebar-4.jpg')}}">
+<div class="sidebar" data-color="{{ $color }}" data-image="https://source.unsplash.com/collection/3156495/1920x1080/">
     <!--
 Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
