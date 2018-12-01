@@ -8,7 +8,7 @@
             <div class="card card-user">
                 <div class="card-header no-padding">
                     <div class="card-image">
-                        <img src="{{asset('/img/full-screen-image-3.jpg')}}" alt="Imagem bonita">
+                        <img src="https://source.unsplash.com/collection/3156495/640x480/" alt="Imagem bonita">
                     </div>
                 </div>
                 <div class="card-body ">
