@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\ProcessoSeletivo;
+use Illuminate\Support\Facades\Validator;
+use App\Confirmacao;
 
 class ConfirmacaoController extends Controller
 {
@@ -11,9 +14,19 @@ class ConfirmacaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('confirmacao.index');
+        $editais = ProcessoSeletivo::all();
+        if ($request->has('edital')) {
+            $confirmacoes = Confirmacao::where('processo_seletivo_id', $request->edital)->get();
+        } else {
+            $confirmacoes = Confirmacao::all();
+        }
+        
+        return view('confirmacao.index')->with([
+            'confirmacoes' => $confirmacoes,
+            'editais' => $editais
+            ]);
     }
 
     /**
@@ -23,7 +36,8 @@ class ConfirmacaoController extends Controller
      */
     public function create()
     {
-        return view('confirmacao.edit-add');
+        $editais = ProcessoSeletivo::all();
+        return view('confirmacao.edit-add')->with(['editais' => $editais]);
     }
 
     /**
@@ -34,11 +48,20 @@ class ConfirmacaoController extends Controller
      */
     public function store(Request $request)
     {
-        /**
-         * Colocar lógica para armazenar as informações do formulário
-         *
-         */
+        $validate = Validator::make($request->all(), [
+            'cpf' => 'required|regex:/([0-9]{3}[.]){2}([0-9]{3}[-]){1}([0-9]{2})/',
+            'nome' => 'required|string',
+            'processo_seletivo_id' => 'required|numeric'
+        ]);
+        if ($validate->fails()) {
+            toastr()->error('Por favor, verifique as informações!');
+            return redirect()->back()
+                    ->withInput()
+                    ->withErrors($validate);
+        }
         
+        Confirmacao::create($request->all());
+
         toastr()->success('Confirmação de inscrição salva com sucesso!');
         return redirect()->route('sigea.confirmacao.index');
     }
@@ -62,11 +85,20 @@ class ConfirmacaoController extends Controller
      */
     public function edit($id)
     {
+        $editais = ProcessoSeletivo::all();
         $resposta = [];
         if ($id == 2) {
-            $resposta = ['nome' => 'Felipe Gustavo', 'cpf' => '038.925.001-50', 'inscricao' => '1'];
+            $resposta = [
+                'nome' => 'Felipe Gustavo',
+                'cpf' => '038.925.001-50',
+                'processo_seletivo_id' => '1',
+                'id' => $id
+            ];
         }
-        return view('confirmacao.edit-add')->with(['confirmacao' => $resposta]);
+        return view('confirmacao.edit-add')->with([
+            'confirmacao' => $resposta,
+            'editais' => $editais
+            ]);
     }
 
     /**
@@ -78,7 +110,7 @@ class ConfirmacaoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $request;
     }
 
     /**

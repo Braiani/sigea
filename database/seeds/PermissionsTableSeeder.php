@@ -425,6 +425,46 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2018-07-09 12:26:49',
                 'updated_at' => '2018-07-09 12:26:49',
             ),
+            51 => 
+            array (
+                'id' => 52,
+                'key' => 'browse_processo_seletivos',
+                'table_name' => 'processo_seletivos',
+                'created_at' => '2018-12-03 23:27:01',
+                'updated_at' => '2018-12-03 23:27:01',
+            ),
+            52 => 
+            array (
+                'id' => 53,
+                'key' => 'read_processo_seletivos',
+                'table_name' => 'processo_seletivos',
+                'created_at' => '2018-12-03 23:27:01',
+                'updated_at' => '2018-12-03 23:27:01',
+            ),
+            53 => 
+            array (
+                'id' => 54,
+                'key' => 'edit_processo_seletivos',
+                'table_name' => 'processo_seletivos',
+                'created_at' => '2018-12-03 23:27:01',
+                'updated_at' => '2018-12-03 23:27:01',
+            ),
+            54 => 
+            array (
+                'id' => 55,
+                'key' => 'add_processo_seletivos',
+                'table_name' => 'processo_seletivos',
+                'created_at' => '2018-12-03 23:27:01',
+                'updated_at' => '2018-12-03 23:27:01',
+            ),
+            55 => 
+            array (
+                'id' => 56,
+                'key' => 'delete_processo_seletivos',
+                'table_name' => 'processo_seletivos',
+                'created_at' => '2018-12-03 23:27:01',
+                'updated_at' => '2018-12-03 23:27:01',
+            ),
         ));
         
         
