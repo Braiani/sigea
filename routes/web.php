@@ -61,7 +61,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::resource('rematricula/coordenacao', 'RematriculaCoordController')->only(['index', 'show']);
     
     //Rotas para Módulo Confirmação de Inscrições
-    Route::resource('/confirmacao', 'ConfirmacaoController');
+    Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);
 });
 
 

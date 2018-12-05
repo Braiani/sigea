@@ -4,7 +4,7 @@
 
 @section('content')
 @php
-	if (isset($confirmacao['inscricao'])) {
+	if (isset($confirmacao['id'])) {
 		$editRows = [
 			'edit' => true,
 			'route' => 'sigea.confirmacao.update',

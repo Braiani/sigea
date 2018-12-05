@@ -4,14 +4,14 @@
 
 @section('content')
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-6">
 		<div class="card">
 			<div class="card-header">
 				<h4 class="card-title">Selecione o processo seletivo:</h4>
 			</div>
 			<div class="card-body">
 				<form action="" method="get" id="form-selecionar">
-					<div class="col-4">
+					<div class="col-8">
 						<select name="edital" id="inscricai" class="selectpicker">
 							@foreach ($editais as $edital)
 								<option value="{{ $edital->id }}">{{ $edital->edital }} - {{ $edital->descricao }}</option>
@@ -29,11 +29,13 @@
 	<div class="col-md-4">
 		<div class="card">
 			<div class="card-header">
-				<h4 class="card-title">Cadastrar nova confirmação de inscrição</h4>
-				<p class="card-category">Utilize o botão abaixo para acessar a página de cadastro de nova confirmação de inscrição.</p>
+				<h4 class="card-title text-center">Cadastrar nova confirmação de inscrição</h4>
+				<p class="card-category text-center">Utilize o botão abaixo para acessar a página de cadastro de nova confirmação de inscrição.</p>
 			</div>
 			<div class="card-body">
-				<a class="btn btn-success" href="{{ route('sigea.confirmacao.create') }}">Cadastrar</a>
+				<div class="text-center">
+					<a class="btn btn-success" href="{{ route('sigea.confirmacao.create') }}">Cadastrar</a>
+				</div>
 			</div>
 		</div>
 	</div>

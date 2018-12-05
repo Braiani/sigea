@@ -27,7 +27,19 @@
     {{-- End Task widget! --}}
 </div>
 <div class="row">
-
+	<div class="col-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title text-center">Cadastrar nova confirmação de inscrição</h4>
+				<p class="card-category text-center">Utilize o botão abaixo para acessar a página de cadastro de nova confirmação de inscrição.</p>
+			</div>
+			<div class="card-body">
+				<div class="text-center">
+					<a class="btn btn-success" href="{{ route('sigea.confirmacao.create') }}">Cadastrar</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 

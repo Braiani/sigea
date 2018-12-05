@@ -17,10 +17,10 @@ class ConfirmacaoController extends Controller
     public function index(Request $request)
     {
         $editais = ProcessoSeletivo::all();
+        $confirmacoes = [];
+        
         if ($request->has('edital')) {
-            $confirmacoes = Confirmacao::where('processo_seletivo_id', $request->edital)->get();
-        } else {
-            $confirmacoes = Confirmacao::all();
+            $confirmacoes = Confirmacao::where('processo_seletivo_id', $request->edital)->paginate(10);
         }
         
         return view('confirmacao.index')->with([
@@ -59,22 +59,17 @@ class ConfirmacaoController extends Controller
                     ->withInput()
                     ->withErrors($validate);
         }
-        
-        Confirmacao::create($request->all());
+                
+        Confirmacao::updateOrCreate(
+            [
+            'cpf' => $request->cpf,
+            'processo_seletivo_id' => $request->processo_seletivo_id
+        ],
+            $request->except(['_token', '_method', 'cpf'])
+        );
 
         toastr()->success('Confirmação de inscrição salva com sucesso!');
-        return redirect()->route('sigea.confirmacao.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('sigea.confirmacao.index', ['edital' => $request->processo_seletivo_id]);
     }
 
     /**
@@ -86,17 +81,10 @@ class ConfirmacaoController extends Controller
     public function edit($id)
     {
         $editais = ProcessoSeletivo::all();
-        $resposta = [];
-        if ($id == 2) {
-            $resposta = [
-                'nome' => 'Felipe Gustavo',
-                'cpf' => '038.925.001-50',
-                'processo_seletivo_id' => '1',
-                'id' => $id
-            ];
-        }
+        $confirmacao = Confirmacao::find($id);
+        
         return view('confirmacao.edit-add')->with([
-            'confirmacao' => $resposta,
+            'confirmacao' => $confirmacao,
             'editais' => $editais
             ]);
     }
@@ -110,7 +98,23 @@ class ConfirmacaoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $request;
+        $validate = Validator::make($request->all(), [
+            'cpf' => 'required|regex:/([0-9]{3}[.]){2}([0-9]{3}[-]){1}([0-9]{2})/',
+            'nome' => 'required|string',
+            'processo_seletivo_id' => 'required|numeric'
+        ]);
+
+        if ($validate->fails()) {
+            toastr()->error('Por favor, verifique as informações!');
+            return redirect()->back()
+                    ->withInput()
+                    ->withErrors($validate);
+        }
+        $confirmacao = Confirmacao::find($id);
+        $confirmacao->update($request->except(['_token', '_method']));
+        
+        toastr()->success('Confirmação de inscrição editada com sucesso!');
+        return redirect()->route('sigea.confirmacao.index', ['edital' => $request->processo_seletivo_id]);
     }
 
     /**
@@ -121,6 +125,10 @@ class ConfirmacaoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $confirmacao = Confirmacao::find($id);
+        $confirmacao->delete();
+
+        toastr()->success('Confirmação de inscrição apagada com sucesso!');
+        return redirect()->route('sigea.confirmacao.index', ['edital' => $confirmacao->processo_seletivo_id]);
     }
 }
