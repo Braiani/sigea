@@ -19,7 +19,7 @@ Route::post('/admin/logout', 'Auth\\LoginController@logout')->name('sigea.logout
 Route::get('/admin/lockscreen', 'LockscreenController@lock')->name('lockscreen');
 Route::post('/admin/lockscreen', 'LockscreenController@unlock')->name('unlock');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
     // Rota para o perfil do usuário!
@@ -59,6 +59,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::put('/rematricula/coordenacao/{aluno}/recusar/{registro}', 'RematriculaCoordController@recusar')->name('coordenacao.recusar');
     Route::put('/rematricula/coordenacao/{aluno}/desfazer/{registro}', 'RematriculaCoordController@desfazer')->name('coordenacao.desfazer');
     Route::resource('rematricula/coordenacao', 'RematriculaCoordController')->only(['index', 'show']);
+    
+    //Rotas para Módulo Confirmação de Inscrições
+    Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);
 });
 
 
