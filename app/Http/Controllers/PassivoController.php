@@ -36,10 +36,11 @@ class PassivoController extends VoyagerBaseController
 
         if ($search) {
             $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhereIn('curso_id', function($query) use ($search){
-                        $query->select('id')->from('cursos')->where('nome',  'LIKE', "%{$search}%");
+                    ->orWhereIn('curso_id', function ($query) use ($search) {
+                        $query->select('id')->from('cursos')->where('nome', 'LIKE', "%{$search}%");
                     })
-                    ->orWhere('id', 'LIKE', "%{$search}%");
+                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->orWhere('observacao', 'LIKE', "%{$search}%");
         }
         if ($sort) {
             $query = $query->orderBy($sort, $request->get('order'));
@@ -90,7 +91,7 @@ class PassivoController extends VoyagerBaseController
             $igual = true;
             if ($count == 1) {
                 $message = "Foi encontrado a seguinte pasta com o nome {$passivo[0]->nome} : n. {$passivo[0]->id}";
-            }else{
+            } else {
                 $message = "Foram encontradas as seguintes pastas com o nome {$passivo[0]->nome} : ";
                 foreach ($passivo as $value) {
                     $message .= " n. {$value->id}";
