@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCotaMatriculasTable extends Migration
+class CreateDocumentoMatriculasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateCotaMatriculasTable extends Migration
      */
     public function up()
     {
-        Schema::create('cota_matriculas', function (Blueprint $table) {
+        Schema::create('documento_matriculas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('sigla');
+            $table->string('descricao');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateCotaMatriculasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cota_matriculas');
+        Schema::dropIfExists('documento_matriculas');
     }
 }

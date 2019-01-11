@@ -24,6 +24,20 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title text-center">Registrar matrícula</h4>
+				</div>
+				<div class="card-body">
+					<div class="form-group">
+						<h4 class="text-center">Nome do aluno aqui</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 

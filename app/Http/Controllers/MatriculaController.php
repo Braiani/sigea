@@ -29,9 +29,11 @@ class MatriculaController extends VoyagerBaseController
         $response = [];
 
         foreach ($candidatos as  $candidato) {
+            $text = 'Nome: ' . $candidato->nome . ' - CPF: ' . $candidato->cpf . ' - Curso: ' . $candidato->curso->nome . ' ('.$candidato->periodo.')';
+
             $response[] = [
                 'id' => $candidato->id,
-                'text' => 'Nome: ' . $candidato->nome . ' - CPF: ' . $candidato->cpf
+                'text' => $text
             ];
         }
         return \Response::json($response);
