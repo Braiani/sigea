@@ -29,16 +29,16 @@ class User extends \TCG\Voyager\Models\User
 
     public function getisAdminAttribute()
     {
-        return $this->role->name == 'admin' ;
+        return $this->hasRole('admin');
     }
 
     public function getisCogeaAttribute()
     {
-        return $this->role->name == 'cogea' ;
+        return $this->hasRole('cogea');
     }
 
     public function getisCoordAttribute()
     {
-        return $this->role->name == 'coords' ;
+        return $this->hasRole('coords');
     }
 }
