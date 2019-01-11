@@ -40,6 +40,19 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title text-center">Realizar Matrícula</h4>
+				<p class="card-category tex-center">Utilize o botão abaixo para registrar uma matrícula nova.</p>				
+			</div>
+			<div class="card-body">
+				<div class="text-center">
+					<a href="{{ route('sigea.matriculas.index') }}" class="btn btn-success">Acessar</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 

@@ -62,6 +62,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     
     //Rotas para Módulo Confirmação de Inscrições
     Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);
+    
+    // Rotas para Módulo de Matrícula de alunos novos
+    Route::resource('/matriculas', 'MatriculaController');
+    Route::get('/matriculas/api/candidatos', 'MatriculaController@getCandidatos')->name('matriculas.candidatos');
 });
 
 
