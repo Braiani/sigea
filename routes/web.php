@@ -62,6 +62,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     
     //Rotas para Módulo Confirmação de Inscrições
     Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);
+    
+    // Rotas para Módulo de Matrícula de alunos novos
+    Route::resource('/matriculas', 'MatriculaController')->only(['index', 'store']);
+    Route::group(['prefix' => 'matriculas/api'], function () {
+        Route::post('candidato/reclassificacao', 'MatriculaController@reclassificacao')->name('matriculas.reclassificacao');
+        Route::get('candidatos', 'MatriculaController@getCandidatos')->name('matriculas.candidatos');
+        Route::get('relatorios/matriculados', 'MatriculaController@getRelatorioMatriculas')->name('matriculas.relatorio.matriculados');
+        Route::get('/cota', 'MatriculaController@getcota')->name('matriculas.cota');
+    });
 });
 
 

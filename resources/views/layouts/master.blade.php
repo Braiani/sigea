@@ -34,7 +34,6 @@
         </div>
     </div>
 
-</body>
 <!--   Core JS Files   -->
 <script src="{{asset('/js/core/jquery.3.2.1.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('/js/core/popper.min.js')}}" type="text/javascript"></script>
@@ -78,5 +77,5 @@
 
 
 @stack('script')
-
+</body>
 </html>
