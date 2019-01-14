@@ -465,6 +465,126 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2018-12-03 23:27:01',
                 'updated_at' => '2018-12-03 23:27:01',
             ),
+            56 => 
+            array (
+                'id' => 57,
+                'key' => 'browse_cota_matriculas',
+                'table_name' => 'cota_matriculas',
+                'created_at' => '2019-01-11 01:26:15',
+                'updated_at' => '2019-01-11 01:26:15',
+            ),
+            57 => 
+            array (
+                'id' => 58,
+                'key' => 'read_cota_matriculas',
+                'table_name' => 'cota_matriculas',
+                'created_at' => '2019-01-11 01:26:15',
+                'updated_at' => '2019-01-11 01:26:15',
+            ),
+            58 => 
+            array (
+                'id' => 59,
+                'key' => 'edit_cota_matriculas',
+                'table_name' => 'cota_matriculas',
+                'created_at' => '2019-01-11 01:26:15',
+                'updated_at' => '2019-01-11 01:26:15',
+            ),
+            59 => 
+            array (
+                'id' => 60,
+                'key' => 'add_cota_matriculas',
+                'table_name' => 'cota_matriculas',
+                'created_at' => '2019-01-11 01:26:15',
+                'updated_at' => '2019-01-11 01:26:15',
+            ),
+            60 => 
+            array (
+                'id' => 61,
+                'key' => 'delete_cota_matriculas',
+                'table_name' => 'cota_matriculas',
+                'created_at' => '2019-01-11 01:26:15',
+                'updated_at' => '2019-01-11 01:26:15',
+            ),
+            61 => 
+            array (
+                'id' => 62,
+                'key' => 'browse_status_matriculas',
+                'table_name' => 'status_matriculas',
+                'created_at' => '2019-01-11 01:27:02',
+                'updated_at' => '2019-01-11 01:27:02',
+            ),
+            62 => 
+            array (
+                'id' => 63,
+                'key' => 'read_status_matriculas',
+                'table_name' => 'status_matriculas',
+                'created_at' => '2019-01-11 01:27:02',
+                'updated_at' => '2019-01-11 01:27:02',
+            ),
+            63 => 
+            array (
+                'id' => 64,
+                'key' => 'edit_status_matriculas',
+                'table_name' => 'status_matriculas',
+                'created_at' => '2019-01-11 01:27:02',
+                'updated_at' => '2019-01-11 01:27:02',
+            ),
+            64 => 
+            array (
+                'id' => 65,
+                'key' => 'add_status_matriculas',
+                'table_name' => 'status_matriculas',
+                'created_at' => '2019-01-11 01:27:02',
+                'updated_at' => '2019-01-11 01:27:02',
+            ),
+            65 => 
+            array (
+                'id' => 66,
+                'key' => 'delete_status_matriculas',
+                'table_name' => 'status_matriculas',
+                'created_at' => '2019-01-11 01:27:02',
+                'updated_at' => '2019-01-11 01:27:02',
+            ),
+            66 => 
+            array (
+                'id' => 67,
+                'key' => 'browse_documento_matriculas',
+                'table_name' => 'documento_matriculas',
+                'created_at' => '2019-01-12 15:13:13',
+                'updated_at' => '2019-01-12 15:13:13',
+            ),
+            67 => 
+            array (
+                'id' => 68,
+                'key' => 'read_documento_matriculas',
+                'table_name' => 'documento_matriculas',
+                'created_at' => '2019-01-12 15:13:13',
+                'updated_at' => '2019-01-12 15:13:13',
+            ),
+            68 => 
+            array (
+                'id' => 69,
+                'key' => 'edit_documento_matriculas',
+                'table_name' => 'documento_matriculas',
+                'created_at' => '2019-01-12 15:13:13',
+                'updated_at' => '2019-01-12 15:13:13',
+            ),
+            69 => 
+            array (
+                'id' => 70,
+                'key' => 'add_documento_matriculas',
+                'table_name' => 'documento_matriculas',
+                'created_at' => '2019-01-12 15:13:13',
+                'updated_at' => '2019-01-12 15:13:13',
+            ),
+            70 => 
+            array (
+                'id' => 71,
+                'key' => 'delete_documento_matriculas',
+                'table_name' => 'documento_matriculas',
+                'created_at' => '2019-01-12 15:13:13',
+                'updated_at' => '2019-01-12 15:13:13',
+            ),
         ));
         
         
