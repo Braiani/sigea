@@ -44,6 +44,8 @@ class MatriculaController extends VoyagerBaseController
         
         $candidato->status()->associate($status->id);
         $candidato->user_id = Auth::user()->id;
+        $candidato->nome = $validateData['nome'];
+        $candidato->email = $validateData['email'];
         
         $candidato->save();
         
