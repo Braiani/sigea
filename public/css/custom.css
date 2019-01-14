@@ -1,22 +1,6 @@
-.panel {
-    background-color: rgba(40, 40, 40, 0.818);
-}
-
-.full-height {
-    height: 100vh;
-}
-
-.flex-center {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-
-.content-center {
-    text-align: center;
-}
-
 .table{
-    margin-top: 15px;
-    background-color: white;
+	width: auto;    
+}
+.table-documentos td{
+	border: none;
 }
