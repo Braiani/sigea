@@ -41,4 +41,9 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->hasRole('coords');
     }
+    
+    public function getisNugedAttribute()
+    {
+        return $this->hasRole('nuged');
+    }
 }

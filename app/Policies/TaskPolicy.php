@@ -22,9 +22,7 @@ class TaskPolicy
 
     public function before($user, $ability)
     {
-        if ($user->isAdmin) {
-            return true;
-        }
+        return $user->isAdmin;
     }
 
     public function create(User $user, Task $task)

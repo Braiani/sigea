@@ -65,11 +65,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     
     // Rotas para Módulo de Matrícula de alunos novos
     Route::resource('/matriculas', 'MatriculaController')->only(['index', 'store']);
+    Route::get('/matriculas/relatorios', 'MatriculaController@relatorios')->name('matriculas.relatorios');
+    
     Route::group(['prefix' => 'matriculas/api'], function () {
         Route::post('candidato/reclassificacao', 'MatriculaController@reclassificacao')->name('matriculas.reclassificacao');
         Route::get('candidatos', 'MatriculaController@getCandidatos')->name('matriculas.candidatos');
         Route::get('relatorios/matriculados', 'MatriculaController@getRelatorioMatriculas')->name('matriculas.relatorio.matriculados');
         Route::get('/cota', 'MatriculaController@getcota')->name('matriculas.cota');
+        Route::get('/relatorios/listar', 'MatriculaController@getListaMatriculados')->name('matriculas.relatorio.lista');
+        Route::post('/relatorios/deferido', 'MatriculaController@matriculaDeferido')->name('matriculas.analise.deferido');
+        Route::post('/relatorios/indeferido', 'MatriculaController@matriculaIndeferido')->name('matriculas.analise.indeferido');
+        Route::post('/relatorios/matricular', 'MatriculaController@matricular')->name('matriculas.analise.matricular');
     });
 });
 
