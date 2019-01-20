@@ -49,7 +49,7 @@
 				<hr>
 				<div class="pull-right">
 					
-					<a href="#" class="btn btn-success">Gerar relatório</a>
+					<a href="{{ route('sigea.confirmacao.relatorio.index', ['edital' => Request::get('edital')]) }}" class="btn btn-success">Gerar relatório</a>
 				</div>
 			</div>
 		</div>
