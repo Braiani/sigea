@@ -131,4 +131,9 @@ class ConfirmacaoController extends Controller
         toastr()->success('Confirmação de inscrição apagada com sucesso!');
         return redirect()->route('sigea.confirmacao.index', ['edital' => $confirmacao->processo_seletivo_id]);
     }
+
+    public function getData(Request $request)
+    {
+        ///
+    }
 }

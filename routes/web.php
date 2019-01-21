@@ -59,10 +59,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::put('/rematricula/coordenacao/{aluno}/recusar/{registro}', 'RematriculaCoordController@recusar')->name('coordenacao.recusar');
     Route::put('/rematricula/coordenacao/{aluno}/desfazer/{registro}', 'RematriculaCoordController@desfazer')->name('coordenacao.desfazer');
     Route::resource('rematricula/coordenacao', 'RematriculaCoordController')->only(['index', 'show']);
-    
+
     //Rotas para Módulo Confirmação de Inscrições
     Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);
-    
+    Route::get('/confirmacao/table', 'ConfirmacaoController@getData')->name('confirmacao.table');
+    Route::get('/confirmacao/relatorio', 'ConfirmacaoRelatorioController@index')->name('confirmacao.relatorio.index');
+    Route::post('/confirmacao/relatorio/{edital}', 'ConfirmacaoRelatorioController@gerarFile')->name('confirmacao.relatorio.post');
+    Route::post('/confirmacao/relatorio/{edital}/checar', 'ConfirmacaoRelatorioController@checarLista')->name('confirmacao.relatorio.checar');
+
     // Rotas para Módulo de Matrícula de alunos novos
     Route::resource('/matriculas', 'MatriculaController')->only(['index', 'store']);
     Route::get('/matriculas/relatorios', 'MatriculaController@relatorios')->name('matriculas.relatorios');
