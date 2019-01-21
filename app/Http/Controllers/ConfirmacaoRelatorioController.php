@@ -37,10 +37,17 @@ class ConfirmacaoRelatorioController extends Controller
             $cpf = str_replace('-', '', $cpf);
             $fileLine = $fileLines->firstWhere('CPF', $cpf);
             if ($fileLine !== null) {
-                $temp['nome'] = $confirmado->nome;
+                $temp['nome'] = strtoupper($confirmado->nome);
                 $temp['inscricao'] = $fileLine['Inscrição'];
                 $temp['data'] = $confirmado->created_at->format('d/m/Y H:i:s');
                 $temp['publico'] = $fileLine['Público'];
+
+                array_push($respota, $temp);
+            } elseif ($request->has('inconsistencias') and $request->inconsistencias) {
+                $temp['nome'] = strtoupper($confirmado->nome);
+                $temp['inscricao'] = '---';
+                $temp['data'] = $confirmado->created_at->format('d/m/Y H:i:s');
+                $temp['publico'] = '---';
 
                 array_push($respota, $temp);
             }
@@ -63,7 +70,10 @@ class ConfirmacaoRelatorioController extends Controller
         ]);
 
         if ($validateData['arquivo']->getClientMimeType() !== 'text/csv') {
-            return redirect()->back()->with('error', 'Arquivo anexado não é um CSV');
+            return response()->json([
+                'error' => true,
+                'message' => 'Arquivo anexado não é um CSV'
+            ]);
         }
 
         $csv = Reader::createFromPath($validateData['arquivo']->getPathname(), 'r');
@@ -77,7 +87,7 @@ class ConfirmacaoRelatorioController extends Controller
             $cpf = str_replace('-', '', $cpf);
             $fileLine = $fileLines->firstWhere('CPF', $cpf);
             if ($fileLine === null) {
-                $temp['nome'] = $confirmado->nome;
+                $temp['nome'] = strtoupper($confirmado->nome);
                 $temp['cpf'] = $confirmado->cpf;
                 $temp['data'] = $confirmado->created_at->format('d/m/Y H:i:s');
 

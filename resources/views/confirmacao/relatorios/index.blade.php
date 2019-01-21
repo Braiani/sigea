@@ -48,8 +48,8 @@
                         <progress id="progress" class="progress-relatorio" value="0" max="100"></progress>
                     </div>
                     <hr>
-                    <button type="submit" id="gerar" form="form-relatorio" class="btn btn-success">Gerar arquivo
-                    </button>
+                    <button type="submit" id="gerar" form="form-relatorio" class="btn btn-success">Gerar arquivo</button>
+                    <button type="submit" id="gerarComIncon" form="form-relatorio" class="btn btn-warning">Gerar arquivo c/ inconsistências</button>
                     <button type="submit" id="checar" form="form-relatorio" class="btn btn-info">Checar Lista</button>
                 </div>
             </div>
@@ -60,30 +60,26 @@
                     <h3 class="card-title text-center">Instruções:</h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-title">Utilize o botão "Checar" para verificar as possíveis inconsistências entre o
-                        arquivo anexado e os dados cadastrados.</p>
-                    <p class="card-title">Utilize o botão "Gerar arquivo" para gerar a lista que deve ser enviada à
-                        COPOG.</p>
+                    <h4 class="card-title"><b>Checar:</b> <span class="card-category">Utilize o botão "Checar" para verificar as possíveis inconsistências entre o
+                        arquivo anexado e os dados cadastrados.</span></h4>
+                    <h4 class="card-title"><b>Gerar arquivo:</b> <span class="card-category">Utilize o botão "Gerar arquivo" para gerar a lista que deve ser enviada à
+                        COPOG.</span></h4>
+                    <h4 class="card-title"><b>Gerar arquivo c/ inconsistências:</b> <span class="card-category">Utilize o botão "Gerar arquivo c/ inconsistências" para gerar a
+                        lista que deve ser enviada à COPOG com os nomes que constam no sistema, mas não constam no arquivo.</span></h4>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row invisible" id="checarPanel">
         <div class="col-md-12">
-            <div class="card invisible" id="checarPanel">
+            <div class="card">
                 <div class="card-header">
                     <h4 class="card-title text-center">Inconsistências:</h4>
                     <p class="card-category text-center">Essa é a lista de nomes registrados no sistema e que não
                         constam na lista anexa.</p>
                 </div>
-                <div class="card-body">
-                    <div class="col-sm-12">
-                        <div class="row" id="resultado">
-
-                        </div>
-                    </div>
-                </div>
             </div>
+            <div class="row" id="resultado"></div>
         </div>
     </div>
 @endsection
@@ -104,15 +100,27 @@
     <script src="http://malsup.github.io/jquery.form.js"></script>
     <script>
         function exibeResposta(response) {
+            if (response.error){
+                swal(
+                    'Oops!',
+                    response.message,
+                    'error'
+                );
+                return;
+            }
             if ($("#checarPanel").hasClass('invisible')) {
                 $("#checarPanel").removeClass('invisible');
             }
             $.each(response, function (index, value) {
                 $("#resultado").append([
-                    '<div class="col-sm-3 border-resultado">' +
-                    '<p> <b>Nome</b>: ' + value.nome + '</p>' +
-                    '<p> <b>CPF</b>: ' + value.cpf + '</p>' +
-                    '<p> <b>Data da confirmação</b>: ' + value.data + '</p>' +
+                    '<div class="col-sm-3">' +
+                        '<div class="card">' +
+                            '<div class="card-body">' +
+                                '<p> <b>Nome</b>: ' + value.nome + '</p>' +
+                                '<p> <b>CPF</b>: ' + value.cpf + '</p>' +
+                                '<p> <b>Data da confirmação</b>: ' + value.data + '</p>' +
+                            '</div>' +
+                        '</div>' +
                     '</div>'
                 ]);
             })
@@ -159,7 +167,15 @@
 
                 $("#form-relatorio").attr('action', "{{route('sigea.confirmacao.relatorio.post', $edital->id)}}");
                 $("#form-relatorio").trigger('submit');
-            })
+            });
+            $("#gerarComIncon").on('click', function (e) {
+                e.preventDefault();
+
+                $("#form-relatorio").unbind('submit');
+
+                $("#form-relatorio").attr('action', "{{route('sigea.confirmacao.relatorio.post', [$edital->id, 'inconsistencias' => 'true'])}}");
+                $("#form-relatorio").trigger('submit');
+            });
         });
     </script>
 @endpush
