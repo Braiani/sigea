@@ -8,7 +8,7 @@
 	<p>Olá {{ $candidato->nome }}.</p>
 	
 	<p>
-		Recebemos seus documentos de matrícula na Central de Relacionamento do <i>campus</i> Campo Grande e estamos processando sua matrícula!
+		Recebemos seus documentos na Central de Relacionamento do <i>campus</i> Campo Grande e estamos processando sua matrícula!
 	</p>
 	
 	<p>

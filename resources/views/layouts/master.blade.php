@@ -63,6 +63,7 @@
 <script>
     $(document).ready(function() {
         $(document).trigger('documentReady');
+        $(document).trigger('pageReady');
         $('#sair').on('click', function(e){
             e.preventDefault();
             $('#form-sair').submit();

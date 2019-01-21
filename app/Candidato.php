@@ -33,6 +33,6 @@ class Candidato extends Model
 
     public function servidor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

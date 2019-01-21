@@ -25,4 +25,14 @@ class StatusMatricula extends Model
     {
         return $query->where('padrao_reclassificacao', true);
     }
+    
+    public function scopeDeferido($query)
+    {
+        return $query->where('descricao', 'Deferido');
+    }
+    
+    public function scopeIndeferido($query)
+    {
+        return $query->where('descricao', 'Indeferido');
+    }
 }
