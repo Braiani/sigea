@@ -44,11 +44,17 @@
 						data-locale="pt-BR">
 						<thead>
 							<tr>
-								<th data-field="nome">Nome</th>
+								<th data-field="nome" data-sortable="true">Nome</th>
 								<th data-field="curso"
 									data-align="center"
 									data-formatter="cursoFormatter">
 									Curso
+								</th>
+								<th data-field="chamada"
+									data-sortable="true"
+									data-align="center"
+									data-formatter="chamadaFormatter">
+									Chamada
 								</th>
 								<th data-field="cota_candidato"
 									data-align="center"
@@ -165,6 +171,10 @@
 
 	function statusFormatter(value) {
 		return value.descricao;
+	}
+
+	function chamadaFormatter(value) {
+		return value + "ª Chamada";
 	}
 
 	function reclassificacao(candidatoId, table) {
