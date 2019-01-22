@@ -88,7 +88,7 @@ class SettingsTableSeeder extends Seeder
                 'id' => 7,
                 'key' => 'admin.description',
                 'display_name' => 'Admin Description',
-                'value' => 'Painel administrativo do SIGEA',
+                'value' => 'Sistema de Gestão Acadêmica - IFMS Campus Campo Grande',
                 'details' => '',
                 'type' => 'text',
                 'order' => 2,

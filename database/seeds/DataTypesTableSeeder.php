@@ -195,7 +195,7 @@ class DataTypesTableSeeder extends Seeder
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"desc","default_search_key":null}',
                 'created_at' => '2019-01-11 01:26:15',
-                'updated_at' => '2019-01-13 14:05:07',
+                'updated_at' => '2019-01-14 03:10:14',
             ),
             10 => 
             array (
@@ -213,7 +213,7 @@ class DataTypesTableSeeder extends Seeder
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null}',
                 'created_at' => '2019-01-11 01:27:02',
-                'updated_at' => '2019-01-11 23:43:46',
+                'updated_at' => '2019-01-16 08:38:05',
             ),
             11 => 
             array (
@@ -231,7 +231,25 @@ class DataTypesTableSeeder extends Seeder
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null}',
                 'created_at' => '2019-01-12 15:13:13',
-                'updated_at' => '2019-01-12 15:13:13',
+                'updated_at' => '2019-01-14 03:37:06',
+            ),
+            12 => 
+            array (
+                'id' => 13,
+                'name' => 'candidatos',
+                'slug' => 'candidatos',
+                'display_name_singular' => 'Candidato',
+                'display_name_plural' => 'Candidatos',
+                'icon' => NULL,
+                'model_name' => 'App\\Candidato',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 1,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"desc","default_search_key":"nome"}',
+                'created_at' => '2019-01-21 23:27:54',
+                'updated_at' => '2019-01-21 23:39:42',
             ),
         ));
         
