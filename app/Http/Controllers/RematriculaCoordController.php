@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Registro;
-use App\Aluno;
+use App\Models\Registro;
+use App\Models\Aluno;
 
 class RematriculaCoordController extends Controller
 {

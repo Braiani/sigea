@@ -3,8 +3,8 @@
 @section('title', 'Matrículas')
 
 @section('content')
-{{-- <div class="row">
-	<div class="col-sm-6">
+{{--<div class="row">
+	<div class="col-sm-4">
 		<div class="card">
 			<div class="card-header">
 				<h4 class="card-title text-center">Gráfico por curso</h4>
@@ -15,7 +15,18 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-4">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title text-center">Gráfico por curso</h4>
+				<p class="card-category text-center">Visão das matrículas por curso</p>
+			</div>
+			<div class="card-body">
+				@include('matriculas.partials.grafico-relatorios')
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-4">
 		<div class="card">
 			<div class="card-header">
 				<h4 class="card-title text-center">Gráfico por cota</h4>
@@ -26,7 +37,7 @@
 			</div>
 		</div>
 	</div>
-</div> --}}
+</div>--}}
 <div class="row">
 	<div class="col-sm-12">
 		<div class="card bootstrap-table">

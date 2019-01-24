@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,12 +8,12 @@ class Aluno extends Model
 {
     public function curso()
     {
-        return $this->belongsTo('App\Curso', 'id_curso');
+        return $this->belongsTo('App\Models\Curso', 'id_curso');
     }
 
     public function registros()
     {
-        return $this->hasMany('App\Registro', 'id_alunos');
+        return $this->hasMany('App\Models\Registro', 'id_alunos');
     }
 
     public function scopeSituacao($query, $search)

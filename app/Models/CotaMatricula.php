@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\DocumentoMatricula;
 use Illuminate\Database\Eloquent\Model;
 
 class CotaMatricula extends Model

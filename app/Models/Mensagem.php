@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,12 +14,12 @@ class Mensagem extends Model
 
     public function from()
     {
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     public function messageTo()
     {
-        return $this->belongsTo('App\User', 'to', 'id');
+        return $this->belongsTo('App\Models\User', 'to', 'id');
     }
 
     public function scopeMailFrom($query, $id)

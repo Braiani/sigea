@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\Candidato;
+use App\Models\DocumentoMatricula;
 use Illuminate\Database\Eloquent\Model;
 
 class Pendencia extends Model

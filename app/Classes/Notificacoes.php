@@ -1,8 +1,8 @@
 <?php
 namespace App\Classes;
 
-use App\Mensagem;
-use App\Task;
+use App\Models\Mensagem;
+use App\Models\Task;
 
 class Notificacoes
 {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ProcessoSeletivo;
+use App\Models\ProcessoSeletivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use League\Csv\Reader;

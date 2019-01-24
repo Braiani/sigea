@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\Aluno;
-use App\Registro;
-use App\DisciplinaCurso;
+use App\Models\Aluno;
+use App\Models\Registro;
+use App\Models\DisciplinaCurso;
 
 class CerelController extends Controller
 {

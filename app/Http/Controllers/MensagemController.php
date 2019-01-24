@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use App\Mensagem;
+use App\Models\Mensagem;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Models\User;
 
 class MensagemController extends VoyagerBaseController
 {

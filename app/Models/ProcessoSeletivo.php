@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\Confirmacao;
 use Illuminate\Database\Eloquent\Model;
 
 class ProcessoSeletivo extends Model

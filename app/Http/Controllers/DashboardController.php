@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Passivo;
+use App\Models\Passivo;
 
 class DashboardController extends Controller
 {
