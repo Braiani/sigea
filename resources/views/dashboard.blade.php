@@ -21,7 +21,7 @@
     </div>
     {{-- Start Task widget! --}}
     @php
-        $tasks_model = new App\Task;
+        $tasks_model = new \App\Models\Task;
     @endphp
     @include('tasks', ['tasks_model' => $tasks_model])
     {{-- End Task widget! --}}

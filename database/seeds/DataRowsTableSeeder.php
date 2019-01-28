@@ -702,7 +702,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 1,
             ),
             43 => 
@@ -718,7 +718,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 3,
             ),
             44 => 
@@ -734,7 +734,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 5,
             ),
             45 => 
@@ -750,7 +750,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 2,
             ),
             46 => 
@@ -766,7 +766,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 6,
             ),
             47 => 
@@ -782,7 +782,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 0,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 8,
             ),
             48 => 
@@ -798,7 +798,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 9,
             ),
             49 => 
@@ -814,7 +814,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"model":"App\\\\Curso","table":"cursos","type":"belongsTo","column":"id_curso","key":"id","label":"nome","pivot_table":"alunos","pivot":"0","taggable":"0"}',
+                'details' => '{"model":"App\\\\Models\\\\Curso","table":"cursos","type":"belongsTo","column":"id_curso","key":"id","label":"nome","pivot_table":"alunos","pivot":"0","taggable":"0"}',
                 'order' => 4,
             ),
             50 => 
@@ -830,7 +830,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 1,
             ),
             51 => 
@@ -846,7 +846,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 2,
             ),
             52 => 
@@ -862,7 +862,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 4,
             ),
             53 => 
@@ -878,7 +878,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 5,
             ),
             54 => 
@@ -894,7 +894,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 0,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 6,
             ),
             55 => 
@@ -910,7 +910,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 7,
             ),
             56 => 
@@ -926,7 +926,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"model":"App\\\\Curso","table":"cursos","type":"belongsTo","column":"id_cursos","key":"id","label":"nome","pivot_table":"alunos","pivot":"0","taggable":"0"}',
+                'details' => '{"model":"App\\\\Models\\\\Curso","table":"cursos","type":"belongsTo","column":"id_cursos","key":"id","label":"nome","pivot_table":"alunos","pivot":"0","taggable":"0"}',
                 'order' => 3,
             ),
             57 => 
@@ -942,7 +942,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"model":"App\\\\Registro","table":"registros","type":"hasMany","column":"id_alunos","key":"id","label":"id","pivot_table":"alunos","pivot":"0","taggable":"0"}',
+                'details' => '{"model":"App\\\\Models\\\\Registro","table":"registros","type":"hasMany","column":"id_alunos","key":"id","label":"id","pivot_table":"alunos","pivot":"0","taggable":"0"}',
                 'order' => 7,
             ),
             58 => 
@@ -1696,6 +1696,38 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '{"model":"App\\\\User","table":"users","type":"belongsTo","column":"user_id","key":"id","label":"name","pivot_table":"alunos","pivot":"0","taggable":"0"}',
                 'order' => 20,
+            ),
+            105 => 
+            array (
+                'id' => 120,
+                'data_type_id' => 8,
+                'field' => 'carga_horaria',
+                'type' => 'number',
+                'display_name' => 'Carga Horária',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 5,
+            ),
+            106 => 
+            array (
+                'id' => 121,
+                'data_type_id' => 7,
+                'field' => 'registro_situacao_id',
+                'type' => 'number',
+                'display_name' => 'Registro Situacao Id',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 3,
             ),
         ));
         

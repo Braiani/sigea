@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use App\Passivo;
+use App\Models\Passivo;
 use Dotenv\Validator;
-use App\Curso;
+use App\Models\Curso;
 
 class PassivoController extends VoyagerBaseController
 {

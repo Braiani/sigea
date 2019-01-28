@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\ProcessoSeletivo;
+use App\Models\ProcessoSeletivo;
 use Illuminate\Support\Facades\Validator;
-use App\Confirmacao;
+use App\Models\Confirmacao;
 
 class ConfirmacaoController extends Controller
 {

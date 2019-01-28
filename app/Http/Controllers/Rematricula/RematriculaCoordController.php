@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Rematricula;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Registro;
-use App\Aluno;
+use App\Models\Registro;
+use App\Models\Aluno;
 
 class RematriculaCoordController extends Controller
 {

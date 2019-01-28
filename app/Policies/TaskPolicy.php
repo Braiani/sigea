@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Task;
+use App\Models\Task;
 
 class TaskPolicy
 {

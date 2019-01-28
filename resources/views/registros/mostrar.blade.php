@@ -8,8 +8,8 @@
         <h3>Foram encontrados os seguintes registros para o(a) estudante selecionado: {{ $aluno->nomeFormatado }}</h3>
         <div class="row">
             <div class="pull-right">
-                <a href="{{ route('sigea.registros.editar', $aluno->id) }}" class="btn btn-success">+ Adicionar disciplina</a>
-                <a href="{{ route('sigea.registros.comprovante', $aluno->id) }}" class="btn btn-info">Imprimir comprovante</a>
+                <a href="{{ route('sigea.registros.editar', [$aluno->id, 'semestre' => '20191']) }}" class="btn btn-success">+ Adicionar disciplina</a>
+                <a href="{{ route('sigea.registros.comprovante', [$aluno->id, 'semestre' => '20191']) }}" class="btn btn-info">Imprimir comprovante</a>
             </div>
         </div>
         <div class="table-responsive">

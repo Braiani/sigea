@@ -1,3 +1,4 @@
+
 ![](https://raw.githubusercontent.com/ifms-na/siai-ifms-na/master/app/assets/images/logo_ifms.png?token=ABT0W4aSOnogYpUeUhFZlcp1WgNYR34Gks5Yv3kuwA%3D%3D)
 
 
@@ -17,7 +18,8 @@ O SIGEA (Sistema de Gestão Acadêmica) é um sistema desenvolvido com o objetiv
  - Módulo de Tarefas
  - Módulo de Rematrícula - CEREL
  - Módulo de Rematrícula - Coords
- - Módulo de controle de Confirmação de inscrições - Pós-graduação (Em desenvolvimento)
+ - Modulo de Matricula - Registro das matriculas com atualização de status e envio automático de e-mail aos responsáveis
+ - Módulo de controle de Confirmação de inscrições - Pós-graduação
  - Mural de recados (A desenvolver)
  - Gerenciamento de "Ocorrências" individuais de alunos (A desenvolver)
  - Gerenciamento e emissão de inúmeros documentos institucionais (A desenvolver)

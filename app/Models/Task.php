@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +13,7 @@ class Task extends Model
 
     public function userTo()
     {
-        return $this->belongsTo('App\User', 'user_to');
+        return $this->belongsTo('App\Models\User', 'user_to');
     }
 
     public function scopeToUser($query, $id)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +13,6 @@ class Passivo extends Model
 
     public function curso()
     {
-        return $this->belongsTo('App\Curso');
+        return $this->belongsTo('App\Models\Curso');
     }
 }
