@@ -20,6 +20,7 @@
                 <select name='situacao' class='form-control selectpicker' title="Selecione a situação do estudante" data-style="{{ $errors->has('situacao') ? 'btn-danger' : 'btn-info' }}">
                     <option value="1" {{ old('situacao') == 1 ? 'selected': '' }}>Dependência</option>
                     <option value="2" {{ old('situacao') == 2 ? 'selected': '' }}>Retido</option>
+                    <option value="3" {{ old('situacao') == 2 ? 'selected': '' }}>Regular</option>
                 </select>
             </div>
         </div>
@@ -27,7 +28,8 @@
             <div class="form-group">
                 <label for="semestre">Semestre de rematrícula:</label>
                 <select name='semestre' class='form-control selectpicker' data-style="{{ $errors->has('semestre') ? 'btn-danger' : 'btn-info' }}">
-                    <option value="20182">2018/2</option>
+                    <option value="20191">2019/1</option>
+                    <option value="20182" disabled>2018/2</option>
                     <option value="20181" disabled>2018/1</option>
                 </select>
             </div>

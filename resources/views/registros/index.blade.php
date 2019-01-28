@@ -168,25 +168,31 @@
                 );
                 $.each(disciplinas, function (index, value) {
                     if (value.semestre === i) {
-                        if ($.inArray(value.pivot.status, reprovado) > -1) {
-                            var checked = '';
-                            $.each(registros, function (i, v) {
-                                if (value.id === v.id_disciplina_cursos){
-                                    checked = 'checked';
-                                    console.log('eba: ' + v.id_disciplina_cursos);
-                                }
-                            });
-                            $("#semestre_" + i).append(
-                                '<label class="reprovado">' +
-                                '<input type="checkbox" name="disciplinas[]" value="' + value.id + '" '+ checked + '> ' +
-                                value.nome + ' (' + value.pivot.status + ')' +
-                                '</label> <br>'
-                            );
-                        }else{
-                            $("#semestre_" + i).append(
-                                '<p class="card-category aprovado">' + value.nome + '</p>'
-                            );
-                        }
+                        $("#semestre_" + i).append(
+                            '<label class="reprovado">' +
+                            '<input type="checkbox" name="disciplinas[]" value="' + value.id + '" '+ checked + '> ' +
+                            value.nome + ' (' + value.pivot.status + ')' +
+                            '</label> <br>'
+                        );
+                        // if ($.inArray(value.pivot.status, reprovado) > -1) {
+                        //     var checked = '';
+                        //     $.each(registros, function (i, v) {
+                        //         if (value.id === v.id_disciplina_cursos){
+                        //             checked = 'checked';
+                        //             console.log('eba: ' + v.id_disciplina_cursos);
+                        //         }
+                        //     });
+                        //     $("#semestre_" + i).append(
+                        //         '<label class="reprovado">' +
+                        //         '<input type="checkbox" name="disciplinas[]" value="' + value.id + '" '+ checked + '> ' +
+                        //         value.nome + ' (' + value.pivot.status + ')' +
+                        //         '</label> <br>'
+                        //     );
+                        // }else{
+                        //     $("#semestre_" + i).append(
+                        //         '<p class="card-category aprovado">' + value.nome + '</p>'
+                        //     );
+                        // }
                     }
                 });
             }
@@ -194,13 +200,14 @@
 
         function exibirRespostaBusca(response) {
             console.log(response);
-            if (response.aluno.situacao !== null) {
-                if (response.aluno.situacao.nome === "Regular") {
-                    alunoRegular(response.aluno);
-                }else{
-                    alunoNaoRegular(response.aluno, response.historico, response.registros);
-                }
-            }
+            alunoNaoRegular(response.aluno, response.disciplinas, response.registros);
+            // if (response.aluno.situacao !== null) {
+            //     if (response.aluno.situacao.nome === "Regular") {
+            //         alunoRegular(response.aluno);
+            //     }else{
+            //         alunoNaoRegular(response.aluno, response.historico, response.registros);
+            //     }
+            // }
         }
 
         $(document).on('pageReady', function () {
@@ -230,18 +237,19 @@
 
             $("#aluno").on('change', function () {
                 var aluno = $(this).select2('data')[0]['aluno'];
-                if ($("#disciplinas").hasClass('escondido')) {
-                    $("#disciplinas").toggleClass('escondido');
-                    $('#disciplinas select').select2();
-                }
-                url = "{{ route('sigea.registros.edit', '__id') }}";
-                semestre = $("#semestre").val();
+                window.location = "{{ route('sigea.registros.show', ['__id', 'semestre' => '20191']) }}".replace('__id', aluno.id);
+                // if ($("#disciplinas").hasClass('escondido')) {
+                //     $("#disciplinas").toggleClass('escondido');
+                //     $('#disciplinas select').select2();
+                // }
+                // url = "{{ route('sigea.registros.edit', '__id') }}";
+                // semestre = $("#semestre").val();
 
-                data = {
-                    id: aluno.id,
-                    semestre: semestre
-                };
-                execAjax('GET', url.replace('__id', aluno.id), data, exibirRespostaBusca);
+                // data = {
+                //     id: aluno.id,
+                //     semestre: semestre
+                // };
+                // execAjax('GET', url.replace('__id', aluno.id), data, exibirRespostaBusca);
             })
         });
     </script>
