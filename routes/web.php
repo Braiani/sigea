@@ -47,18 +47,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::post('/configuracoes', 'ConfiguracoesController@store')->name('configuracoes.update');
 
     // Rematrícula - CEREL
-    Route::get('/cerel/comprovante/{aluno}', 'CerelController@comprovante')->name('registros.comprovante');
-    Route::post('/cerel/registros/get_alunos', 'CerelController@getAlunos')->name('registros.getAlunos');
-    Route::get('/cerel/registros/{aluno}/editar', 'CerelController@editar')->name('registros.editar');
-    Route::put('/cerel/registros/{aluno}/salvar', 'CerelController@salvarUpdate')->name('registros.salvarUpdate');
-    Route::resource('/cerel/registros', 'CerelController')->except(['create', 'store']);
+    Route::get('/cerel/comprovante/{aluno}', 'Rematricula\CerelController@comprovante')->name('registros.comprovante');
+    Route::post('/cerel/registros/get_alunos', 'Rematricula\CerelController@getAlunos')->name('registros.getAlunos');
+    Route::get('/cerel/registros/{aluno}/editar', 'Rematricula\CerelController@editar')->name('registros.editar');
+    Route::put('/cerel/registros/{aluno}/salvar', 'Rematricula\CerelController@salvarUpdate')->name('registros.salvarUpdate');
+    Route::resource('/cerel/registros', 'Rematricula\CerelController')->except(['create', 'store']);
+
+    // Rematrícula - Histórico Escolar, CR e IDs
+    Route::post('/cerel/historico_escolar', 'Rematricula\HistoricoEscolarController@update')->name('historicos.update');
+    Route::post('/cerel/atualizar_cr', 'Rematricula\AtualizacoesController@updateCr')->name('atualizar.cr');
 
     // Rematrícula - Coords
-    Route::get('/rematricula/coordenacao/table/json', 'RematriculaCoordController@getData')->name('coordenacao.table');
-    Route::put('/rematricula/coordenacao/{aluno}/aceitar/{registro}', 'RematriculaCoordController@aceitar')->name('coordenacao.aceitar');
-    Route::put('/rematricula/coordenacao/{aluno}/recusar/{registro}', 'RematriculaCoordController@recusar')->name('coordenacao.recusar');
-    Route::put('/rematricula/coordenacao/{aluno}/desfazer/{registro}', 'RematriculaCoordController@desfazer')->name('coordenacao.desfazer');
-    Route::resource('rematricula/coordenacao', 'RematriculaCoordController')->only(['index', 'show']);
+    Route::get('/rematricula/coordenacao/table/json', 'Rematricula\RematriculaCoordController@getData')->name('coordenacao.table');
+    Route::put('/rematricula/coordenacao/{aluno}/aceitar/{registro}', 'Rematricula\RematriculaCoordController@aceitar')->name('coordenacao.aceitar');
+    Route::put('/rematricula/coordenacao/{aluno}/recusar/{registro}', 'Rematricula\RematriculaCoordController@recusar')->name('coordenacao.recusar');
+    Route::put('/rematricula/coordenacao/{aluno}/desfazer/{registro}', 'Rematricula\RematriculaCoordController@desfazer')->name('coordenacao.desfazer');
+    Route::resource('rematricula/coordenacao', 'Rematricula\RematriculaCoordController')->only(['index', 'show']);
 
     //Rotas para Módulo Confirmação de Inscrições
     Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);

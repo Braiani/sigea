@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Aluno extends Model
 {
+    protected $fillable = ['nome', 'matricula', 'id_curso', 'registro_situacao_id', 'CR'];
+
     public function curso()
     {
         return $this->belongsTo('App\Models\Curso', 'id_curso');
@@ -14,6 +16,21 @@ class Aluno extends Model
     public function registros()
     {
         return $this->hasMany('App\Models\Registro', 'id_alunos');
+    }
+
+    public function situacao()
+    {
+        return $this->belongsTo('App\Models\RegistroSituacao', 'registro_situacao_id');
+    }
+
+    public function disciplinas()
+    {
+        return $this->hasMany('App\Models\DisciplinaCurso', 'id_cursos', 'id_curso');
+    }
+
+    public function historico()
+    {
+        return $this->belongsToMany('App\Models\DisciplinaCurso', 'historico_escolares')->withPivot('status');
     }
 
     public function scopeSituacao($query, $search)

@@ -2,6 +2,10 @@
 
 @section('title', 'Registro de intenção')
 
+@push('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet"/>
+@endpush
+
 @section('content')
 <div class="row">
     <div class="col-sm-10">
@@ -15,7 +19,7 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="form-group">
                         <label for="situacao">Situação do estudante:</label>
-                        <select name='situacao' class='form-control selectpicker' title="Selecione a situação do estudante" data-style="{{ $errors->has('situacao') ? 'btn-danger' : 'btn-info' }}">
+                        <select name='situacao' class='form-control select2' title="Selecione a situação do estudante" data-style="{{ $errors->has('situacao') ? 'btn-danger' : 'btn-info' }}">
                             <option></option>
                             <option value="1" {{ $registros[0]->situacao == 1 ? 'selected': '' }}>Dependência</option>
                             <option value="2" {{ $registros[0]->situacao == 2 ? 'selected': '' }}>Retido</option>
@@ -25,9 +29,10 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="form-group">
                         <label for="semestre">Semestre de rematrícula:</label>
-                        <select name='semestre' class='form-control selectpicker' data-style="{{ $errors->has('semestre') ? 'btn-danger' : 'btn-info' }}">
-                            <option value="20182">2018/2</option>
-                            <option value="20181">2018/1</option>
+                        <select name='semestre' class='form-control select2'>
+                            <option value="20191">2019/1</option>
+                            <option value="20182" disabled>2018/2</option>
+                            <option value="20181" disabled>2018/1</option>
                         </select>
                     </div>
                 </div>
@@ -62,3 +67,13 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/i18n/pt-BR.js"></script>
+    <script>
+        $(document).on('pageReady', function () {
+            $(".select2").select2();
+        });
+    </script>
+@endpush

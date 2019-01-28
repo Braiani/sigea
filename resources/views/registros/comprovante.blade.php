@@ -75,7 +75,7 @@
 
         </div>
         <div class="second-paragraph">
-            <p>O responsável está ciente que deverá comparecer nesta instituição, no período de 23/07/2018 a 27/07/2018, para confirmação da matrícula do estudante e em caso de não comparecimento, a presente pré-matrícula será cancelada automaticamente.</p>
+            <p>O responsável está ciente que deverá comparecer nesta instituição, no período de 07/02/2019 a 08/02/2019, para confirmação da matrícula do estudante e em caso de não comparecimento, a presente pré-matrícula será cancelada automaticamente.</p>
         </div>
         <div class="data-local">
             <p>Campo Grande, MS - {{ date( 'd/m/Y' , strtotime(now()))}}.

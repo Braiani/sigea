@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Rematricula;
 
+use App\Http\Controllers\Controller;
+use App\Models\RegistroSituacao;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\Aluno;
@@ -10,15 +12,6 @@ use App\Models\DisciplinaCurso;
 
 class CerelController extends Controller
 {
-
-    public function __construct(Request $request)
-    {
-
-        // if (!$request->user()->isAdmin or !$request->user()->isCogea or !$request->user()->role->name == 'cerel') {
-        //     toastr()->error('Você não tem permissão para essa ação!');
-        //     return redirect()->route('sigea.dashborad');
-        // }
-    }
     /**
      * Display a listing of the resource.
      *
@@ -26,8 +19,7 @@ class CerelController extends Controller
      */
     public function index()
     {
-        $alunos = Aluno::orderBy('nome', 'ASC')->get();
-        return view('registros.index')->with(['alunos' => $alunos]);
+        return view('registros.index');
     }
 
     /**
@@ -36,37 +28,80 @@ class CerelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        if (Registro::alunoRegistrado($id)->count() > 0) {
-            return redirect()->route('sigea.registros.edit', $id);
+        $registros = Registro::alunoRegistrado($id)->where('semestre', $request->semestre);
+        if ($registros->count() === 0) {
+            return redirect()->route('sigea.registros.index');
         }
         $aluno = Aluno::find($id);
-        $contadorSemestre = DisciplinaCurso::cursoDisciplina($aluno->curso->id)->max('semestre');
-        for ($i=1; $i <= $contadorSemestre; $i++) {
-            $disciplinas[$i] = DisciplinaCurso::cursoDisciplina($aluno->curso->id)->semestre($i)->get();
-        }
+        $registros = $registros->get();
 
-        return view('registros.registrar')->with([
+        return view('registros.mostrar')->with([
             'aluno' => $aluno,
-            'disciplinas' => $disciplinas
+            'registros' => $registros
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return array $response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $aluno = Aluno::find($id);
-        $registros = Registro::alunoRegistrado($id)->get();
-        return view('registros.mostrar')->with([
-            'aluno' => $aluno,
+        $aluno = Aluno::with(['situacao', 'historico'])->find($id);
+
+        $aluno = $this->verificaStatus($aluno);
+
+        $alunoVeridicado = $aluno->fresh('situacao');
+
+        $registros = $alunoVeridicado->registros->where('semestre', $request->semestre);
+
+        return [
+            'aluno' => $alunoVeridicado,
+            'historico' => $alunoVeridicado->historico,
             'registros' => $registros
-        ]);
+        ];
+    }
+
+    public function verificaStatus(Aluno $aluno) : Aluno
+    {
+        $rfs = $aluno->historico->where('pivot.status', "Reprovado por Falta");
+        $rns = $aluno->historico->where('pivot.status', "Reprovado por Nota");
+
+        if ($aluno->situacao === null){
+
+            if ($rfs->isNotEmpty() or $rns->isNotEmpty()){
+                $sum = 0;
+                foreach ($rns as $reprovacao){
+                    $sum += $reprovacao['carga_horaria'];
+                }
+                foreach ($rfs as $reprovacao){
+                    $sum += $reprovacao['carga_horaria'];
+                }
+                if ($sum / 15 < 12){
+                    $dependencia = RegistroSituacao::dependencia()->first();
+                    $aluno->situacao()->associate($dependencia->id);
+                    $aluno->save();
+                    return $aluno;
+                }else{
+                    $retido = RegistroSituacao::retido()->first();
+                    $aluno->situacao()->associate($retido->id);
+                    $aluno->save();
+                    return $aluno;
+                }
+            }else{
+                $regular = RegistroSituacao::regular()->first();
+                $aluno->situacao()->associate($regular->id);
+                $aluno->save();
+                return $aluno;
+            }
+        }else{
+            return $aluno;
+        }
     }
 
     /**
@@ -78,14 +113,21 @@ class CerelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+
+        $validateData = $request->validate([
             'situacao' => 'required',
             'semestre' => 'required',
             'disciplinas' => 'required'
         ]);
-        $semestre = $request->semestre;
-        $situacao = $request->situacao;
-        $disciplinas = $request->disciplinas;
+
+        $semestre = $validateData['semestre'];
+        $situacao = $validateData['situacao'];
+        $disciplinas = $validateData['disciplinas'];
+
+        if (Registro::alunoRegistrado($id)->where('semestre', $semestre)->count() > 0) {
+            return redirect()->route('sigea.registros.editar', [$id, 'semestre' => $semestre]);
+        }
+
 
         foreach ($disciplinas as $disciplina) {
             $registro = new Registro();
@@ -99,8 +141,10 @@ class CerelController extends Controller
             $registro->save();
         }
 
+        $aluno = Aluno::find($id);
+
         toastr()->success('Registro realizado com sucesso!');
-        return redirect()->route('sigea.registros.edit', $id);
+        return redirect()->route('sigea.registros.comprovante', [$aluno, 'semetre' => '20191']);
     }
 
     /**
@@ -127,7 +171,10 @@ class CerelController extends Controller
 
     public function comprovante(Request $request, Aluno $aluno)
     {
-        $registros = Registro::AlunoRegistrado($aluno->id)->get();
+        $request->validate([
+            'semestre' => 'required'
+        ]);
+        $registros = Registro::AlunoRegistrado($aluno->id)->where('semestre', $request->semestre)->get();
 
         return PDF::loadView('registros.comprovante', [
             'aluno' => $aluno,
@@ -142,7 +189,7 @@ class CerelController extends Controller
 
     public function editar(Request $request, Aluno $aluno)
     {
-        $registros = Registro::alunoRegistrado($aluno->id)->get();
+        $registros = Registro::alunoRegistrado($aluno->id)->where('semestre', $request->semestre)->get();
         $contadorSemestre = DisciplinaCurso::cursoDisciplina($aluno->curso->id)->max('semestre');
         for ($i=1; $i <= $contadorSemestre; $i++) {
             $disciplinas[$i] = DisciplinaCurso::cursoDisciplina($aluno->curso->id)->semestre($i)->get();
@@ -167,7 +214,7 @@ class CerelController extends Controller
         $disciplinas = $request->disciplinas;
 
         foreach ($disciplinas as $disciplina) {
-            if (Registro::disciplinaRegistrada($disciplina)->alunoRegistrado($aluno->id)->count() == 0) {
+            if (Registro::disciplinaRegistrada($disciplina)->alunoRegistrado($aluno->id)->where('semestre', $semestre)->count() == 0) {
                 $registro = new Registro();
                 $registro->id_disciplina_cursos = $disciplina;
                 $registro->id_alunos = $aluno->id;
@@ -181,20 +228,18 @@ class CerelController extends Controller
         }
 
         toastr()->success('Registro atualizado com sucesso!');
-        return redirect()->route('sigea.registros.edit', $aluno);
+        return redirect()->route('sigea.registros.show', [$aluno, 'semestre' => $semestre]);
     }
 
     public function getAlunos(Request $request)
     {
-        $alunos = Aluno::where('nome', 'LIKE', "%{$request->q}%")->get();
+        $alunos = Aluno::where('nome', 'LIKE', "%{$request->q}%")->with('curso')->get();
         $resposta = [];
         foreach ($alunos as $aluno) {
             $resposta[] = [
-                'text' => $aluno->nome,
-                'value' => $aluno->id,
-                'data' => [
-                    'subtext' => $aluno->curso->nome
-                ]
+                'text' => $aluno->nome . ' - ' . $aluno->curso->nome,
+                'id' => $aluno->id,
+                'aluno' => $aluno
             ];
         }
 
