@@ -31,14 +31,19 @@ class CerelController extends Controller
     public function show(Request $request, $id)
     {
         $registros = Registro::alunoRegistrado($id)->where('semestre', $request->semestre);
-        if ($registros->count() === 0) {
-            return redirect()->route('sigea.registros.index');
+        if ($registros->count() > 0) {
+            return redirect()->route('sigea.registros.edit', $id);
         }
         $aluno = Aluno::find($id);
+        $contadorSemestre = DisciplinaCurso::cursoDisciplina($aluno->curso->id)->max('semestre');
+        for ($i=1; $i <= $contadorSemestre; $i++) {
+            $disciplinas[$i] = DisciplinaCurso::cursoDisciplina($aluno->curso->id)->semestre($i)->get();
+        }
         $registros = $registros->get();
 
-        return view('registros.mostrar')->with([
+        return view('registros.registrar')->with([
             'aluno' => $aluno,
+            'disciplinas' => $disciplinas,
             'registros' => $registros
         ]);
     }
@@ -52,19 +57,12 @@ class CerelController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $aluno = Aluno::with(['situacao', 'historico'])->find($id);
-
-        $aluno = $this->verificaStatus($aluno);
-
-        $alunoVeridicado = $aluno->fresh('situacao');
-
-        $registros = $alunoVeridicado->registros->where('semestre', $request->semestre);
-
-        return [
-            'aluno' => $alunoVeridicado,
-            'historico' => $alunoVeridicado->historico,
+        $aluno = Aluno::find($id);
+        $registros = Registro::alunoRegistrado($id)->get();
+        return view('registros.mostrar')->with([
+            'aluno' => $aluno,
             'registros' => $registros
-        ];
+        ]);
     }
 
     public function verificaStatus(Aluno $aluno) : Aluno
