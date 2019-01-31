@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Rematricula;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Registro;
 use App\Models\Aluno;
+use App\Models\Registro;
+use Illuminate\Http\Request;
 
 class RematriculaCoordController extends Controller
 {
@@ -16,14 +16,19 @@ class RematriculaCoordController extends Controller
      */
     public function index()
     {
-        // return Registro::all();
-        return view('rematricula.coords.index');
+        $semestres = Registro::select('semestre')->distinct('semestre')->get();
+        $situacoes = Registro::select('situacao')->distinct('situacao')->get();
+
+        return view('rematricula.coords.index')->with([
+            'semestres' => $semestres,
+            'situacoes' => $situacoes
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -38,16 +43,22 @@ class RematriculaCoordController extends Controller
     {
         $offset = $request->get('offset');
         $limit = $request->get('limit');
-        $search = $request->get('search') ? $request->get('search') : false;
-        $sort = $request->get('sort') ? $request->get('sort') : false;
+        $search = $request->has('search') ? $request->get('search') : false;
+        $sort = $request->has('sort') ? $request->get('sort') : false;
+        $semestre = $request->has('semestre') ? $request->get('semestre') : false;
+        $situacao = $request->has('situacao') ? $request->get('situacao') : false;
 
         $query = new Aluno();
 
-        $query = $query->has('registros');
+        $query = $query->whereHas('registros', function ($query) use ($semestre) {
+            if ($semestre !== false) {
+                return $query->where('semestre', $semestre);
+            }
+        });
 
-        $query = $query->when($search, function ($query, $search){
+        $query = $query->when($search, function ($query, $search) {
 
-            return $query->where(function($query) use ($search){
+            return $query->where(function ($query) use ($search) {
 
                 $query->nome($search)->curso($search)->situacao($search);
             });
@@ -58,10 +69,10 @@ class RematriculaCoordController extends Controller
 
                 $query = $query->orderBy('id_curso', $request->get('order'));
 
-            }elseif ($sort == 'situacao') {
+            } elseif ($sort == 'situacao') {
 
                 $query = $query->with('registros')->orderBy('situacao', $request->get('order'));
-            }else{
+            } else {
 
                 $query = $query->orderBy($sort, $request->get('order'));
             }
@@ -75,7 +86,7 @@ class RematriculaCoordController extends Controller
             $avaliacao = 'Não avaliado';
             foreach ($resultado->registros as $registro) {
                 $situacao = $registro->situacoes->nome;
-                if ($registro->avaliacao !== 0) {
+                if ($registro->semestre == $semestre and $registro->avaliacao !== 0) {
                     $avaliacao = 'Avaliado';
                 }
             }
@@ -99,9 +110,9 @@ class RematriculaCoordController extends Controller
 
     public function aceitar(Request $request, Aluno $aluno, Registro $registro)
     {
-        try{
+        try {
             $this->authorize('aceitar', $registro);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             toastr()->error('Você não tem permissão para essa ação!');
             return redirect()->route('sigea.coordenacao.show', $aluno->id);
         }
@@ -116,9 +127,9 @@ class RematriculaCoordController extends Controller
 
     public function recusar(Request $request, Aluno $aluno, Registro $registro)
     {
-        try{
+        try {
             $this->authorize('recusar', $registro);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             toastr()->error('Você não tem permissão para essa ação!');
             return redirect()->route('sigea.coordenacao.show', $aluno->id);
         }
@@ -133,9 +144,9 @@ class RematriculaCoordController extends Controller
 
     public function desfazer(Request $request, Aluno $aluno, Registro $registro)
     {
-        try{
+        try {
             $this->authorize('desfazer', $registro);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             toastr()->error('Você não tem permissão para essa ação!');
             return redirect()->route('sigea.coordenacao.show', $aluno->id);
         }
