@@ -78,6 +78,8 @@ class RematriculaCoordController extends Controller
             }
         }
 
+        $total = $query->count();
+
         $result = $query->orderBy('CR', 'DESC')->offset($offset)->limit($limit)->get();
         $registros = [];
 
@@ -101,7 +103,7 @@ class RematriculaCoordController extends Controller
         }
 
         $resposta = array(
-            'total' => $query->count(),
+            'total' => $total,
             'count' => $result->count(),
             'rows' => $registros,
         );
