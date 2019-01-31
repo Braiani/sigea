@@ -14,6 +14,7 @@ Solicitação de {{ $aluno->nome }}
                     <tr>
                         <th>Estudante</th>
                         <th>CR</th>
+                        <th>Semestre</th>
                         <th>Disciplina</th>
                         <th>Responsável rematrícula</th>
                         <th>Ação</th>
@@ -41,6 +42,7 @@ Solicitação de {{ $aluno->nome }}
                         <tr class="{{ $class }}">
                             <td>{{ $aluno->nomeFormatado }}</td>
                             <td>{{ $aluno->CRFormatado }}</td>
+                            <td>{{ $registro->semestre }}</td>
                             <td>{{ $registro->disciplinas->nomeFormatado }}</td>
                             <td>{{ $registro->user->name }}</td>
                             <td>
