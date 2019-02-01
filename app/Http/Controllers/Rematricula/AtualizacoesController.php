@@ -28,13 +28,12 @@ class AtualizacoesController extends Controller
                 $aluno->CR = $fileLine['cr'];
                 $aluno->save();
 
-                toastr('CRs atualizado com sucesso', 'success');
-
-                return redirect()->route('sigea.registros.index');
             }catch (\Exception $e){
-                dd($e->getMessage());
+                toastr($e->getMessage(), 'error');
             }
+            toastr('CRs atualizado com sucesso', 'success');
 
+            return redirect()->route('sigea.registros.index');
         }
     }
 }
