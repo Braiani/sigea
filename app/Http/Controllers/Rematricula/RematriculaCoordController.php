@@ -18,10 +18,12 @@ class RematriculaCoordController extends Controller
     {
         $semestres = Registro::select('semestre')->distinct('semestre')->get();
         $situacoes = Registro::select('situacao')->distinct('situacao')->get();
+        $cursos = Aluno::select('id_curso')->has('registros')->with('curso')->distinct('curso')->get();
 
         return view('rematricula.coords.index')->with([
             'semestres' => $semestres,
-            'situacoes' => $situacoes
+            'situacoes' => $situacoes,
+            'cursos' => $cursos
         ]);
     }
 
@@ -47,21 +49,56 @@ class RematriculaCoordController extends Controller
         $sort = $request->has('sort') ? $request->get('sort') : false;
         $semestre = $request->has('semestre') ? $request->get('semestre') : false;
         $situacao = $request->has('situacao') ? $request->get('situacao') : false;
+        $curso = $request->has('curso') ? $request->get('curso') : false;
 
         $query = new Aluno();
 
-        $query = $query->whereHas('registros', function ($query) use ($semestre) {
-            if ($semestre !== false) {
-                return $query->where('semestre', $semestre);
-            }
-        });
+        $query = $query->whereHas('registros', function ($query) use ($search, $semestre, $situacao, $curso) {
 
-        $query = $query->when($search, function ($query, $search) {
+            $query = $query->when($semestre, function ($query) use ($semestre) {
 
-            return $query->where(function ($query) use ($search) {
+                return $query->whereSemestre($semestre);
 
-                $query->nome($search)->curso($search)->situacao($search);
             });
+
+            $query = $query->when($situacao, function ($query) use ($situacao) {
+
+                return $query->whereSituacao($situacao);
+
+            }, function ($query) use ($search) {
+
+                return $query->whereHas('situacoes', function ($q) use ($search){
+                    return $q->orWhere('nome', 'LIKE', "%{$search}%");
+                });
+
+            });
+
+            $query = $query->when($curso, function ($query) use ($curso) {
+
+                return $query->whereHas('aluno', function ($query) use ($curso) {
+                    return $query->whereIdCurso($curso);
+                });
+
+            }, function ($query) use ($search) {
+
+                return $query->orWhereHas('aluno', function ($query) use ($search) {
+                    return $query->orWhereIn('id_curso', function ($query) use ($search) {
+                        return $query->select('id')->where('nome', 'LIKE', "%{$search}%")->from('cursos');
+                    });
+                });
+
+            });
+
+            $query = $query->when($search, function ($query) use ($search) {
+
+                $query = $query->orWhereHas('aluno', function ($query) use ($search) {
+                    return $query->orWhere('nome', 'LIKE', "%{$search}%")->orWhere('matricula', 'LIKE', "%{$search}%");
+                });
+
+                return $query;
+            });
+
+            return $query;
         });
 
         if ($sort) {
@@ -72,6 +109,7 @@ class RematriculaCoordController extends Controller
             } elseif ($sort == 'situacao') {
 
                 $query = $query->with('registros')->orderBy('situacao', $request->get('order'));
+
             } else {
 
                 $query = $query->orderBy($sort, $request->get('order'));
@@ -80,35 +118,16 @@ class RematriculaCoordController extends Controller
 
         $total = $query->count();
 
-        $result = $query->orderBy('CR', 'DESC')->offset($offset)->limit($limit)->get();
-        $registros = [];
-
-        foreach ($result as $resultado) {
-            $situacao = 'Erro';
-            $avaliacao = 'Não avaliado';
-            foreach ($resultado->registros as $registro) {
-                $situacao = $registro->situacoes->nome;
-                if ($registro->semestre == $semestre and $registro->avaliacao !== 0) {
-                    $avaliacao = 'Avaliado';
-                }
-            }
-            array_push($registros, [
-                'id' => $resultado->id,
-                'nome' => $resultado->nome,
-                'curso' => $resultado->curso->nome,
-                'cr' => sprintf("%1.4f", $resultado->CR),
-                'avaliacao' => $avaliacao,
-                'situacao' => $situacao
-            ]);
-        }
+        $registros = $query->offset($offset)->limit($limit)->orderBy('CR', 'DESC')->with(['curso', 'registros.situacoes'])->get();
 
         $resposta = array(
             'total' => $total,
-            'count' => $result->count(),
+            'count' => $registros->count(),
             'rows' => $registros,
         );
         return $resposta;
     }
+
 
     public function aceitar(Request $request, Aluno $aluno, Registro $registro)
     {

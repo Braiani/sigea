@@ -15,7 +15,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="semestre">Semestre:</label>
                                 <select name="semestre" id="semestre" class="form-control select2">
@@ -26,7 +26,7 @@
                                 </select>
                             </div>
                         </div>
-                        {{--<div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="situacao">Situação:</label>
                                 <select name="situacao" id="situacao" class="form-control select2">
@@ -36,7 +36,18 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>--}}
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="curso">Curso:</label>
+                                <select name="curso" id="curso" class="form-control select2">
+                                    <option value=""></option>
+                                    @foreach($cursos as $curso)
+                                        <option value="{{ $curso->curso->id }}">{{ $curso->curso->nome }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,27 +67,32 @@
                                data-query-params="queryParams"
                                data-height="600"
                                data-side-pagination="server"
+                               data-row-style="colorStyle"
                                data-locale="pt-BR">
                             <thead>
                             <tr>
                                 <th data-field="nome"
                                     data-sortable="true"
-                                        {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
                                 >Nome estudante
                                 </th>
+                                <th data-field="matricula" data-sortable="true">Matrícula</th>
                                 <th data-field="curso"
                                     data-sortable="true"
-                                        {{-- data-formatter="cursoFormatter" --}}
+                                    data-formatter="cursoFormatter"
                                 >Curso
                                 </th>
-                                <th data-field="cr"
+                                <th data-field="CR"
                                     data-align="center"
                                     data-sortable="true"
-                                        {{-- data-events="operateEvents" data-formatter="operateFormatter" --}}
+                                    data-formatter="crFormatter"
                                 >CR
                                 </th>
-                                <th data-field="situacao" data-sortable="false">Situação</th>
-                                <th data-field="avaliacao">Avaliado?</th>
+                                <th data-field="registros"
+                                    data-sortable="false"
+                                    data-formatter="situacaoFormatter"
+                                >Situação
+                                </th>
+                                <th data-field="registros" data-formatter="avaliadoFormatter">Avaliado?</th>
                                 <th data-field="actions" class="td-actions text-right" data-events="operateEvents"
                                     data-formatter="operateFormatter">Ações
                                 </th>
@@ -102,12 +118,77 @@
             ].join('');
         };
 
+        function cursoFormatter(value, row, index) {
+            if (value != null) {
+                return value.nome;
+            } else {
+                return '-';
+            }
+        }
+
+        function crFormatter(value) {
+            return value.toFixed(4);
+        }
+
+        function situacaoFormatter(value) {
+            if (value != null) {
+                var resposta;
+                var semestre;
+                if ($("#semestre").val() != '') {
+                    semestre = $("#semestre").val();
+                } else {
+                    semestre = '20191';
+                }
+                $.each(value, function (index, valor) {
+                    if (valor.semestre == semestre) {
+                        resposta = valor.situacoes.nome;
+                    }
+                });
+                return resposta;
+            } else {
+                return '-';
+            }
+        }
+
+        function avaliadoFormatter(value) {
+            var avaliado = true;
+            var semestre;
+            if ($("#semestre").val() != '') {
+                semestre = $("#semestre").val();
+            } else {
+                semestre = '20191';
+            }
+            $.each(value, function (index, valor) {
+                if (valor.semestre == semestre && valor.avaliacao === 0) {
+                    avaliado = false;
+                }
+            });
+
+            if (avaliado) {
+                return 'Avaliado';
+            } else {
+                return 'Pendente';
+            }
+        }
+
+        function colorStyle(row) {
+            if (avaliadoFormatter(row.registros) == 'Avaliado') {
+                return {
+                    classes: 'success'
+                }
+            }
+            return {};
+        }
+
         function queryParams(params) {
             if ($("#semestre").val() !== '') {
                 params.semestre = $("#semestre").val();
             }
             if ($("#situacao").val() !== '') {
                 params.situacao = $("#situacao").val();
+            }
+            if ($("#curso").val() !== '') {
+                params.curso = $("#curso").val();
             }
             return params;
         }
@@ -149,8 +230,18 @@
                 $table.bootstrapTable('resetView');
             });
 
-            $("#semestre").select2({placeholder:"Selecione o semestre"});
-            $("#situacao").select2({placeholder:"Selecione a situação"});
+            $("#semestre").select2({
+                placeholder: "Selecione o semestre",
+                allowClear: true
+            });
+            $("#situacao").select2({
+                placeholder: "Selecione a situação",
+                allowClear: true
+            });
+            $("#curso").select2({
+                placeholder: "Selecione o curso",
+                allowClear: true
+            });
 
             $("#semestre").on('change', function () {
                 $table.bootstrapTable('refresh');
