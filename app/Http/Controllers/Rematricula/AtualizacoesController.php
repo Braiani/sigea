@@ -31,9 +31,9 @@ class AtualizacoesController extends Controller
             }catch (\Exception $e){
                 toastr($e->getMessage(), 'error');
             }
-            toastr('CRs atualizado com sucesso', 'success');
-
-            return redirect()->route('sigea.registros.index');
         }
+        toastr('CRs atualizado com sucesso', 'success');
+
+        return redirect()->route('sigea.registros.index');
     }
 }
