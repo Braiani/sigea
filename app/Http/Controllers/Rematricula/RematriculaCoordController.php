@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Aluno;
 use App\Models\Registro;
 use Illuminate\Http\Request;
+use League\Csv\Writer;
 
 class RematriculaCoordController extends Controller
 {
@@ -67,7 +68,7 @@ class RematriculaCoordController extends Controller
 
             }, function ($query) use ($search) {
 
-                return $query->whereHas('situacoes', function ($q) use ($search){
+                return $query->whereHas('situacoes', function ($q) use ($search) {
                     return $q->orWhere('nome', 'LIKE', "%{$search}%");
                 });
 
@@ -178,5 +179,31 @@ class RematriculaCoordController extends Controller
 
         toastr()->success('Registro desfeito!');
         return redirect()->route('sigea.coordenacao.show', $aluno->id);
+    }
+
+    public function geraRelatorio(Request $request)
+    {
+        $alunos = Aluno::has('registros')->with('registros')->get();
+        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+
+        $csv->insertOne(['Estudante', 'Semestre', 'Situação']);
+
+        foreach ($alunos as $aluno) {
+            $semestreAnterior = $aluno->registros->firstWhere('semestre', '20182');
+            $semestreAtual = $aluno->registros->firstWhere('semestre', '20191');
+
+            $csv->insertOne([
+                $aluno->nome,
+                '20181',
+                $semestreAnterior === null ? '' : $semestreAnterior->situacoes->nome
+            ]);
+            $csv->insertOne([
+                $aluno->nome,
+                '20191',
+                $semestreAtual === null ? '' : $semestreAtual->situacoes->nome
+            ]);
+        }
+
+        return $csv->output('relatorio.csv');
     }
 }
