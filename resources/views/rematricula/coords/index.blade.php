@@ -7,8 +7,8 @@
 @endpush
 
 @section('content')
-    <div class="orw">
-        <div class="col-sm-12">
+    <div class="row">
+        <div class="col-sm-10">
             <div class="card">
                 <div class="card-header">
                     <h4 class="cad-title text-center">Filtros</h4>
@@ -48,6 +48,18 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title text-center">Relatório</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <a href="{{ route('sigea.coordenacao.relatorio') }}" class="btn btn-primary">Gerar relatório</a>
                     </div>
                 </div>
             </div>
