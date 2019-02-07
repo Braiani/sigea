@@ -9,12 +9,12 @@ Solicitação de {{ $aluno->nome }}
     <div class="col-md-12">
         <h3>Foram encontrados os seguintes registros para o(a) estudante selecionado: {{ $aluno->nomeFormatado }}</h3>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table id="table" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Estudante</th>
                         <th>CR</th>
-                        <th>Semestre</th>
+                        <th data-sortable="true">Semestre</th>
                         <th>Disciplina</th>
                         <th>Responsável rematrícula</th>
                         <th>Ação</th>
@@ -79,3 +79,18 @@ Solicitação de {{ $aluno->nome }}
     </div>
 </div>
 @endsection
+ @push('script')
+     <script>
+         $(document).on('pageReady', function(){
+             $('#table').bootstrapTable({
+                 toolbar: ".toolbar",
+                 clickToSelect: false,
+                 search: true,
+                 pagination: true,
+                 searchAlign: 'left',
+                 pageSize: 10,
+                 pageList: [8, 10, 25, 50, 100],
+             });
+         });
+     </script>
+ @endpush
