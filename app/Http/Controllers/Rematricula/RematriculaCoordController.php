@@ -66,12 +66,6 @@ class RematriculaCoordController extends Controller
 
                 return $query->whereSituacao($situacao);
 
-            }, function ($query) use ($search) {
-
-                return $query->whereHas('situacoes', function ($q) use ($search) {
-                    return $q->orWhere('nome', 'LIKE', "%{$search}%");
-                });
-
             });
 
             $query = $query->when($curso, function ($query) use ($curso) {
@@ -80,23 +74,14 @@ class RematriculaCoordController extends Controller
                     return $query->whereIdCurso($curso);
                 });
 
-            }, function ($query) use ($search) {
-
-                return $query->orWhereHas('aluno', function ($query) use ($search) {
-                    return $query->orWhereIn('id_curso', function ($query) use ($search) {
-                        return $query->select('id')->where('nome', 'LIKE', "%{$search}%")->from('cursos');
-                    });
-                });
-
             });
 
             $query = $query->when($search, function ($query) use ($search) {
 
-                $query = $query->orWhereHas('aluno', function ($query) use ($search) {
-                    return $query->orWhere('nome', 'LIKE', "%{$search}%")->orWhere('matricula', 'LIKE', "%{$search}%");
+                $query = $query->whereHas('aluno', function ($query) use ($search) {
+                    return $query->Where('nome', 'LIKE', "%{$search}%")->orWhere('matricula', 'LIKE', "%{$search}%");
                 });
 
-                return $query;
             });
 
             return $query;
