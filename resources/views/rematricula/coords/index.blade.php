@@ -56,14 +56,51 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title text-center">Relatório</h4>
+                    <p class="card-category text-center">Utilize o formulário que será aberto para escolher o
+                        relatório.</p>
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <a href="{{ route('sigea.coordenacao.relatorio') }}" class="btn btn-primary">Gerar relatório</a>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#relatorioModal">
+                            Gerar relatório
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="relatorioModal" tabindex="-1" role="dialog"
+                             aria-labelledby="relatorioModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="relatorioModalTitle">Escolher o relatório</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ route('sigea.coordenacao.relatorio') }}" method="GET" id="form-relatorioModal" class="form">
+                                            <div class="form-group">
+                                                <label for="relatorio">Escolha o relatório que deseja:</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select name="relatorio" id="relatorio" class="form-control">
+                                                    <option value=""></option>
+                                                    <option value="1">Alunos com situação (DP/Retido)</option>
+                                                    <option value="2">Disciplinas recusadas (c/ quantidade)</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                        <button type="submit" form="form-relatorioModal" class="btn btn-primary">Gerar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -260,6 +297,11 @@
             });
             $("#situacao").on('change', function () {
                 $table.bootstrapTable('refresh');
+            });
+            $('#relatorio').select2({
+                width: '100%',
+                placeholder: 'Seleciono o relatório',
+                dropdownParent: $('#relatorioModal')
             });
         });
     </script>
