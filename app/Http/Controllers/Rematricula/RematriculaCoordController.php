@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Rematricula;
 use App\Http\Controllers\Controller;
 use App\Models\Aluno;
 use App\Models\Registro;
+use App\Traits\RelatoriosCoords;
 use Illuminate\Http\Request;
-use League\Csv\Writer;
 
 class RematriculaCoordController extends Controller
 {
+    use RelatoriosCoords;
+
     /**
      * Display a listing of the resource.
      *
@@ -168,27 +170,23 @@ class RematriculaCoordController extends Controller
 
     public function geraRelatorio(Request $request)
     {
-        $alunos = Aluno::has('registros')->with('registros')->get();
-        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+        $request->validate([
+            'relatorio' => 'required|numeric'
+        ]);
 
-        $csv->insertOne(['Estudante', 'Semestre', 'Situação']);
+        $relatorio = $request->relatorio;
 
-        foreach ($alunos as $aluno) {
-            $semestreAnterior = $aluno->registros->firstWhere('semestre', '20182');
-            $semestreAtual = $aluno->registros->firstWhere('semestre', '20191');
-
-            $csv->insertOne([
-                $aluno->nome,
-                '20181',
-                $semestreAnterior === null ? '' : $semestreAnterior->situacoes->nome
-            ]);
-            $csv->insertOne([
-                $aluno->nome,
-                '20191',
-                $semestreAtual === null ? '' : $semestreAtual->situacoes->nome
-            ]);
+        switch ($relatorio) {
+            case 1:
+                return $this->alunoSituacao();
+                break;
+            case 2:
+                return $this->disciplinaRecusadas('20191');
+                break;
+            default:
+                toastr()->error('Relatório não encontratdo');
+                return redirect()->back();
+                break;
         }
-
-        return $csv->output('relatorio.csv');
     }
 }

@@ -8,7 +8,7 @@ class DisciplinaCurso extends Model
 {
     public function curso()
     {
-        return $this->belongsTo('App\Models\Curso', 'id_curso');
+        return $this->belongsTo('App\Models\Curso', 'id_cursos');
     }
 
     public function scopeCursoDisciplina($query, $id)
