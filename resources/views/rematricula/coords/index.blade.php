@@ -83,8 +83,9 @@
                                             <div class="form-group">
                                                 <select name="relatorio" id="relatorio" class="form-control">
                                                     <option value=""></option>
-                                                    <option value="1">Alunos com situação (DP/Retido)</option>
-                                                    <option value="2">Disciplinas recusadas (c/ quantidade)</option>
+                                                    <option value="1">1. Alunos com situação (DP/Retido)</option>
+                                                    <option value="2">2. Disciplinas recusadas c/ quantidade (Somente disciplinas)</option>
+                                                    <option value="3">3. Disciplinas recusadas c/ estudantes (c/ quantidade)</option>
                                                 </select>
                                             </div>
                                         </form>

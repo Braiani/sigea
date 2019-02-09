@@ -65,4 +65,34 @@ trait RelatoriosCoords
 
     }
 
+    public function disciplinasRecusadasEstudantes($semestre)
+    {
+        $registros = Registro::where(function ($query) use ($semestre) {
+            return $query->where('semestre', $semestre)->where('avaliacao', 2);
+        })->with(['disciplinas', 'disciplinas.curso'])->get();
+
+        $registrosGrouped = $registros->groupBy('id_disciplina_cursos');
+
+        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+
+        $csv->insertOne(['Curso', 'Disciplina', 'Estudante', 'Quantidade']);
+
+        foreach ($registrosGrouped as $registroGrouped) {
+            $linha = [];
+            $i = 1;
+            foreach ($registroGrouped as $registro) {
+                $linha = [
+                    $registro->disciplinas->curso->nome,
+                    $registro->disciplinas->nomeFormatado,
+                    $registro->aluno->nome,
+                    $i
+                ];
+                $i++;
+                $csv->insertOne($linha);
+            }
+        }
+
+        return $csv->output('Relatório Disciplinas Recusadas.csv');
+    }
+
 }

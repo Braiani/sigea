@@ -183,6 +183,9 @@ class RematriculaCoordController extends Controller
             case 2:
                 return $this->disciplinaRecusadas('20191');
                 break;
+            case 3:
+                return $this->disciplinasRecusadasEstudantes('20191');
+                break;
             default:
                 toastr()->error('Relatório não encontratdo');
                 return redirect()->back();
