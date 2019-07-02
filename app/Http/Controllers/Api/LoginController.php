@@ -10,15 +10,16 @@ class LoginController extends Controller
 {
     public function __invoke(ApiLoginRequest $request)
     {
+        sleep(2);
 
         try {
-            $student = Student::where('cpf', '03892500150')
+            $student = Student::where('cpf', $request->cpf)->where('born', $request->nascimento)
                 ->with(['matriculas', 'matriculas.course'])->firstOrFail();
             return $student;
         } catch (\Exception $exception) {
             $resposta = [
                 'error' => true,
-                'message' => "Estudante não encontrado'"
+                'message' => "Estudante não encontrado"
             ];
             return response($resposta);
         }

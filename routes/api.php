@@ -18,5 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'testes'], function (){
-    Route::get('login', 'Api\\LoginController');
+    Route::post('login', 'Api\\LoginController');
+    Route::get('token', function(){
+        return "Retorno da API";
+    });
 });
