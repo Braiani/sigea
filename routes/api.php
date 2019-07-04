@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'testes'], function (){
     Route::post('login', 'Api\\LoginController');
+    Route::get('qse/{cpf}', 'Api\\RematriculaController@getQse');
     Route::get('token', function(){
         return "Retorno da API";
     });

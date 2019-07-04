@@ -8,6 +8,10 @@ class Matricula extends Model
 {
     protected $fillable = ['id', 'status', 'student_id', 'course_id'];
 
+    protected $casts = [
+        'id' => 'string'
+    ];
+
     public function student()
     {
         return $this->belongsTo(Student::class);
