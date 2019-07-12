@@ -21,4 +21,9 @@ class Matricula extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function intentions()
+    {
+        return $this->belongsToMany(Subject::class, 'intentions');
+    }
 }

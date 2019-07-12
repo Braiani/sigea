@@ -17,10 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'testes'], function (){
+Route::group(['prefix' => 'rematricula'], function (){
     Route::post('login', 'Api\\LoginController');
-    Route::get('qse/{cpf}', 'Api\\RematriculaController@getQse');
-    Route::get('token', function(){
-        return "Retorno da API";
+    Route::group(['prefix' => 'students', 'middleware' => 'auth:api'], function () {
+        Route::post('/email/update', 'Api\\RematriculaController@updateEmail');
+        Route::get('/intentions/{matricula}', 'Api\\RematriculaController@intentions');
+        Route::post('/intentions/{matricula}', 'Api\\RematriculaController@registerIntention');
     });
+});
+
+Route::get('testes/intentions', function () {
+    return App\Models\Matricula::with('intentions')->first();
 });
