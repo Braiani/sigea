@@ -24,6 +24,6 @@ class Matricula extends Model
 
     public function intentions()
     {
-        return $this->belongsToMany(Subject::class, 'intentions');
+        return $this->belongsToMany(Subject::class, 'intentions')->withPivot('semestre');
     }
 }

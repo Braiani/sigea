@@ -27,5 +27,5 @@ Route::group(['prefix' => 'rematricula'], function (){
 });
 
 Route::get('testes/intentions', function () {
-    return App\Models\Matricula::with('intentions')->first();
+    return App\Models\Matricula::with(['intentions', 'student'])->first();
 });

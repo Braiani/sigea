@@ -25,7 +25,7 @@ class RematriculaController extends Controller
 
     public function intentions(Request $request, Matricula $matricula)
     {
-        return $matricula->load('intentions');
+        return $matricula->load(['intentions', 'student']);
     }
 
     public function registerIntention(Request $request, Matricula $matricula)
@@ -33,7 +33,7 @@ class RematriculaController extends Controller
         $disciplinas = $request->disciplinas;
 
         foreach ($disciplinas as $disciplina) {
-            $unidade = Subject::firstOrCreate(['nome' => str_replace('*', '', $disciplina)]);
+            $unidade = Subject::firstOrCreate(['nome' => str_replace('*', '', $disciplina['uc_nome'])]);
 
             $matricula->intentions()->attach([
                 $unidade->id => [
