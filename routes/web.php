@@ -56,6 +56,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     // Rematrícula - Histórico Escolar, CR e IDs
     Route::post('/cerel/historico_escolar', 'Rematricula\HistoricoEscolarController@update')->name('historicos.update');
     Route::post('/cerel/atualizar_cr', 'Rematricula\AtualizacoesController@updateCr')->name('atualizar.cr');
+    Route::post('/cerel/atualizar_matriculas', 'Rematricula\AtualizacoesController@updateMatriculas')->name('atualizar.matriculas');
 
     // Rematrícula - Coords
     Route::get('/rematricula/coordenacao/table/json', 'Rematricula\RematriculaCoordController@getData')->name('coordenacao.table');

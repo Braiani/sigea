@@ -31,6 +31,9 @@
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalCr">
                     Atualizar CR
                 </button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalMatricula">
+                    Atualizar Matrículas
+                </button>
                 {{--<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalMatriculaId">
                     Atualizar Matrícula ID
                 </button>--}}
@@ -251,6 +254,11 @@
                 // };
                 // execAjax('GET', url.replace('__id', aluno.id), data, exibirRespostaBusca);
             })
+
+            $("#form-Matricula").on('submit', function () {
+                $('#modalMatricula').modal('toggle');
+                $('#modalLoading').modal('toggle');
+            });
         });
     </script>
 @endpush
