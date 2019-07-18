@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+    {{ dd($integralizacao) }}
     <div class="row">
         <div class="col-md-12">
             <h3>Foram encontrados os seguintes registros para o(a) estudante
@@ -15,8 +16,9 @@
                     <tr>
                         <th>Estudante</th>
                         <th>E-mail</th>
-                        <th data-sortable="true">Semestre</th>
-                        <th>Disciplina</th>
+                        <th>Semestre</th>
+                        <th data-sortable="true">Disciplina</th>
+                        <th>Situação</th>
                         <th>Ação</th>
                     </tr>
                     </thead>
@@ -25,10 +27,10 @@
                         @php
                             $class = '';
                             switch ($registro->pivot->avaliado_cerel) {
-                                case '1':
+                                case '0':
                                     $class = '';
                                     break;
-                                case '0':
+                                case '1':
                                     $class = 'success';
                                     break;
                                 case '2':
@@ -45,10 +47,18 @@
                             <td>{{ $registro->pivot->semestre }}</td>
                             <td>{{ $registro->nome }}</td>
                             <td>
-                                @if ($registro->pivot->avaliacao)
+                                @if ($registro->pivot->avaliado_cerel)
                                     Avaliado!
                                 @else
                                     Não avaliado!
+                                @endif
+                            </td>
+                            <td>
+                                @if($registro->pivot->avaliado_cerel)
+                                    <a href="#" class="btn btn-primary">Desfazer</a>
+                                @else
+                                    <a href="#" class="btn btn-success">Aceitar</a>
+                                    <a href="#" class="btn btn-warning">Rejeitar</a>
                                 @endif
                             </td>
                         </tr>
@@ -68,7 +78,7 @@
                 search: true,
                 pagination: true,
                 searchAlign: 'left',
-                pageSize: 10,
+                pageSize: 15,
                 pageList: [8, 10, 25, 50, 100],
             });
         });
