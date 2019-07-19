@@ -9,5 +9,5 @@ class Intention extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['matricula_id', 'subject_id', 'semestre', 'avaliado_cerel'];
+    protected $fillable = ['matricula_id', 'subject_id', 'semestre', 'avaliado_cerel', 'avaliacao_coord', 'avaliado_coord'];
 }

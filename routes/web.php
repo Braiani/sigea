@@ -46,17 +46,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
     Route::get('/configuracoes', 'ConfiguracoesController@index')->name('configuracoes.index');
     Route::post('/configuracoes', 'ConfiguracoesController@store')->name('configuracoes.update');
 
-    // Rematrícula - CEREL
-    Route::get('/cerel/comprovante/{aluno}', 'Rematricula\CerelController@comprovante')->name('registros.comprovante');
-    Route::post('/cerel/registros/get_alunos', 'Rematricula\CerelController@getAlunos')->name('registros.getAlunos');
-    Route::get('/cerel/registros/{aluno}/editar', 'Rematricula\CerelController@editar')->name('registros.editar');
-    Route::put('/cerel/registros/{aluno}/salvar', 'Rematricula\CerelController@salvarUpdate')->name('registros.salvarUpdate');
-    Route::resource('/cerel/registros', 'Rematricula\CerelController')->except(['create', 'store']);
+    Route::group(['prefix' => 'cerel'], function () {
+        // Rematrícula - CEREL
+        Route::get('/comprovante/{aluno}', 'Rematricula\CerelController@comprovante')->name('registros.comprovante');
+        Route::post('/registros/get_alunos', 'Rematricula\CerelController@getAlunos')->name('registros.getAlunos');
+        Route::get('/registros/{aluno}/editar', 'Rematricula\CerelController@editar')->name('registros.editar');
+        Route::put('/registros/{aluno}/salvar', 'Rematricula\CerelController@salvarUpdate')->name('registros.salvarUpdate');
+        Route::resource('/registros', 'Rematricula\CerelController')->except(['create', 'store']);
 
-    // Rematrícula - Histórico Escolar, CR e IDs
-    Route::post('/cerel/historico_escolar', 'Rematricula\HistoricoEscolarController@update')->name('historicos.update');
-    Route::post('/cerel/atualizar_cr', 'Rematricula\AtualizacoesController@updateCr')->name('atualizar.cr');
-    Route::post('/cerel/atualizar_matriculas', 'Rematricula\AtualizacoesController@updateMatriculas')->name('atualizar.matriculas');
+        // Rematrícula - Histórico Escolar, CR e IDs
+        Route::post('/historico_escolar', 'Rematricula\HistoricoEscolarController@update')->name('historicos.update');
+        Route::post('/atualizar_cr', 'Rematricula\AtualizacoesController@updateCr')->name('atualizar.cr');
+        Route::post('/atualizar_matriculas', 'Rematricula\AtualizacoesController@updateMatriculas')->name('atualizar.matriculas');
+
+        //Rematricula - CEREL - Rematricula online
+        Route::get('/rematricula/table', 'Rematricula\RematriculaOnlineController@getData')->name('rematricula.table');
+        Route::get('/rematricula/{matricula}/{intention}/change', 'Rematricula\RematriculaOnlineController@updateDp')->name('rematricula.update.dp');
+        Route::resource('/rematricula', 'Rematricula\RematriculaOnlineController')->except(['create', 'edit'])->parameters(['rematricula' => 'matricula']);
+    });
 
     // Rematrícula - Coords
     Route::get('/rematricula/coordenacao/table/json', 'Rematricula\RematriculaCoordController@getData')->name('coordenacao.table');
