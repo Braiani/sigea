@@ -5,82 +5,100 @@
 @endsection
 
 @section('content')
-    {{ dd($integralizacao) }}
+    @if($matricula->intentions->first()->pivot->avaliado_cerel)
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card bg-danger">
+                    <div class="card-header mb-4 bg-info">
+                        <h3 class="text-center">Estudante já avaliado!</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-12">
-            <h3>Foram encontrados os seguintes registros para o(a) estudante
-                selecionado: {{ $matricula->student->name }}</h3>
-            <div class="table-responsive">
-                <table id="table" class="table table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Estudante</th>
-                        <th>E-mail</th>
-                        <th>Semestre</th>
-                        <th data-sortable="true">Disciplina</th>
-                        <th>Situação</th>
-                        <th>Ação</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($matricula->intentions as $registro)
-                        @php
-                            $class = '';
-                            switch ($registro->pivot->avaliado_cerel) {
-                                case '0':
-                                    $class = '';
-                                    break;
-                                case '1':
-                                    $class = 'success';
-                                    break;
-                                case '2':
-                                    $class = 'danger';
-                                    break;
-                                default:
-                                    $class = '';
-                                    break;
-                            }
-                        @endphp
-                        <tr class="{{ $class }}">
-                            <td>{{ $matricula->student->name }}</td>
-                            <td>{{ $matricula->student->email }}</td>
-                            <td>{{ $registro->pivot->semestre }}</td>
-                            <td>{{ $registro->nome }}</td>
-                            <td>
-                                @if ($registro->pivot->avaliado_cerel)
-                                    Avaliado!
-                                @else
-                                    Não avaliado!
-                                @endif
-                            </td>
-                            <td>
-                                @if($registro->pivot->avaliado_cerel)
-                                    <a href="#" class="btn btn-primary">Desfazer</a>
-                                @else
-                                    <a href="#" class="btn btn-success">Aceitar</a>
-                                    <a href="#" class="btn btn-warning">Rejeitar</a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Foram encontrados os seguintes registros para o(a) estudante: {{ $matricula->student->name }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('sigea.rematricula.update', $matricula->id) }}" id="form-rematricula">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            @foreach($integralizacao as $semestre => $disciplinas)
+                                <div class="col-md-6">
+                                    <div class="form-group border">
+                                        <h4 class="text-center">{{ $semestre }}º Semestre</h4>
+                                        <table class="table table-striped table-responsive table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th>Disciplina</th>
+                                                <th>CH</th>
+                                                <th class="text-center">Situação</th>
+                                                <th class="text-center">Solicitada?</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($disciplinas as $disciplina)
+                                                <tr>
+                                                    <td>{{ trim(strtoupper(str_replace('*', '', $disciplina['uc_nome']))) }}</td>
+                                                    <td class="text-center">{{ $disciplina['carga_horaria'] }}</td>
+                                                    <td class="text-center">{{ $disciplina['situacao'] }}</td>
+                                                    <td class="text-center">
+                                                        @if($disciplina['situacao'] !== "Cursada")
+                                                            @foreach($matricula->intentions as $registro)
+
+                                                                @if(strcmp(trim(mb_strtolower(str_replace('*', '', $disciplina['uc_nome']))), trim(mb_strtolower($registro->nome))) == 0)
+                                                                    @if($disciplina['situacao'] === "Não cursada")
+                                                                        Sim
+                                                                        @if(!$registro->pivot->avaliacao_coord && !$registro->pivot->avaliado_cerel)
+                                                                            <a href="{{ route('sigea.rematricula.update.dp', [$matricula->id, $registro->id]) }}">É DP?</a>
+                                                                        @endif
+                                                                    @else
+                                                                        Sim
+                                                                    @endif
+                                                                    @break
+                                                                @elseif($loop->last)
+                                                                    Não
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @if(!$matricula->intentions->first()->pivot->avaliado_cerel)
+                                <button type="submit" class="btn btn-success" form="form-rematricula">Registrar avaliação</button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 @endsection
 @push('script')
     <script>
         $(document).on('pageReady', function () {
-            $('#table').bootstrapTable({
-                toolbar: ".toolbar",
-                clickToSelect: false,
-                search: true,
-                pagination: true,
-                searchAlign: 'left',
-                pageSize: 15,
-                pageList: [8, 10, 25, 50, 100],
-            });
+            $(".form").on('submit', function (e) {
+
+            })
         });
     </script>
 @endpush

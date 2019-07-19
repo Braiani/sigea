@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h4 class="cad-title text-center">Filtros</h4>
@@ -40,55 +40,6 @@
                                 <select name="curso" id="curso" class="form-control select2">
                                     <option value=""></option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title text-center">Relatório</h4>
-                    <p class="card-category text-center">Utilize o formulário que será aberto para escolher o
-                        relatório.</p>
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#relatorioModal">
-                            Gerar relatório
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="relatorioModal" tabindex="-1" role="dialog"
-                             aria-labelledby="relatorioModalTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="relatorioModalTitle">Escolher o relatório</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ route('sigea.coordenacao.relatorio') }}" method="GET" id="form-relatorioModal" class="form">
-                                            <div class="form-group">
-                                                <label for="relatorio">Escolha o relatório que deseja:</label>
-                                            </div>
-                                            <div class="form-group">
-                                                <select name="relatorio" id="relatorio" class="form-control">
-                                                    <option value=""></option>
-                                                    <option value="1">1. Alunos com situação (DP/Retido)</option>
-                                                    <option value="2">2. Disciplinas recusadas c/ quantidade (Somente disciplinas)</option>
-                                                    <option value="3">3. Disciplinas recusadas c/ estudantes (c/ quantidade)</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                        <button type="submit" form="form-relatorioModal" class="btn btn-primary">Gerar</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,6 +101,15 @@
             ].join('');
         }
 
+        function colorStyle(row) {
+            if (row.intentions[0].pivot.avaliado_cerel) {
+                return {
+                    classes: 'success'
+                }
+            }
+            return {}
+        }
+
         function studentFormatter(value) {
             return value.name;
         }
@@ -184,7 +144,7 @@
                 toolbar: ".toolbar",
                 clickToSelect: false,
                 showRefresh: true,
-                search: true,
+                search: false, // Desabilitado por enquanto
                 showToggle: true,
                 showColumns: true,
                 pagination: true,
@@ -206,6 +166,10 @@
 
             $(window).resize(function () {
                 $table.bootstrapTable('resetView');
+            });
+
+            window.addEventListener('focus', function () {
+                $table.bootstrapTable('refresh');
             });
 
             $("#semestre").select2({

@@ -24,7 +24,7 @@ class Matricula extends Model
 
     public function intentions()
     {
-        return $this->belongsToMany(Subject::class, 'intentions')->withPivot('semestre', 'avaliado_cerel');
+        return $this->belongsToMany(Subject::class, 'intentions')->withPivot('semestre', 'avaliado_cerel', 'avaliacao_coord', 'avaliado_coord')->withTimestamps();
     }
 
     public function scopeWithAndWhereHas($query, $relation, $constraint){

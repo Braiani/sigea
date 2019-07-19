@@ -42,7 +42,7 @@ class RematriculaOnlineController extends Controller
     {
         $matricula = Matricula::where('id', $id)->withAndWhereHas('intentions', function ($query) {
             $query->where('semestre', '20192');
-        })->with(['course', 'student'])->first();
+        })->with(['course', 'student'])->firstOrFail();
 
         $token = sha1('IFMS' . $id);
         $url = "https://academico.ifms.edu.br/administrativo/historico_escolar/integralizacao_publica/{$id}/?token={$token}";
@@ -55,7 +55,21 @@ class RematriculaOnlineController extends Controller
 
         $response =  file_get_contents($url, false, $streamSSL);
 
-        $integralizacao = collect(json_decode($response))['Integralizacao'];
+        $integralizacao = collect(json_decode($response, true)['Integralizacao']);
+
+        foreach ($integralizacao as $disciplinas) {
+            foreach ($disciplinas as $disciplina) {
+                if ($disciplina['situacao'] === "Reprovação") {
+                    foreach ($matricula->intentions as $intention) {
+                        if (strcmp(trim(mb_strtolower(str_replace('*', '', $disciplina['uc_nome']))), mb_strtolower($intention->nome)) == 0){
+                            $matricula->intentions()->updateExistingPivot($intention->id, ['avaliacao_coord' => true]);
+                            $matricula->load('intentions');
+                        }
+
+                    }
+                }
+            }
+        }
 
         return view('rematricula.cerel.edit', compact('matricula', 'integralizacao'));
     }
@@ -67,9 +81,18 @@ class RematriculaOnlineController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Matricula $matricula)
     {
-        //
+        $matricula->load('intentions');
+        $intentionsId = $matricula->intentions->pluck('id')->toArray();
+
+        foreach ($intentionsId as $intentionId) {
+            $matricula->intentions()->updateExistingPivot($intentionId, ['avaliado_cerel' => true]);
+        }
+
+        toastr('Registrado com sucesso');
+
+        return redirect()->route('sigea.rematricula.show', $matricula->id);
     }
 
     /**
@@ -100,7 +123,7 @@ class RematriculaOnlineController extends Controller
 
         $total = $intentions->count();
 
-        $registros = $intentions->offset($offset)->limit($limit)->with(['course', 'student'])->orderBy('id', 'desc')->get();
+        $registros = $intentions->offset($offset)->limit($limit)->with(['course', 'intentions', 'student'])->orderBy('id', 'desc')->get();
 
         $resposta = array(
             'total' => $total,
@@ -108,5 +131,14 @@ class RematriculaOnlineController extends Controller
             'rows' => $registros,
         );
         return $resposta;
+    }
+
+    public function updateDp(Request $request, Matricula $matricula, Intention $intention)
+    {
+        $matricula->intentions()->updateExistingPivot($intention->id, ['avaliacao_coord' => true]);
+
+        toastr('Registrado como DP', 'success');
+
+        return redirect()->route('sigea.rematricula.show', $matricula->id);
     }
 }
