@@ -28,17 +28,12 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="situacao">Situação:</label>
-                                <select name="situacao" id="situacao" class="form-control select2">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
                                 <label for="curso">Curso:</label>
                                 <select name="curso" id="curso" class="form-control select2">
                                     <option value=""></option>
+                                    @foreach($courses as $course)
+                                        <option value="{{ $course->id }}">{{ $course->nome }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -102,9 +97,11 @@
         }
 
         function colorStyle(row) {
-            if (row.intentions[0].pivot.avaliado_cerel) {
-                return {
-                    classes: 'success'
+            if (typeof row.intentions[0] !== "undefined") {
+                if (row.intentions[0].pivot.avaliado_cerel) {
+                    return {
+                        classes: 'success'
+                    }
                 }
             }
             return {}
@@ -144,7 +141,7 @@
                 toolbar: ".toolbar",
                 clickToSelect: false,
                 showRefresh: true,
-                search: false, // Desabilitado por enquanto
+                search: true,
                 showToggle: true,
                 showColumns: true,
                 pagination: true,

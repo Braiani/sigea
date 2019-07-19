@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Rematricula;
 
+use App\Models\Course;
 use App\Models\Intention;
 use App\Models\Matricula;
 use Illuminate\Http\Request;
@@ -17,8 +18,9 @@ class RematriculaOnlineController extends Controller
     public function index()
     {
         $semestres = Intention::select('semestre')->distinct('semestre')->get();
+        $courses = Course::all();
 
-        return view('rematricula.cerel.index', compact('semestres'));
+        return view('rematricula.cerel.index', compact('semestres', 'courses'));
     }
 
     /**
@@ -95,30 +97,32 @@ class RematriculaOnlineController extends Controller
         return redirect()->route('sigea.rematricula.show', $matricula->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function getData(Request $request)
     {
         $offset = $request->get('offset');
         $limit = $request->get('limit');
         $search = $request->has('search') ? $request->get('search') : false;
         $sort = $request->has('sort') ? $request->get('sort') : false;
+        $curso = $request->has('curso') ? $request->get('curso') : false;
 
         $intentions = new Matricula();
 
-        $intentions = $intentions->whereHas('intentions', function ($query) use ($search) {
-            //
-        })->when($search, function ($query) use ($search) {
-            $query->where('id', 'LIKE', "%{$search}%");
+        $intentions = $intentions->has('intentions');
+
+        $intentions = $intentions->when($curso, function ($query) use ($curso) {
+            $query->whereHas('course', function ($q) use ($curso) {
+                $q->where('id', $curso);
+            });
+        });
+
+        $intentions = $intentions->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->whereHas('student', function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%");
+                })->orWhere('id', "LIKE", "%{$search}%")->orWhereHas('course', function ($q) use ($search) {
+                    $q->where('nome', 'LIKE', "%{$search}%");
+                });
+            });
         });
 
         $total = $intentions->count();
