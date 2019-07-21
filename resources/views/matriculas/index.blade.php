@@ -2,7 +2,6 @@
 @section('title', 'Matrículas')
 
 @push('css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 @endpush
 
@@ -107,8 +106,6 @@
 @endsection
 
 @push('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/i18n/pt-BR.js"></script>
     @stack('script-matricula-functions')
     <script>
         function clearChecklist() {

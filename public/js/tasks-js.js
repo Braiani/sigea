@@ -1,12 +1,18 @@
 async function addTask(url, urlGetUsers){
     await swal({
         title: 'Registrar Tarefa',
+        onBeforeOpen: () => {
+            $(".select2").select2({
+                dropdownParent: $('#myModal'),
+
+            });
+        },
         html:
-        '<div class="card stacked-form">' +
+        '<div id="myModal" class="card stacked-form">' +
             '<div class="card-body ">' +
                 '<div class="form-group">' +
                     '<label>Para</label>' +
-                    '<select name="user_to" id="user_to" class="form-control">' +
+                    '<select name="user_to" id="user_to" class="form-control select2" style="width:100%;">' +
                         '<option value="X">Carregando...</option>' +
                     '</select>' +
                 '</div>' +
