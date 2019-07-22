@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Rematricula;
 use App\Models\Course;
 use App\Models\Intention;
 use App\Models\Matricula;
+use App\Traits\RetreiveSigaInfo;
+use Dompdf\Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RematriculaOnlineController extends Controller
 {
+    use RetreiveSigaInfo;
     /**
      * Display a listing of the resource.
      *
@@ -46,18 +49,7 @@ class RematriculaOnlineController extends Controller
             $query->where('semestre', '20192');
         })->with(['course', 'student'])->firstOrFail();
 
-        $token = sha1('IFMS' . $id);
-        $url = "https://academico.ifms.edu.br/administrativo/historico_escolar/integralizacao_publica/{$id}/?token={$token}";
-        $streamSSL = stream_context_create(array(
-            "ssl"=>array(
-                "verify_peer"=> false,
-                "verify_peer_name"=> false
-            )
-        ));
-
-        $response =  file_get_contents($url, false, $streamSSL);
-
-        $integralizacao = collect(json_decode($response, true)['Integralizacao']);
+        $integralizacao = $this->getIntegralizacaoCollect($id);
 
         foreach ($integralizacao as $disciplinas) {
             foreach ($disciplinas as $disciplina) {
@@ -144,5 +136,30 @@ class RematriculaOnlineController extends Controller
         toastr('Registrado como DP', 'success');
 
         return redirect()->route('sigea.rematricula.show', $matricula->id);
+    }
+
+    public function updataCoordenacao(Request $request)
+    {
+        try {
+            $matriculas = Matricula::whereHas('intentions', function ($q) {
+                $q->where('avaliado_cerel', false);
+            })->limit(15)->get();
+
+            foreach ($matriculas as $matricula) {
+                $response = $this->show($matricula->id);
+            }
+
+            $resposta = [
+                'error' => false,
+                'message' => "Estudantes atualizados com sucesso!"
+            ];
+            return response($resposta);
+        }catch (\Exception $exception){
+            $resposta = [
+                'error' => true,
+                'message' => $exception->getMessage()
+            ];
+            return response($resposta);
+        }
     }
 }

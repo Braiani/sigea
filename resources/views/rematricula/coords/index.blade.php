@@ -2,10 +2,6 @@
 
 @section('title', 'Rematrículas realizadas')
 
-@push('css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet"/>
-@endpush
-
 @section('content')
     <div class="row">
         <div class="col-sm-10">
@@ -76,7 +72,7 @@
                                         <h5 class="modal-title" id="relatorioModalTitle">Escolher o relatório</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('sigea.coordenacao.relatorio') }}" method="GET" id="form-relatorioModal" class="form">
+                                        <form action="{{ route('sigea.coordenacao.rematricula.relatorio') }}" method="GET" id="form-relatorioModal" class="form">
                                             <div class="form-group">
                                                 <label for="relatorio">Escolha o relatório que deseja:</label>
                                             </div>
@@ -113,7 +109,7 @@
                         </div>
                         <table id="table"
                                class="table table-striped"
-                               data-url="{{ route('sigea.coordenacao.table') }}"
+                               data-url="{{ route('sigea.coordenacao.rematricula.table') }}"
                                data-query-params="queryParams"
                                data-height="600"
                                data-side-pagination="server"
@@ -162,7 +158,7 @@
     <script>
         function operateFormatter(value, row, index) {
             return [
-                '<a rel="tooltip" title="Visualizar" class="btn btn-link btn-primary table-action" target="_Blank" href="{{ route('sigea.coordenacao.index') }}/' + row.id + '">',
+                '<a rel="tooltip" title="Visualizar" class="btn btn-link btn-primary table-action" target="_Blank" href="{{ route('sigea.coordenacao.rematricula.index') }}/' + row.id + '">',
                 '<i class="fa fa-eye"></i>',
                 '</a>',
             ].join('');

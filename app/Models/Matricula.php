@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Matricula extends Model
 {
-    protected $fillable = ['id', 'status', 'student_id', 'course_id'];
+    protected $fillable = ['id', 'status', 'student_id', 'course_id', 'cr', 'is_retido'];
 
     protected $casts = [
-        'id' => 'string'
+        'id' => 'string',
+        'is_retido' => 'boolean'
     ];
 
     public function student()

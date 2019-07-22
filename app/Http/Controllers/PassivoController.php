@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Curso;
+use App\Models\Passivo;
+use App\Traits\BackendVerification;
 use Illuminate\Http\Request;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
-use App\Models\Passivo;
-use Dotenv\Validator;
-use App\Models\Curso;
 
 class PassivoController extends VoyagerBaseController
 {
+
+    use BackendVerification;
+
     public function index(Request $request)
     {
         if ($this->isBackend($request)) {
@@ -36,11 +39,11 @@ class PassivoController extends VoyagerBaseController
 
         if ($search) {
             $query = $query->where('nome', 'LIKE', "%{$search}%")
-                    ->orWhereIn('curso_id', function ($query) use ($search) {
-                        $query->select('id')->from('cursos')->where('nome', 'LIKE', "%{$search}%");
-                    })
-                    ->orWhere('id', 'LIKE', "%{$search}%")
-                    ->orWhere('observacao', 'LIKE', "%{$search}%");
+                ->orWhereIn('curso_id', function ($query) use ($search) {
+                    $query->select('id')->from('cursos')->where('nome', 'LIKE', "%{$search}%");
+                })
+                ->orWhere('id', 'LIKE', "%{$search}%")
+                ->orWhere('observacao', 'LIKE', "%{$search}%");
         }
         if ($sort) {
             $query = $query->orderBy($sort, $request->get('order'));
@@ -150,10 +153,5 @@ class PassivoController extends VoyagerBaseController
         }
 
         return $request;
-    }
-
-    public function isBackend(Request $request)
-    {
-        return in_array('backend', explode('/', $request->url()));
     }
 }
