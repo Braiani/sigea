@@ -65,13 +65,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
         Route::resource('/rematricula', 'Rematricula\RematriculaOnlineController')->except(['create', 'edit'])->parameters(['rematricula' => 'matricula']);
     });
 
-    // Rematrícula - Coords
-    Route::get('/rematricula/coordenacao/table/json', 'Rematricula\RematriculaCoordController@getData')->name('coordenacao.table');
-    Route::get('/rematricula/coordenacao/relatorio', 'Rematricula\RematriculaCoordController@geraRelatorio')->name('coordenacao.relatorio');
-    Route::put('/rematricula/coordenacao/{aluno}/aceitar/{registro}', 'Rematricula\RematriculaCoordController@aceitar')->name('coordenacao.aceitar');
-    Route::put('/rematricula/coordenacao/{aluno}/recusar/{registro}', 'Rematricula\RematriculaCoordController@recusar')->name('coordenacao.recusar');
-    Route::put('/rematricula/coordenacao/{aluno}/desfazer/{registro}', 'Rematricula\RematriculaCoordController@desfazer')->name('coordenacao.desfazer');
-    Route::resource('rematricula/coordenacao', 'Rematricula\RematriculaCoordController')->only(['index', 'show']);
+    Route::group(['prefix' => 'coordenacao', 'as' => 'coordenacao.'], function () {
+        Route::group(['prefix' => 'rematricula', 'as' => 'rematricula.'], function () {
+            // Rematrícula - Coords
+            Route::get('/table/json', 'Rematricula\RematriculaCoordController@getData')->name('table');
+            Route::get('/relatorio', 'Rematricula\RematriculaCoordController@geraRelatorio')->name('relatorio');
+            Route::put('/{aluno}/aceitar/{registro}', 'Rematricula\RematriculaCoordController@aceitar')->name('aceitar');
+            Route::put('/{aluno}/recusar/{registro}', 'Rematricula\RematriculaCoordController@recusar')->name('recusar');
+            Route::put('/{aluno}/desfazer/{registro}', 'Rematricula\RematriculaCoordController@desfazer')->name('desfazer');
+            Route::resource('/', 'Rematricula\RematriculaCoordController')->only(['index', 'show']);
+
+            // Rematrícula  - Online - Coords
+            Route::get('/online/update/matricula_informations', 'Rematricula\RematriculaOnlineCoordsController@updateMatriculaInformations')->name('update.infor');
+            Route::get('/online/table', 'Rematricula\RematriculaOnlineCoordsController@getData')->name('table');
+            Route::resource('/online', 'Rematricula\RematriculaOnlineCoordsController')->only(['index', 'show'])->parameters(['online' => 'matricula']);
+        });
+    });
 
     //Rotas para Módulo Confirmação de Inscrições
     Route::resource('/confirmacao', 'ConfirmacaoController')->except(['show']);

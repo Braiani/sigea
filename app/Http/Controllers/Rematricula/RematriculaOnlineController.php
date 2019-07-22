@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Rematricula;
 use App\Models\Course;
 use App\Models\Intention;
 use App\Models\Matricula;
+use App\Traits\RetreiveSigaInfo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RematriculaOnlineController extends Controller
 {
+    use RetreiveSigaInfo;
     /**
      * Display a listing of the resource.
      *
@@ -46,18 +48,7 @@ class RematriculaOnlineController extends Controller
             $query->where('semestre', '20192');
         })->with(['course', 'student'])->firstOrFail();
 
-        $token = sha1('IFMS' . $id);
-        $url = "https://academico.ifms.edu.br/administrativo/historico_escolar/integralizacao_publica/{$id}/?token={$token}";
-        $streamSSL = stream_context_create(array(
-            "ssl"=>array(
-                "verify_peer"=> false,
-                "verify_peer_name"=> false
-            )
-        ));
-
-        $response =  file_get_contents($url, false, $streamSSL);
-
-        $integralizacao = collect(json_decode($response, true)['Integralizacao']);
+        $integralizacao = $this->getIntegralizacaoCollect($id);
 
         foreach ($integralizacao as $disciplinas) {
             foreach ($disciplinas as $disciplina) {
