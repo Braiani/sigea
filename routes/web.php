@@ -61,6 +61,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
 
         //Rematricula - CEREL - Rematricula online
         Route::get('/rematricula/table', 'Rematricula\RematriculaOnlineController@getData')->name('rematricula.table');
+        Route::post('/rematricula/atualizar/coordenacao', 'Rematricula\RematriculaOnlineController@updataCoordenacao')->name('rematricula.updata.coord');
         Route::get('/rematricula/{matricula}/{intention}/change', 'Rematricula\RematriculaOnlineController@updateDp')->name('rematricula.update.dp');
         Route::resource('/rematricula', 'Rematricula\RematriculaOnlineController')->except(['create', 'edit'])->parameters(['rematricula' => 'matricula']);
     });
@@ -78,6 +79,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
             // Rematrícula  - Online - Coords
             Route::get('/online/update/matricula_informations', 'Rematricula\RematriculaOnlineCoordsController@updateMatriculaInformations')->name('update.infor');
             Route::get('/online/table', 'Rematricula\RematriculaOnlineCoordsController@getData')->name('table');
+            Route::put('/online/registrar/{matricula}/{intention}/aceitar', 'Rematricula\RematriculaOnlineCoordsController@aceitar')->name('online.aceitar');
+            Route::put('/online/registrar/{matricula}/{intention}/recusar', 'Rematricula\RematriculaOnlineCoordsController@recusar')->name('online.recusar');
+            Route::put('/online/registrar/{matricula}/{intention}/desfazer', 'Rematricula\RematriculaOnlineCoordsController@desfazer')->name('online.desfazer');
             Route::resource('/online', 'Rematricula\RematriculaOnlineCoordsController')->only(['index', 'show'])->parameters(['online' => 'matricula']);
         });
     });

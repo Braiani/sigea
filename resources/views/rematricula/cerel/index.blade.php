@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8">
             <div class="card">
                 <div class="card-header">
                     <h4 class="cad-title text-center">Filtros</h4>
@@ -37,6 +37,24 @@
                 </div>
             </div>
         </div>
+        @if(Auth::user()->isAdmin)
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="cad-title text-center">Atualizar</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <div class="form-group">
+                                    <button id="updateCoord" class="btn btn-warning">Atualizar Coordenações</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
     </div>
     <div class="row">
@@ -113,9 +131,6 @@
             if ($("#semestre").val() !== '') {
                 params.semestre = $("#semestre").val();
             }
-            if ($("#situacao").val() !== '') {
-                params.situacao = $("#situacao").val();
-            }
             if ($("#curso").val() !== '') {
                 params.curso = $("#curso").val();
             }
@@ -167,10 +182,6 @@
                 placeholder: "Selecione o semestre",
                 allowClear: true
             });
-            $("#situacao").select2({
-                placeholder: "Selecione a situação",
-                allowClear: true
-            });
             $("#curso").select2({
                 placeholder: "Selecione o curso",
                 allowClear: true
@@ -179,14 +190,60 @@
             $("#semestre").on('change', function () {
                 $table.bootstrapTable('refresh');
             });
-            $("#situacao").on('change', function () {
-                $table.bootstrapTable('refresh');
+            $("#updateCoord").on('click', function () {
+                var $url = '{{ route('sigea.rematricula.updata.coord') }}';
+                Swal.fire({
+                    title: 'Atualizar',
+                    type: 'warning',
+                    text: "Você tem certeza que deseja atualizar os estudantes DPs?",
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim, quero atualizar',
+                    cancelButtonText: 'Não, quero cancelar',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return execAjax('POST', $url, [])
+                            .then(response => {
+                                return response
+                            });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (!result.value.error) {
+                        $table.bootstrapTable('refresh');
+                        Swal.fire({
+                            title: 'Atualizado',
+                            text: result.value.message,
+                            type: 'success'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: result.value.message,
+                            type: 'error'
+                        });
+                    }
+                })
             });
-            $('#relatorio').select2({
-                width: '100%',
-                placeholder: 'Seleciono o relatório',
-                dropdownParent: $('#relatorioModal')
-            });
+
+            function execAjax(type, url, data) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: type,
+                        url: url,
+                        data: data,
+                        cache: false,
+                        success: (response) => {
+                            resolve(response);
+                        },
+                        error: (error) => {
+                            reject(error);
+                        }
+                    });
+                })
+            }
         });
     </script>
 @endpush

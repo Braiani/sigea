@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Intention;
 use App\Models\Matricula;
 use App\Traits\RetreiveSigaInfo;
+use Dompdf\Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -135,5 +136,30 @@ class RematriculaOnlineController extends Controller
         toastr('Registrado como DP', 'success');
 
         return redirect()->route('sigea.rematricula.show', $matricula->id);
+    }
+
+    public function updataCoordenacao(Request $request)
+    {
+        try {
+            $matriculas = Matricula::whereHas('intentions', function ($q) {
+                $q->where('avaliado_cerel', false);
+            })->limit(15)->get();
+
+            foreach ($matriculas as $matricula) {
+                $response = $this->show($matricula->id);
+            }
+
+            $resposta = [
+                'error' => false,
+                'message' => "Estudantes atualizados com sucesso!"
+            ];
+            return response($resposta);
+        }catch (\Exception $exception){
+            $resposta = [
+                'error' => true,
+                'message' => $exception->getMessage()
+            ];
+            return response($resposta);
+        }
     }
 }

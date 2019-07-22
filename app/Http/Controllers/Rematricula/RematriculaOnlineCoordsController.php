@@ -23,7 +23,35 @@ class RematriculaOnlineCoordsController extends Controller
 
     public function show(Request $request, Matricula $matricula)
     {
-        return collect(json_decode($this->getAllMatriculaInfo($matricula->id), true));
+        $matricula->load(['intentions' => function ($q) {
+            $q->where('avaliacao_coord', true);
+        }, 'student', 'course']);
+
+        return view('rematricula.coords.online.mostrar', compact('matricula'));
+    }
+
+    public function aceitar(Request $request, Matricula $matricula, Intention $intention)
+    {
+        $matricula->intentions()->updateExistingPivot($intention->id, ['avaliado_coord' => 1]);
+
+        toastr('Registro aceito com sucesso.', 'success');
+        return redirect()->back();
+    }
+
+    public function recusar(Request $request, Matricula $matricula, Intention $intention)
+    {
+        $matricula->intentions()->updateExistingPivot($intention->id, ['avaliado_coord' => 2]);
+
+        toastr('Registro recusado com sucesso.', 'info');
+        return redirect()->back();
+    }
+
+    public function desfazer(Request $request, Matricula $matricula, Intention $intention)
+    {
+        $matricula->intentions()->updateExistingPivot($intention->id, ['avaliado_coord' => 0]);
+
+        toastr('Registro desfeito com sucesso.', 'success');
+        return redirect()->back();
     }
 
     public function updateMatriculaInformations()
