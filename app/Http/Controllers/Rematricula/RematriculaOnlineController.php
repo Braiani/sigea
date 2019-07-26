@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Rematricula;
 
+use App\Http\Controllers\Controller;
+use App\Jobs\RetrieveGradeJob;
 use App\Models\Course;
 use App\Models\Intention;
 use App\Models\Matricula;
 use App\Traits\RetreiveSigaInfo;
-use Dompdf\Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class RematriculaOnlineController extends Controller
 {
     use RetreiveSigaInfo;
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +31,7 @@ class RematriculaOnlineController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -40,7 +42,7 @@ class RematriculaOnlineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,7 +57,7 @@ class RematriculaOnlineController extends Controller
             foreach ($disciplinas as $disciplina) {
                 if ($disciplina['situacao'] === "Reprovação") {
                     foreach ($matricula->intentions as $intention) {
-                        if (strcmp(trim(mb_strtolower(str_replace('*', '', $disciplina['uc_nome']))), mb_strtolower($intention->nome)) == 0){
+                        if (strcmp(trim(mb_strtolower(str_replace('*', '', $disciplina['uc_nome']))), mb_strtolower($intention->nome)) == 0) {
                             $matricula->intentions()->updateExistingPivot($intention->id, ['avaliacao_coord' => true]);
                             $matricula->load('intentions');
                         }
@@ -71,8 +73,8 @@ class RematriculaOnlineController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Matricula $matricula)
@@ -138,28 +140,45 @@ class RematriculaOnlineController extends Controller
         return redirect()->route('sigea.rematricula.show', $matricula->id);
     }
 
-    public function updataCoordenacao(Request $request)
+    public function startAdvices(Request $request)
     {
         try {
             $matriculas = Matricula::whereHas('intentions', function ($q) {
-                $q->where('avaliado_cerel', false);
-            })->limit(15)->get();
+                $q->where('avaliado_cerel', true);
+            })->limit(10)->get();
 
             foreach ($matriculas as $matricula) {
-                $response = $this->show($matricula->id);
+                dispatch((new RetrieveGradeJob($matricula))->onQueue('processing'));
             }
 
             $resposta = [
                 'error' => false,
-                'message' => "Estudantes atualizados com sucesso!"
+                'message' => "Processo de aviso iniciado com sucesso!"
             ];
             return response($resposta);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $resposta = [
                 'error' => true,
                 'message' => $exception->getMessage()
             ];
             return response($resposta);
         }
+    }
+
+    public function teste()
+    {
+        $matricula = Matricula::whereHas('intentions', function ($q) {
+            $q->where('avaliado_cerel', true);
+        })->first();
+
+        if (!Storage::disk('public')->directories($matricula->id)) {
+            Storage::disk('public')->makeDirectory($matricula->id);
+        }
+
+        $file = $this->getGradeInfo($matricula->id, '20192');
+
+        Storage::disk('public')->put("{$matricula->id}/19-07-27.pdf", $file);
+
+        return Storage::disk('public')->allFiles($matricula->id);
     }
 }
