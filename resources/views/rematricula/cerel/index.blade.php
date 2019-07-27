@@ -37,17 +37,17 @@
                 </div>
             </div>
         </div>
-        @if(Auth::user()->isAdmin)
+        @if(\Illuminate\Support\Facades\Gate::allows('admin-actions'))
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="cad-title text-center">Atualizar</h4>
+                        <h4 class="cad-title text-center">Avisos</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12 text-center">
                                 <div class="form-group">
-                                    <button id="updateCoord" class="btn btn-warning">Atualizar Coordenações</button>
+                                    <button id="startAdvices" class="btn btn-warning">Disparar os avisos</button>
                                 </div>
                             </div>
                         </div>
@@ -190,18 +190,19 @@
             $("#semestre").on('change', function () {
                 $table.bootstrapTable('refresh');
             });
-            $("#updateCoord").on('click', function () {
-                var $url = '{{ route('sigea.rematricula.updata.coord') }}';
+            $("#startAdvices").on('click', function () {
+                var $url = '{{ route('sigea.rematricula.start.advice') }}';
+                var $data = {semestre: "20192"};
                 Swal.fire({
                     title: 'Atualizar',
-                    type: 'warning',
-                    text: "Você tem certeza que deseja atualizar os estudantes DPs?",
+                    type: 'question',
+                    text: "Você tem certeza que deseja disparar os avisos aos estudantes?",
                     showCancelButton: true,
-                    confirmButtonText: 'Sim, quero atualizar',
-                    cancelButtonText: 'Não, quero cancelar',
+                    confirmButtonText: 'Sim',
+                    cancelButtonText: 'Não',
                     showLoaderOnConfirm: true,
                     preConfirm: () => {
-                        return execAjax('POST', $url, [])
+                        return execAjax('POST', $url, $data)
                             .then(response => {
                                 return response
                             });
@@ -209,9 +210,8 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (!result.value.error) {
-                        $table.bootstrapTable('refresh');
                         Swal.fire({
-                            title: 'Atualizado',
+                            title: 'Sucesso',
                             text: result.value.message,
                             type: 'success'
                         });

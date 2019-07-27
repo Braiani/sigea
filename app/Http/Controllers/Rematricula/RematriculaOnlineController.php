@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Rematricula;
 
+use App\Http\Controllers\Controller;
+use App\Jobs\RetrieveGradeJob;
 use App\Models\Course;
 use App\Models\Intention;
 use App\Models\Matricula;
 use App\Traits\RetreiveSigaInfo;
-use Dompdf\Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class RematriculaOnlineController extends Controller
 {
     use RetreiveSigaInfo;
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +31,7 @@ class RematriculaOnlineController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -40,7 +42,7 @@ class RematriculaOnlineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,7 +57,7 @@ class RematriculaOnlineController extends Controller
             foreach ($disciplinas as $disciplina) {
                 if ($disciplina['situacao'] === "Reprovação") {
                     foreach ($matricula->intentions as $intention) {
-                        if (strcmp(trim(mb_strtolower(str_replace('*', '', $disciplina['uc_nome']))), mb_strtolower($intention->nome)) == 0){
+                        if (strcmp(trim(mb_strtolower(str_replace('*', '', $disciplina['uc_nome']))), mb_strtolower($intention->nome)) == 0) {
                             $matricula->intentions()->updateExistingPivot($intention->id, ['avaliacao_coord' => true]);
                             $matricula->load('intentions');
                         }
@@ -71,8 +73,8 @@ class RematriculaOnlineController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Matricula $matricula)
@@ -138,23 +140,26 @@ class RematriculaOnlineController extends Controller
         return redirect()->route('sigea.rematricula.show', $matricula->id);
     }
 
-    public function updataCoordenacao(Request $request)
+    public function startAdvices(Request $request)
     {
         try {
-            $matriculas = Matricula::whereHas('intentions', function ($q) {
-                $q->where('avaliado_cerel', false);
-            })->limit(15)->get();
+            $semestre = $request->semestre;
+            $matriculas = Matricula::whereHas('intentions', function ($q) use ($semestre) {
+                $q->where('semestre', $semestre)->where('avaliado_cerel', true);
+            })->whereDoesntHave('alerts', function ($q) use ($semestre) {
+                $q->where('semestre', $semestre);
+            })->limit(5)->get();
 
             foreach ($matriculas as $matricula) {
-                $response = $this->show($matricula->id);
+                dispatch((new RetrieveGradeJob($matricula, $semestre))->onQueue('processing'));
             }
 
             $resposta = [
                 'error' => false,
-                'message' => "Estudantes atualizados com sucesso!"
+                'message' => "Processo de aviso iniciado com sucesso!"
             ];
             return response($resposta);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $resposta = [
                 'error' => true,
                 'message' => $exception->getMessage()

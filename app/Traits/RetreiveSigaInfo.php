@@ -30,4 +30,18 @@ trait RetreiveSigaInfo
         $response = $this->getAllMatriculaInfo($matricula);
         return collect(json_decode($response, true)['Integralizacao']);
     }
+
+    public function getGradeInfo($matricula, $semestre)
+    {
+        $token = sha1('IFMS' . $matricula);
+        $url = "https://academico.ifms.edu.br/administrativo/matriculas/comprovante_matricula_publico/{$matricula}/{$semestre}?token={$token}";
+        $streamSSL = stream_context_create(array(
+            "ssl"=>array(
+                "verify_peer"=> false,
+                "verify_peer_name"=> false
+            )
+        ));
+
+        return file_get_contents($url, false, $streamSSL);
+    }
 }
