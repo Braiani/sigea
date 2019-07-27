@@ -143,12 +143,15 @@ class RematriculaOnlineController extends Controller
     public function startAdvices(Request $request)
     {
         try {
-            $matriculas = Matricula::whereHas('intentions', function ($q) {
-                $q->where('avaliado_cerel', true);
-            })->limit(10)->get();
+            $semestre = $request->semestre;
+            $matriculas = Matricula::whereHas('intentions', function ($q) use ($semestre) {
+                $q->where('semestre', $semestre)->where('avaliado_cerel', true);
+            })->whereDoesntHave('alerts', function ($q) use ($semestre) {
+                $q->where('semestre', $semestre);
+            })->limit(5)->get();
 
             foreach ($matriculas as $matricula) {
-                dispatch((new RetrieveGradeJob($matricula))->onQueue('processing'));
+                dispatch((new RetrieveGradeJob($matricula, $semestre))->onQueue('processing'));
             }
 
             $resposta = [
@@ -163,22 +166,5 @@ class RematriculaOnlineController extends Controller
             ];
             return response($resposta);
         }
-    }
-
-    public function teste()
-    {
-        $matricula = Matricula::whereHas('intentions', function ($q) {
-            $q->where('avaliado_cerel', true);
-        })->first();
-
-        if (!Storage::disk('public')->directories($matricula->id)) {
-            Storage::disk('public')->makeDirectory($matricula->id);
-        }
-
-        $file = $this->getGradeInfo($matricula->id, '20192');
-
-        Storage::disk('public')->put("{$matricula->id}/19-07-27.pdf", $file);
-
-        return Storage::disk('public')->allFiles($matricula->id);
     }
 }

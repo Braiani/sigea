@@ -61,7 +61,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'lock', 'as' => 'sigea.'], fu
 
         //Rematricula - CEREL - Rematricula online
         Route::get('/rematricula/table', 'Rematricula\RematriculaOnlineController@getData')->name('rematricula.table');
-        Route::get('/rematricula/teste', 'Rematricula\RematriculaOnlineController@teste')->name('rematricula.teste');
         Route::post('/rematricula/disparar/avisos', 'Rematricula\RematriculaOnlineController@startAdvices')->name('rematricula.start.advice');
         Route::get('/rematricula/{matricula}/{intention}/change', 'Rematricula\RematriculaOnlineController@updateDp')->name('rematricula.update.dp');
         Route::resource('/rematricula', 'Rematricula\RematriculaOnlineController')->except(['create', 'edit'])->parameters(['rematricula' => 'matricula']);

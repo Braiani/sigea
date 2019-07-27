@@ -47,12 +47,7 @@
                         <div class="row">
                             <div class="col-sm-12 text-center">
                                 <div class="form-group">
-                                    <p class="text-muted">Disparar os avisos</p>
-                                </div>
-                                <div class="form-group">
                                     <button id="startAdvices" class="btn btn-warning">Disparar os avisos</button>
-                                    <a href="{{ route('sigea.rematricula.teste') }}" class="btn btn-success">Teste</a>
-                                    <a href="{{ url(Storage::url('2012102025005-1/19-07-27.pdf')) }}" class="btn btn-info">Download</a>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +192,7 @@
             });
             $("#startAdvices").on('click', function () {
                 var $url = '{{ route('sigea.rematricula.start.advice') }}';
+                var $data = {semestre: "20192"};
                 Swal.fire({
                     title: 'Atualizar',
                     type: 'question',
@@ -206,7 +202,7 @@
                     cancelButtonText: 'Não',
                     showLoaderOnConfirm: true,
                     preConfirm: () => {
-                        return execAjax('POST', $url, [])
+                        return execAjax('POST', $url, $data)
                             .then(response => {
                                 return response
                             });
